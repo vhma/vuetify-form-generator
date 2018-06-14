@@ -1,30 +1,28 @@
 <template>
 	<v-app>
-		<div>
-			<v-tabs v-model="active">
-				<v-tabs-bar class="cyan" dark>
-					<v-tabs-item ripple :href="'form'">Form</v-tabs-item>
-					<v-tabs-item ripple :href="'model'">Model</v-tabs-item>
-					<v-tabs-item ripple :href="'schema'">Schema</v-tabs-item>
-					<v-tabs-item ripple :href="'options'">Options</v-tabs-item>
-					<v-tabs-slider color="yellow"></v-tabs-slider>
-				</v-tabs-bar>
-				<v-tabs-items class="ma-5">
-					<v-tabs-content :id="'form'">
-						<v-form-generator :model="model" :schema="schema" :options="options"/>
-					</v-tabs-content>
-					<v-tabs-content :id="'model'">
-						<pre>{{model}}</pre>
-					</v-tabs-content>
-					<v-tabs-content :id="'schema'">
-						<pre>{{schema}}</pre>
-					</v-tabs-content>
-					<v-tabs-content :id="'options'">
-						<pre>{{options}}</pre>
-					</v-tabs-content>
-				</v-tabs-items>
-			</v-tabs>
-		</div>
+	    <div>
+            <v-tabs slider-color="yellow" color="cyan" dark>
+                <v-tab :href="'#form'">Form</v-tab>
+                <v-tab :href="'#model'">Model</v-tab>
+                <v-tab :href="'#schema'">Schema</v-tab>
+                <v-tab :href="'#options'">Options</v-tab>
+
+            <v-tabs-items>
+                <v-tab-item :id="'form'" >
+                    <v-form-generator :model="model" :schema="schema" :options="options"/>
+                </v-tab-item>
+                <v-tab-item :id="'model'" >
+                    <pre>{{model}}</pre>
+                </v-tab-item>
+                <v-tab-item :id="'schema'" >
+                    <pre>{{schema}}</pre>
+                </v-tab-item>
+                <v-tab-item :id="'options'" >
+                    <pre>{{options}}</pre>
+                </v-tab-item>
+            </v-tabs-items>
+            </v-tabs>
+        </div>
 	</v-app>
 </template>
 
