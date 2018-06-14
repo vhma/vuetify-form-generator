@@ -77,18 +77,19 @@
 
 		<div v-else-if="field.type == 'number'">
 			 <v-text-field
-		      v-model="localValue"
-		      :label="field.label"
-		      :required="field.required"
-		      :readonly="field.readonly"
-		      :disabled="field.disabled"
-		      :placeholder="field.placeholder"
-		      mask="##############################"
-		      v-bind:textarea="field.featured"
-		      @blur="onBlur"
-		      @change="onChange"
-		      @focus="onFocus"
-		      @input="onInput"
+                v-model="localValue"
+                :label="field.label"
+                :required="field.required"
+                :readonly="field.readonly"
+                :disabled="field.disabled"
+                :placeholder="field.placeholder"
+                :counter="field.counter"
+                :hint="field.hint"
+                mask="##############################"
+                @blur="onBlur"
+                @change="onChange"
+                @focus="onFocus"
+                @input="onInput"
 		    ></v-text-field>
 		</div>
 
