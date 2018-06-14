@@ -5,7 +5,7 @@
               <v-tabs
               color="cyan"
               dark
-              slider-color="red">
+              slider-color="white">
                 <v-tab
                     v-for="group in schemaItem"
                     :key="group.key"
