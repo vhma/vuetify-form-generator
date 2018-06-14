@@ -84,7 +84,6 @@
 		      :disabled="field.disabled"
 		      :placeholder="field.placeholder"
 		      mask="##############################"
-		      multi-line
 		      v-bind:textarea="field.featured"
 		      @blur="onBlur"
 		      @change="onChange"
