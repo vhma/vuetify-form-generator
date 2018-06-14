@@ -3,9 +3,9 @@
         <div v-for="(schemaItem, schemaItemIndex) in schema">
             <div v-if="schemaItemIndex == 'groups'">
               <v-tabs
-              color="cyan"
+              color="blue"
               dark
-              slider-color="white">
+              slider-color="yellow">
                 <v-tab
                     v-for="group in schemaItem"
                     :key="group.key"
