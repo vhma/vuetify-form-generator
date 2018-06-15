@@ -74,7 +74,7 @@
 						type: "select",
 						label: "Skills",
 						model: "skills",
-						values: ["Javascript", "VueJS", "CSS3", "HTML5"]
+						options: ["Javascript", "VueJS", "CSS3", "HTML5"]
 					},{
 						type: "email",
 						label: "E-mail",
@@ -112,7 +112,7 @@
 									type: "select",
 									label: "Color",
 									model: "color",
-									values: [
+									options: [
 										"Red",
 										"Green",
 										"Blue"

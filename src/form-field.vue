@@ -39,7 +39,7 @@
               v-model="localValue"
               item-text="name"
               item-value="id"
-              :items="options"
+              :items="field.options"
 		      :required="field.required"
 		      :readonly="field.readonly"
 		      :disabled="field.disabled"
