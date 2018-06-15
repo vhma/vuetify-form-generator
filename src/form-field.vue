@@ -39,13 +39,13 @@
               v-model="localValue"
               item-text="name"
               item-value="id"
-              :items="items"
+              :items="options"
 		      :required="field.required"
 		      :readonly="field.readonly"
 		      :disabled="field.disabled"
               single-line
               bottom
-
+              return-object
             ></v-select>
 		</div>
 
