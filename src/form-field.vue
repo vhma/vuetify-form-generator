@@ -37,8 +37,9 @@
 		<div v-else-if="field.type == 'select' || field.type == 'dropdown'">
 		    <v-select
               v-model="localValue"
-              :items="field.values"
-              :label="field.label"
+              item-text="name"
+              item-value="id"
+              :items="items"
 		      :required="field.required"
 		      :readonly="field.readonly"
 		      :disabled="field.disabled"
