@@ -34,7 +34,7 @@
 		    ></v-text-field>
 		</div>
 
-		<div v-else-if="field.type == 'select'">
+		<div v-else-if="field.type == 'select' || field.type == 'dropdown'">
 		    <v-select
               v-model="localValue"
               :items="field.values"
