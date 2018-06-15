@@ -93,6 +93,23 @@
 		    ></v-text-field>
 		</div>
 
+		<div v-else-if="field.type == 'textbox'">
+			 <v-text-field
+		      v-model="localValue"
+		      :label="field.label"
+		      :required="field.required"
+		      :readonly="field.readonly"
+		      :disabled="field.disabled"
+		      :placeholder="field.placeholder"
+			  :counter="field.counter"
+			  :hint="field.hint"
+		      @blur="onBlur"
+		      @change="onChange"
+		      @focus="onFocus"
+		      @input="onInput"
+		    ></v-text-field>
+        </div>
+
 		<div v-else>
 			 <v-text-field
 		      v-model="localValue"
