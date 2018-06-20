@@ -251,16 +251,19 @@
                 let model = this.model;
                 let isRender = true;
                 try{
-                	isRender => eval(string)
+                	isRender = eval(string);
                 } catch(error) {
                   try {
-                  	isRender => eval(string)
+                  	isRender = eval(string)
                   } catch(errorWithoutThis) {
-                  	isRender => true
+                  	isRender = true;
                   }
                 }
+                if( !isRender ){
+                    this.$emit('update:'+this.field.model, "");
+                }
 
-                (!isRender)? this.$emit('update:'+this.field.model, ""):
+                return isRender;
               }
 		},
         watch: {
