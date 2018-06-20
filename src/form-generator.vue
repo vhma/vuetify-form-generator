@@ -17,18 +17,29 @@
                 <v-tab-item
                   v-for="group in schemaItem"
                   :key="group.key"
+                  :label="group.key"
                 >
                   <v-card flat>
                     <div class="ma-3">
-                      <div v-for="field in group.fields">
-                        <v-form-generator-field
-                        :field="field"
-                        :value="field.model"
-                        :model="model"
-                        v-bind.sync="field.model"
-                        />
-                      </div>
-                    </div>
+                        <div v-for="field in group.fields">
+                          <div v-if="field.type == 'select' || field.type == 'dropdown'">
+                              <v-form-generator-field
+                              :field="field"
+                              :value="model[field.model]"
+                              :model="model"
+                              v-bind.sync="model"
+                              />
+                          </div>
+                          <div v-else>
+                              <v-form-generator-field
+                              :field="field"
+                              :value="model[field.model]"
+                              :model="model"
+                              :fieldmodel="field.model"
+                              v-bind.sync="model"/>
+                          </div>
+                        </div>
+                     </div>
                   </v-card>
                 </v-tab-item>
               </v-tabs>
@@ -36,7 +47,6 @@
             <div v-if="schemaItemIndex == 'fields'">
                 <div v-for="field in schemaItem">
                     <div v-if="field.type == 'select' || field.type == 'dropdown'">
-                        <p>value: {{ model[field.model] }}</p>
                         <v-form-generator-field
                         :field="field"
                         :value="model[field.model]"
