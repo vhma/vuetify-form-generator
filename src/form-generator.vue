@@ -9,7 +9,6 @@
                                         :key="`${index+1}-step`"
                                         :step="index+1"
                                         :complete="stepper > index"
-                                        editable
                                       >
                              Paso {{ index+1 }}
                             </v-stepper-step>
