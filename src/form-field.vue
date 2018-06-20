@@ -46,7 +46,7 @@
               single-line
               bottom
               @change="onChangeSelect"
-              ref="select"
+              v-if="evalInContext( field.conditionalShow||true )"
             ></v-select>
 		</div>
 
@@ -179,6 +179,7 @@
 		      :placeholder="field.placeholder"
 			  :counter="field.counter"
 			  :hint="field.hint"
+			  v-if="field.conditionalShow === true"
 		      @blur="onBlur"
 		      @change="onChange"
 		      @focus="onFocus"
@@ -203,11 +204,13 @@
 			menu: false,
 			model: Object,
 			select: null,
+			show: null,
 		},
 		data(){
 			return {
 			    localValue: this.value,
 			    localModel: this.model,
+			    localConditionalShow: this.field,
 				validationRules: {
 					email: [
 						(v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || this.validationErrorMessages.emailInvalid
@@ -226,7 +229,7 @@
 				this.$emit('blur')
 			},
 			onChange: function(){
-			    this.$emit('update:'+this.field.model, this.localValue)
+			    //this.$emit('update:'+this.field.model, this.localValue)
 			},
             onChangeSelect: function(selected){
 				this.$emit('update:'+this.field.model, selected)
@@ -236,7 +239,6 @@
 			},
 			onInput: function(){
 				this.$emit('update:'+this.field.model, this.localValue)
-				console.log(this.localModel)
 			},
 			appendPasswordIconCheckbox(){
 				return () => this.field.passwordVisible = !this.field.passwordVisible
@@ -244,10 +246,25 @@
 			save(date) {
               this.$refs.menu.save(date)
               this.$emit('update:'+this.field.model, date)
-            }
+            },
+            evalInContext(string){
+                let model = this.model;
+                let isRender = true;
+                try{
+                	isRender => eval(string)
+                } catch(error) {
+                  try {
+                  	isRender => eval(string)
+                  } catch(errorWithoutThis) {
+                  	isRender => true
+                  }
+                }
+
+                (!isRender)? this.$emit('update:'+this.field.model, ""):
+              }
 		},
         watch: {
-            menu (val) {val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))}
+            menu (val) {val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))},
         },
 	}
 </script>
