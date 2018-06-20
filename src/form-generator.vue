@@ -1,5 +1,6 @@
 <template>
     <div>
+        <v-card flat>Model Parent: {{ model }}</v-card>
         <div v-for="(schemaItem, schemaItemIndex) in schema">
             <div v-if="schemaItemIndex == 'groups'">
               <v-tabs
@@ -16,18 +17,16 @@
                 <v-tab-item
                   v-for="group in schemaItem"
                   :key="group.key"
-                  :id="group.key"
                 >
                   <v-card flat>
                     <div class="ma-3">
                       <div v-for="field in group.fields">
                         <v-form-generator-field
-                            :field="field"
-                            :value="model[field.model]"
-                            @blur="onBlur"
-                            @change="onChange"
-                            @focus="onFocus"
-                            @input="onInput"/>
+                        :field="field"
+                        :value="field.model"
+                        :model="model"
+                        v-bind.sync="field.model"
+                        />
                       </div>
                     </div>
                   </v-card>
@@ -36,7 +35,24 @@
             </div>
             <div v-if="schemaItemIndex == 'fields'">
                 <div v-for="field in schemaItem">
-                    <v-form-generator-field :field="field" :value="model[field.model]"></v-form-generator-field>
+                    <div v-if="field.type == 'select' || field.type == 'dropdown'">
+                        <p>value: {{ model[field.model] }}</p>
+                        <v-form-generator-field
+                        :field="field"
+                        :value="model[field.model]"
+                        :model="model"
+                        v-bind.sync="model"
+                        />
+                    </div>
+                    <div v-else>
+                        <p>value: {{model[field.model]}}</p>
+                        <v-form-generator-field
+                        :field="field"
+                        :value="model[field.model]"
+                        :model="model"
+                        :fieldmodel="field.model"
+                        v-bind.sync="model"/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -72,8 +88,9 @@
             onFocus: function(){
                 console.info('focus')
             },
-            onInput: function(){
-                console.info('input')
+            onInput: function(value, fieldName) {
+                this.$set(this.model, fieldName, value)
+                this.$emit("update:model", this.model)
             },
         }
     }

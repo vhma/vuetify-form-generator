@@ -36,7 +36,7 @@
 
 		<div v-else-if="field.type == 'select' || field.type == 'dropdown'">
 		    <v-select
-              v-model="localValue"
+              v-model="field.model"
               item-text="name"
               item-value="id"
               :items="field.options"
@@ -45,7 +45,7 @@
 		      :disabled="field.disabled"
               single-line
               bottom
-              return-object
+              @change="onChangeSelect"
             ></v-select>
 		</div>
 
@@ -111,6 +111,34 @@
 		    ></v-text-field>
         </div>
 
+        <div v-else-if="field.type == 'date'">
+			 <v-menu
+                 ref="menu"
+                 :close-on-content-click="false"
+                 v-model="menu"
+                 :nudge-right="40"
+                 lazy
+                 transition="scale-transition"
+                 offset-y
+                 full-width
+                 min-width="290px"
+               >
+                 <v-text-field
+                   slot="activator"
+                   v-model="localValue"
+                   :label="field.label"
+                   readonly
+                 ></v-text-field>
+                 <v-date-picker
+                   ref="picker"
+                   v-model="localValue"
+                   :max="new Date().toISOString().substr(0, 10)"
+                   min="1950-01-01"
+                   @change="save"
+                 ></v-date-picker>
+               </v-menu>
+        </div>
+
 		<div v-else>
 			 <v-text-field
 		      v-model="localValue"
@@ -127,7 +155,6 @@
 		      @input="onInput"
 		    ></v-text-field>
 
-
 		    <v-alert v-if="field.type != 'text'" color="error" icon="warning" value="true">
 		    	<strong>The {{field.type}} type is not yet implemented.</strong> <br>
 		   		{{field}}
@@ -142,11 +169,16 @@
 		name: 'v-form-generator-field',
 		props: {
 			field: Object,
-			value: null
+			value: null,
+			fieldmodel:"",
+			menu: false,
+			model: Object
 		},
 		data(){
 			return {
-				localValue: this.value,
+			    localValue: this.value,
+			    localModel: this.model,
+			    localFieldModel: this.fieldmodel,
 				validationRules: {
 					email: [
 						(v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || this.validationErrorMessages.emailInvalid
@@ -165,18 +197,28 @@
 				this.$emit('blur')
 			},
 			onChange: function(){
-				this.$emit('change')
+			    //this.$emit('change')
+				this.$emit('update:'+this.field.model, this.localValue)
+			},
+            onChangeSelect: function(){
+				this.$emit('update:'+this.field.model, this.localValue)
 			},
 			onFocus: function(){
 				this.$emit('focus')
 			},
 			onInput: function(){
-				this.$emit('input')
+				this.$emit('update:'+this.field.model, this.localValue)
 			},
-
 			appendPasswordIconCheckbox(){
 				return () => this.field.passwordVisible = !this.field.passwordVisible
-			}
-		}
+			},
+			save(date) {
+              this.$refs.menu.save(date)
+              this.$emit('update:'+this.field.model, date)
+            }
+		},
+        watch: {
+            menu (val) {val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))},
+        },
 	}
 </script>
