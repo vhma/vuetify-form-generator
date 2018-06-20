@@ -23,7 +23,12 @@
                     ifeVerticalNumber:"",
                     ifeIdCode:"",
                     dateOfBirth:"",
-                    birthState:""
+                    birthState:"",
+                    electorCodeMail:"",
+                    electorCodePass:"",
+                    electorCodeCheck:"",
+                    electorCodeRadio:"",
+                    electorCodeSwitch:"true"
                 },
                 schema: {
                     fields:[
@@ -250,7 +255,52 @@
                             { "id": "NE", "name": "Nacido en el Extranjero"}
                             ],
                             "conditionalShow": "@type/id.substring(0, 3) != 'ife'"
-                        }
+                        },
+                        {
+                            "resultPath": "electorCodeMail",
+                            "model": "electorCodeMail",
+                            "type": "email",
+                            "label": "Email de Elector",
+                            "conditionalShow": "@type/id.substring(0, 3) == 'ife'"
+                        },
+                        {
+                            "resultPath": "electorCodePass",
+                            "model": "electorCodePass",
+                            "type": "password",
+                            "label": "Password de Elector",
+                            "conditionalShow": "@type/id.substring(0, 3) == 'ife'"
+                        },
+                        {
+                            "resultPath": "electorCodeCheck",
+                            "model": "electorCodeCheck",
+                            "type": "checkbox",
+                            "label": "Clave de Elector",
+                            "conditionalShow": "@type/id.substring(0, 3) == 'ife'"
+                        },
+                        {
+                            "resultPath": "electorCodeRadio",
+                            "model": "electorCodeRadio",
+                            "type": "radio",
+                            "label": "Clave de Elector",
+                            "align": "row",
+                            "conditionalShow": "@type/id.substring(0, 3) == 'ife'",
+                            "options": [
+                                { "id": "AS", "name": "Aguascalientes"},
+                                { "id": "BC", "name": "Baja California"}
+                            ]
+                        },
+                        {
+                            "resultPath": "electorCodeSwitch",
+                            "model": "electorCodeSwitch",
+                            "type": "switch",
+                            "label": "Clave de Elector",
+                            "align": "row",
+                            "conditionalShow": "@type/id.substring(0, 3) == 'ife'",
+                            "options": [
+                                { "id": "AS", "name": "Aguascalientes"},
+                                { "id": "BC", "name": "Baja California"}
+                            ]
+                        },
                     ]
                 },
                 options: {

@@ -57,7 +57,36 @@
               :label="field.label"
 		      :required="field.required"
 		      :disabled="field.disabled"
+		      @change="onChangeSelect"
             ></v-checkbox>
+		</div>
+
+		<div v-else-if="field.type == 'radio'">
+		    <v-container fluid>
+                <v-radio-group
+                    v-model="localValue"
+                    :required="field.required"
+                    :disabled="field.disabled"
+                    :mandatory="field.required"
+                    @change="onChangeSelect"
+                >
+                        <div v-for="option in field.options">
+                          <v-radio :label="option.name" :value="option.id" ></v-radio>
+                        </div>
+                </v-radio-group>
+            </v-container fluid>
+		</div>
+
+		<div v-else-if="field.type == 'switch'">
+            <v-container fluid>
+                <v-switch
+                    v-model="localValue"
+                    :label="field.label"
+                    :disabled="field.disabled"
+                    :required="field.required"
+                    @change="onChangeSelect"
+                 />
+            </v-container>
 		</div>
 
 		<div v-else-if="field.type == 'textarea'">
@@ -171,7 +200,6 @@
 		props: {
 			field: Object,
 			value: null,
-			modelname:"",
 			menu: false,
 			model: Object,
 			select: null,
@@ -180,14 +208,13 @@
 			return {
 			    localValue: this.value,
 			    localModel: this.model,
-			    localFieldModel: this.fieldmodel,
 				validationRules: {
 					email: [
 						(v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || this.validationErrorMessages.emailInvalid
 					]
 				},
 				validationErrorMessages:{
-					'emailInvalid': 'E-mail must be valid'
+					'emailInvalid': 'E-mail debe ser válido'
 				}
 			}
 		},
@@ -199,20 +226,17 @@
 				this.$emit('blur')
 			},
 			onChange: function(){
-			    //this.$emit('change')
-				//this.$emit('update:'+this.field.model, this.localValue)
-				//this.$emit('update:'+this.field.model, { id: $event.target.value })
+			    this.$emit('update:'+this.field.model, this.localValue)
 			},
             onChangeSelect: function(selected){
 				this.$emit('update:'+this.field.model, selected)
-				//this.$emit('input', { id: $event.target.value })
-				//this.$emit('update:'+this.field.model, { id: $event.target.value })
 			},
 			onFocus: function(){
 				this.$emit('focus')
 			},
 			onInput: function(){
 				this.$emit('update:'+this.field.model, this.localValue)
+				console.log(this.localModel)
 			},
 			appendPasswordIconCheckbox(){
 				return () => this.field.passwordVisible = !this.field.passwordVisible
