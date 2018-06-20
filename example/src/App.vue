@@ -13,7 +13,7 @@
 			return {
                 model: {
                     type:"ife",
-                    subtype:"dddd",
+                    subtype:"",
                     valid:"",
                     electorCode:"",
                     names:"",

@@ -36,7 +36,7 @@
 
 		<div v-else-if="field.type == 'select' || field.type == 'dropdown'">
 		    <v-select
-              v-model="field.model"
+              v-model="localValue"
               item-text="name"
               item-value="id"
               :items="field.options"
@@ -46,6 +46,7 @@
               single-line
               bottom
               @change="onChangeSelect"
+              ref="select"
             ></v-select>
 		</div>
 
@@ -170,9 +171,10 @@
 		props: {
 			field: Object,
 			value: null,
-			fieldmodel:"",
+			modelname:"",
 			menu: false,
-			model: Object
+			model: Object,
+			select: null,
 		},
 		data(){
 			return {
@@ -198,10 +200,13 @@
 			},
 			onChange: function(){
 			    //this.$emit('change')
-				this.$emit('update:'+this.field.model, this.localValue)
+				//this.$emit('update:'+this.field.model, this.localValue)
+				//this.$emit('update:'+this.field.model, { id: $event.target.value })
 			},
-            onChangeSelect: function(){
-				this.$emit('update:'+this.field.model, this.localValue)
+            onChangeSelect: function(selected){
+				this.$emit('update:'+this.field.model, selected)
+				//this.$emit('input', { id: $event.target.value })
+				//this.$emit('update:'+this.field.model, { id: $event.target.value })
 			},
 			onFocus: function(){
 				this.$emit('focus')
@@ -218,7 +223,7 @@
             }
 		},
         watch: {
-            menu (val) {val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))},
+            menu (val) {val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))}
         },
 	}
 </script>
