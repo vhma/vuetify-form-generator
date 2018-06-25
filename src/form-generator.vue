@@ -1,7 +1,9 @@
 <template>
-    <div>
+<v-form ref="form" v-model="validForm" lazy-validation>
         <div v-for="(schemaItem, schemaItemIndex) in schema">
             <div v-if="schemaItemIndex == 'forms'">
+            model: {{ model }}
+            modelLocal: {{ localmodel }}
                 <v-stepper v-model="stepper">
                     <v-stepper-header>
                         <template v-for="(steps, index) in schemaItem">
@@ -10,7 +12,7 @@
                                         :step="index+1"
                                         :complete="stepper > index"
                                       >
-                             Paso {{ index+1 }}
+                             {{ steps.label }}
                             </v-stepper-step>
                             <v-divider v-if="index+1 !== schemaItem.length" :key="`${index+1}-div`"></v-divider>
                         </template>
@@ -20,37 +22,50 @@
                           v-for="(steps, index) in schemaItem"
                           :step="index+1"
                           :key="`${index+1}-content`"
+                          row wrap
                         >
-                            <v-card class="mb-5">
-                                <div v-for="field in steps">
-                                    <v-form-generator-field
-                                    :field="field"
-                                    :value="model[field.model]"
-                                    :model="model"
-                                    :fieldmodel="field.model"
-                                    v-bind.sync="model"/>
-                                 </div>
-                            </v-card>
-
-                            <v-btn flat v-if="index+1 !== 1" @click="nextStep(index-1,schemaItem.length)">Cancel</v-btn>
-                            <v-btn color="primary"
-                                @click="nextStep(index+1,schemaItem.length)">
-                                {{ (index+1 === schemaItem.length)?"Terminar":"Continuar"}}
-                            </v-btn>
+                            <v-layout row wrap >
+                                <v-flex xs12 lg12 xl12 >
+                                    <v-card   ref="`${index+1}-vcontent`">
+                                        <v-container  fluid grid-list-lg >
+                                            <v-layout row>
+                                                <v-flex xs12 lg5 xl5>
+                                                    <v-card-media
+                                                      :src="steps.imageUrlVariable"
+                                                      height="100%"
+                                                      width="100%"
+                                                      contain
+                                                    ></v-card-media>
+                                                </v-flex>
+                                                <v-flex xs10 lg7 xl7>
+                                                    <div v-for="field in steps.fields">
+                                                        <v-form-generator-field
+                                                        :field="field"
+                                                        :value="localmodel[field.model]"
+                                                        :model="localmodel"
+                                                        :fieldmodel="field.model"
+                                                        v-bind.sync="localmodel"  />
+                                                     </div>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-container>
+                                   </v-card>
+                                   <div class="right">
+                                        <v-btn flat
+                                            v-if="index+1 !== 1"
+                                            @click="nextStep(index-1,schemaItem.length)">
+                                                Cancel
+                                        </v-btn>
+                                        <v-btn color="primary"
+                                            @click="nextStep(index+1,schemaItem.length)">
+                                            {{ (index+1 === schemaItem.length)?"Terminar":"Continuar"}}
+                                        </v-btn>
+                                   </div>
+                                </v-flex>
+                            </v-layout>
                         </v-stepper-content>
                     </v-stepper-items>
                 </v-stepper>
-                <!--
-                    <div v-for="fields in schemaItem">
-                    <div v-for="field in fields">
-                        <v-form-generator-field
-                        :field="field"
-                        :value="model[field.model]"
-                        :model="model"
-                        :fieldmodel="field.model"
-                        v-bind.sync="model"/>
-                     </div>
-                </div> -->
             </div>
             <div v-if="schemaItemIndex == 'groups'">
               <v-tabs color="blue" dark slider-color="yellow">
@@ -74,7 +89,9 @@
                             :value="model[field.model]"
                             :model="model"
                             :fieldmodel="field.model"
-                            v-bind.sync="model"/>
+                            v-bind.sync="model"
+                            @input="onInput"
+                            />
                         </div>
                      </div>
                   </v-card>
@@ -93,6 +110,7 @@
             </div>
         </div>
     </div>
+</v-form>
 </template>
 
 <script>
@@ -109,6 +127,15 @@
         data(){
             return {
                 stepper:1,
+                validForm:true,
+                model:this.model
+            }
+        },
+        computed: {
+            localmodel: function () {
+                console.log("getting localmodel")
+                console.log(this.model)
+                return this.model
             }
         },
         created: function () {
@@ -127,14 +154,32 @@
             onInput: function(value, fieldName) {
                 this.$set(this.model, fieldName, value)
                 this.$emit("update:model", this.model)
+                this.resetForm()
+            },
+            resetForm: function() {
+                console.log('Reseting the form')
+                console.log(this.model)
+                console.log(this.localmodel)
+
+                var self = this; //you need this because *this* will refer to Object.keys below`
+
+                //Iterate through each object field, key is name of the object field`
+                Object.keys(this.localmodel).forEach(function(key,index) {
+                  //self.model[key] = '';
+                  //self.$set(self.localmodel, key, '')
+                  self.localmodel[key] = '';
+                });
+
+                //self.$emit("update:model", self.localmodel)
+                this.model = this.localmodel
+
             },
             nextStep (n, steps) {
-                console.log("valor n: "+n)
-                console.log("valor this.stepper: "+this.stepper)
-                console.log("valor steps: "+steps)
+                console.log( "refCampos" )
                 if (n == steps) {
+                    this.resetForm()
+
                   this.stepper = 1
-                  console.log("valor this.stepper final: "+this.stepper)
                 } else {
                   this.stepper = n + 1
                 }

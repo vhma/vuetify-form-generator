@@ -4,8 +4,8 @@
 			 <v-text-field
 		      v-model="localValue"
 		      :label="field.label"
-		      :required="field.required"
-		      :readonly="field.readonly"
+		      :required="evalInContextValue(field.required)"
+		      :readonly="evalInContextValue(field.readonly)"
 		      :disabled="field.disabled"
 		      :placeholder="field.placeholder"
 		      :rules="validationRules.email"
@@ -21,14 +21,14 @@
 			 <v-text-field
 		      v-model="localValue"
 		      :label="field.label"
-		      :required="field.required"
-		      :readonly="field.readonly"
+		      :required="evalInContextValue(field.required)"
+		      :readonly="evalInContextValue(field.readonly)"
 		      :disabled="field.disabled"
 		      :placeholder="field.placeholder"
 		      :append-icon="field.passwordVisible ? 'visibility_off' : 'visibility'"
               :append-icon-cb="appendPasswordIconCheckbox()"
               :type="field.passwordVisible ? 'text' : 'password'"
-                v-if="evalInContext( field.conditionalShow||true )"
+              v-if="evalInContext( field.conditionalShow||true )"
 		      @blur="onBlur"
 		      @change="onChange"
 		      @focus="onFocus"
@@ -42,13 +42,19 @@
               item-text="name"
               item-value="id"
               :items="field.options"
-		      :required="field.required"
-		      :readonly="field.readonly"
+		      :required="evalInContextValue(field.required)"
+		      :readonly="evalInContextValue(field.readonly)"
 		      :disabled="field.disabled"
+		      :placeholder="field.label"
+		      :hint="field.hint"
+		      :rules=" field.required ? validationRules.required : [] "
 		      v-if="evalInContext( field.conditionalShow||true )"
+		      validate-on-blur
               single-line
+              persistent-hint
               bottom
               @change="onChangeSelect"
+              @blur="onBlur"
             ></v-select>
 		</div>
 
@@ -57,7 +63,8 @@
 		    <v-checkbox
               v-model="localValue"
               :label="field.label"
-		      :required="field.required"
+              :required="evalInContextValue(field.required)"
+		      :readonly="evalInContextValue(field.readonly)"
 		      :disabled="field.disabled"
 		      v-if="evalInContext( field.conditionalShow||true )"
 		      @change="onChangeSelect"
@@ -68,7 +75,8 @@
 		    <v-container fluid>
                 <v-radio-group
                     v-model="localValue"
-                    :required="field.required"
+                    :required="evalInContextValue(field.required)"
+                    :readonly="evalInContextValue(field.readonly)"
                     :disabled="field.disabled"
                     :mandatory="field.required"
                     v-if="evalInContext( field.conditionalShow||true )"
@@ -87,7 +95,8 @@
                     v-model="localValue"
                     :label="field.label"
                     :disabled="field.disabled"
-                    :required="field.required"
+                    :required="evalInContextValue(field.required)"
+                    :readonly="evalInContextValue(field.readonly)"
                     v-if="evalInContext( field.conditionalShow||true )"
                     @change="onChangeSelect"
                  />
@@ -98,8 +107,8 @@
 			 <v-text-field
 		      v-model="localValue"
 		      :label="field.label"
-		      :required="field.required"
-		      :readonly="field.readonly"
+		      :required="evalInContextValue(field.required)"
+		      :readonly="evalInContextValue(field.readonly)"
 		      :disabled="field.disabled"
 		      :placeholder="field.placeholder"
 		      multi-line
@@ -116,8 +125,8 @@
 			 <v-text-field
                 v-model="localValue"
                 :label="field.label"
-                :required="field.required"
-                :readonly="field.readonly"
+                :required="evalInContextValue(field.required)"
+                :readonly="evalInContextValue(field.readonly)"
                 :disabled="field.disabled"
                 :placeholder="field.placeholder"
                 :counter="field.counter"
@@ -135,8 +144,8 @@
 			 <v-text-field
 		      v-model="localValue"
 		      :label="field.label"
-		      :required="field.required"
-		      :readonly="field.readonly"
+		      :required="evalInContextValue(field.required)"
+		      :readonly="evalInContextValue(field.readonly)"
 		      :disabled="field.disabled"
 		      :placeholder="field.placeholder"
 			  :counter="field.counter"
@@ -146,6 +155,21 @@
 		      @change="onChange"
 		      @focus="onFocus"
 		      @input="onInput"
+		    ></v-text-field>
+        </div>
+
+		<div v-else-if="field.type == 'calculatedField'">
+			 <v-text-field
+		      v-model="localValue"
+		      :label="field.label"
+		      :readonly=true
+		      :disabled="field.disabled"
+			  :counter="field.counter"
+			  v-if="evalInContext( field.conditionalShow||true )"
+		      @blur="onBlur"
+              @change="onChange"
+              @focus="onFocus"
+              @input="onInput"
 		    ></v-text-field>
         </div>
 
@@ -223,6 +247,9 @@
 				validationRules: {
 					email: [
 						(v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || this.validationErrorMessages.emailInvalid
+					],
+					required:[
+                        (v) => !!v || 'El campo es requerido.'
 					]
 				},
 				validationErrorMessages:{
@@ -249,12 +276,30 @@
 			onInput: function(){
 				this.$emit('update:'+this.field.model, this.localValue)
 			},
+			onInputCalculated: function(){
+			    this.localValue = 123;
+			},
 			appendPasswordIconCheckbox(){
 				return () => this.field.passwordVisible = !this.field.passwordVisible
 			},
 			save(date) {
               this.$refs.menu.save(date)
               this.$emit('update:'+this.field.model, date)
+            },
+            evalInContextValue(string){
+                let evalString = null;
+                try{
+                    evalString = eval(string);
+                } catch(error) {
+                  try {
+                    evalString = eval(string)
+                  } catch(errorWithoutThis) {
+                    evalString = null;
+                  }
+                }
+                console.log("evalString:"+ evalString)
+                return evalString;
+
             },
             evalInContext(string){
                 let model = this.model;
@@ -273,7 +318,8 @@
                 }
 
                 return isRender;
-              }
+           },
+
 		},
         watch: {
             menu (val) {val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))},
