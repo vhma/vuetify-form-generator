@@ -26,19 +26,20 @@
                         >
                             <v-layout row wrap >
                                 <v-flex xs12 lg12 xl12 >
-                                    <v-card   ref="`${index+1}-vcontent`">
-                                        <v-container  fluid grid-list-lg >
-                                            <v-layout row>
+                                    <v-card   ref="`${index+1}-vcontent`" >
+                                        <v-container  fluid grid-list-lg fill-height >
+                                            <v-layout row align-center justify-center>
                                                 <v-flex xs12 lg5 xl5>
                                                     <v-card-media
                                                       :src="steps.imageUrlVariable"
                                                       height="100%"
                                                       width="100%"
+                                                      style="min-height:20em"
                                                       contain
                                                     ></v-card-media>
                                                 </v-flex>
-                                                <v-flex xs10 lg7 xl7>
-                                                    <div v-for="field in steps.fields">
+                                                <v-flex xs10 lg7 xl7 >
+                                                    <div v-for="field in steps.fields" >
                                                         <v-form-generator-field
                                                         :field="field"
                                                         :value="localmodel[field.model]"

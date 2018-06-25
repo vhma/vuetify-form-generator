@@ -148,6 +148,7 @@
                       "id": "dataCapture",
                       "label": "Captura de Datos",
                       "helpUrl": "todo.html",
+                      "imageUrlVariable": "static/modeloB.jpg",
                       "fields": [
                         {
                           "resultPathNode": "valid",
