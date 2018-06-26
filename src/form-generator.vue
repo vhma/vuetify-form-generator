@@ -30,13 +30,26 @@
                                         <v-container  fluid grid-list-lg fill-height >
                                             <v-layout row align-center justify-center>
                                                 <v-flex xs12 lg5 xl5>
-                                                    <v-card-media
-                                                      :src="steps.imageUrlVariable"
-                                                      height="100%"
-                                                      width="100%"
-                                                      style="min-height:20em"
-                                                      contain
-                                                    ></v-card-media>
+                                                    <v-carousel  :cycle="false">
+                                                        <v-carousel-item v-for="(item,index) in steps.imagesUrl"
+                                                            cycle
+                                                            :key="`${index}-carousel`">
+                                                            <object
+                                                              :data="item.imageUrlVariable"
+                                                              v-if="item.type==='pdf'"
+                                                              style="width:100%; height:100%"
+                                                              >
+                                                            </object>
+                                                            <v-card-media
+                                                              :src="item.imageUrlVariable"
+                                                              height="100%"
+                                                              width="100%"
+                                                              style="min-height:10em"
+                                                              v-if="item.type==='image'"
+                                                              contain>
+                                                            </v-card-media>
+                                                        </v-carousel-item>
+                                                    </v-carousel>
                                                 </v-flex>
                                                 <v-flex xs10 lg7 xl7 >
                                                     <div v-for="field in steps.fields" >

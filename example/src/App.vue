@@ -33,7 +33,11 @@
                           "id": "idType",
                           "label": "Tipo de Identificación",
                           "helpUrl": "todo.html",
-                          "imageUrlVariable": "static/modeloA.jpg",
+                          "imagesUrl":[
+                            {"type":"image", "imageUrlVariable": "static/modeloA.jpg"},
+                            {"type":"image", "imageUrlVariable": "static/modeloB.jpg"},
+                            {"type":"pdf", "imageUrlVariable": "static/test.pdf"},
+                          ],
                           "fields": [
                             {
                               "resultPathNode": "type",
