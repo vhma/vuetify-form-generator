@@ -53,9 +53,36 @@
               single-line
               persistent-hint
               bottom
+			  v-bind:append-icon="appendiconHelp"
+			  v-bind:append-icon-cb="appendiconHelpCB"
               @change="onChangeSelect"
               @blur="onBlur"
             ></v-select>
+			<v-dialog
+				v-model="dialoghelp"
+				fullscreen
+				hide-overlay
+				transition="dialog-bottom-transition"
+				scrollable
+				>
+				<v-card tile>
+					<v-toolbar card dark color="primary">
+					<v-btn icon dark @click.native="dialoghelp = false">
+						<v-icon>close</v-icon>
+					</v-btn>
+					<v-toolbar-title>Ayuda</v-toolbar-title>
+					<v-spacer></v-spacer>
+					</v-toolbar>
+						<P>TEXTO DE MUESTRA</P>
+						<v-card-media
+							src="static/unknown.JPG"
+							height="100%"
+							width="100%"
+							contain>
+						</v-card-media>
+					<div style="flex: 1 1 auto;"></div>
+				</v-card>
+			</v-dialog>			
 		</div>
 
 
@@ -237,13 +264,43 @@
 			menu: false,
 			model: Object,
 			select: null,
-			show: null,
+			show: null
+		},
+		computed:{
+			appendiconHelp(){
+				if(this.field.model == 'type' || this.field.model== 'subtype'){
+					return "help"
+				}
+			},
+			appendiconHelpCB(){
+				if(this.localField.model == 'type' || this.localField.model== 'subtype'){
+					return () => (this.dialoghelp = !this.dialoghelp)
+				}
+			},
+			srcImageHelp(){
+				console.log("Entro en src IMAGE ")
+				console.log("this.field.model"+this.field.model)
+				let src = "static/";
+				
+				switch(this.localField.model){
+					case 'type':
+						src +="help_"+this.localModel[this.localField.model]+".jpg";
+					break;
+					case 'subtype':
+						src +=this.model.type+"_"+this.localModel[this.localField.model]+".jpg";
+					break;
+				}
+				src = "static/modeloA.jpg";
+				console.log("src: "+src)
+				return src;
+			}
 		},
 		data(){
 			return {
 			    localValue: this.value,
 			    localModel: this.model,
-			    localConditionalShow: this.field,
+			    localField: this.field,
+				dialoghelp: false,
 				validationRules: {
 					email: [
 						(v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || this.validationErrorMessages.emailInvalid
@@ -297,7 +354,6 @@
                     evalString = null;
                   }
                 }
-                console.log("evalString:"+ evalString)
                 return evalString;
 
             },

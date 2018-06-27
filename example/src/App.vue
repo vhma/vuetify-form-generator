@@ -34,9 +34,7 @@
                           "label": "Tipo de Identificación",
                           "helpUrl": "todo.html",
                           "imagesUrl":[
-                            {"type":"image", "imageUrlVariable": "static/modeloA.jpg"},
-                            {"type":"image", "imageUrlVariable": "static/modeloB.jpg"},
-                            {"type":"pdf", "imageUrlVariable": "static/test.pdf"},
+                            {"type":"image", "imageUrlVariable": "static/help_ife.jpg"},
                           ],
                           "fields": [
                             {
@@ -152,7 +150,11 @@
                       "id": "dataCapture",
                       "label": "Captura de Datos",
                       "helpUrl": "todo.html",
-                      "imageUrlVariable": "static/modeloB.jpg",
+                      "imagesUrl":[
+                        {"type":"image", "imageUrlVariable": "static/modeloA.jpg"},
+                        {"type":"image", "imageUrlVariable": "static/modeloB.jpg"},
+                        {"type":"pdf", "imageUrlVariable": "static/test.pdf"},
+                      ],
                       "fields": [
                         {
                           "resultPathNode": "valid",

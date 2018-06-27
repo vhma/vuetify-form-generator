@@ -30,7 +30,7 @@
                                         <v-container  fluid grid-list-lg fill-height >
                                             <v-layout row align-center justify-center>
                                                 <v-flex xs12 lg5 xl5>
-                                                    <v-carousel  :cycle="false">
+                                                    <v-carousel  :cycle="false" hide-delimiters light>
                                                         <v-carousel-item v-for="(item,index) in steps.imagesUrl"
                                                             cycle
                                                             :key="`${index}-carousel`">
@@ -100,10 +100,10 @@
                         <div v-for="field in group.fields">
                             <v-form-generator-field
                             :field="field"
-                            :value="model[field.model]"
-                            :model="model"
+                            :value="localmodel[field.model]"
+                            :model="localmodel"
                             :fieldmodel="field.model"
-                            v-bind.sync="model"
+                            v-bind.sync="localmodel"
                             @input="onInput"
                             />
                         </div>
@@ -116,10 +116,10 @@
                 <div v-for="field in schemaItem">
                     <v-form-generator-field
                     :field="field"
-                    :value="model[field.model]"
-                    :model="model"
+                    :value="localmodel[field.model]"
+                    :model="localmodel"
                     :fieldmodel="field.model"
-                    v-bind.sync="model"/>
+                    v-bind.sync="localmodel"/>
                 </div>
             </div>
         </div>
@@ -142,14 +142,7 @@
             return {
                 stepper:1,
                 validForm:true,
-                model:this.model
-            }
-        },
-        computed: {
-            localmodel: function () {
-                console.log("getting localmodel")
-                console.log(this.model)
-                return this.model
+                localmodel:this.model
             }
         },
         created: function () {
@@ -171,9 +164,6 @@
                 this.resetForm()
             },
             resetForm: function() {
-                console.log('Reseting the form')
-                console.log(this.model)
-                console.log(this.localmodel)
 
                 var self = this; //you need this because *this* will refer to Object.keys below`
 
@@ -189,7 +179,6 @@
 
             },
             nextStep (n, steps) {
-                console.log( "refCampos" )
                 if (n == steps) {
                     this.resetForm()
 
