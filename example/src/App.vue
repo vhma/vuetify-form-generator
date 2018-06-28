@@ -34,7 +34,10 @@
                           "label": "Tipo de Identificación",
                           "helpUrl": "todo.html",
                           "imagesUrl":[
-                            {"type":"image", "imageUrlVariable": "static/help_ife.jpg"},
+                            {"type":"image", "imageUrlVariable": "static/modeloA.jpg"},
+                            {"type":"image", "imageUrlVariable": "static/modeloB.jpg"},
+                            {"type":"pdf", "imageUrlVariable": "static/test.pdf"},
+                            {"type":"pdf", "imageUrlVariable": "static/unknown.jpg"},
                           ],
                           "fields": [
                             {
@@ -221,6 +224,7 @@
                         },
                         {
                           "resultPath": "ifeEmissionNumber",
+                          "model": "ifeEmissionNumber",
                           "type": "textbox",
                           "label": "Número de Emisión",
                           "hint": "Número de Emisión de la credencial",
@@ -229,6 +233,7 @@
                         },
                         {
                           "resultPath": "ifeVerticalNumber",
+                          "model": "ifeVerticalNumber",
                           "type": "textbox",
                           "label": "Número Vertical (OCR)",
                           "hint": "Número Vertical (OCR)",
@@ -237,6 +242,7 @@
                         },
                         {
                           "resultPath": "ifeIdCode",
+                          "model": "ifeIdCode",
                           "type": "textbox",
                           "label": "Código de Identificación de la Credencial (CIC)",
                           "hint": "Código de Identificación de la Credencial (CIC)",
@@ -245,6 +251,7 @@
                         },
                         {
                           "resultPath": "dateOfBirth",
+                          "model": "dateOfBirth",
                           "type": "calculatedField",
                           "label": "Fecha de Nacimiento",
                           "hint": "Fecha de Nacimiento",
@@ -259,6 +266,7 @@
                         },
                         {
                           "resultPath": "dateOfBirth",
+                          "model": "dateOfBirth",
                           "type": "date",
                           "label": "Fecha de Nacimiento",
                           "hint": "Fecha de Nacimiento",
@@ -267,6 +275,7 @@
                         },
                         {
                           "resultPath": "birthState",
+                          "model": "birthState",
                           "type": "calculatedField",
                           "label": "Entidad Federativa de Nacimiento IFE",
                           "hint": "Entidad Federativa de Nacimiento IFE",
@@ -311,6 +320,7 @@
                         },
                         {
                           "resultPath": "birthState",
+                          "model": "birthState",
                           "type": "dropdown",
                           "label": "Entidad Federativa de Nacimiento",
                           "hint": "Entidad Federativa de Nacimiento",

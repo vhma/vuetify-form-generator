@@ -51,9 +51,8 @@
 		      v-if="evalInContext( field.conditionalShow||true )"
 		      validate-on-blur
               single-line
-              persistent-hint
               bottom
-			  v-bind:append-icon="appendiconHelp"
+			  v-bind:append-icon="appendiconHelp"			  
 			  v-bind:append-icon-cb="appendiconHelpCB"
               @change="onChangeSelect"
               @blur="onBlur"
@@ -75,7 +74,8 @@
 					</v-toolbar>
 						<P>TEXTO DE MUESTRA</P>
 						<v-card-media
-							src="static/unknown.JPG"
+							v-bind:src="srcImageHelp"
+							
 							height="100%"
 							width="100%"
 							contain>
@@ -109,9 +109,9 @@
                     v-if="evalInContext( field.conditionalShow||true )"
                     @change="onChangeSelect"
                 >
-                        <div v-for="option in field.options">
-                          <v-radio :label="option.name" :value="option.id" ></v-radio>
-                        </div>
+				<div v-for="option in field.options">
+					<v-radio :label="option.name" :value="option.id" ></v-radio>
+				</div>
                 </v-radio-group>
             </v-container fluid>
 		</div>
@@ -265,7 +265,7 @@
 			model: Object,
 			select: null,
 			show: null
-		},
+		},		
 		computed:{
 			appendiconHelp(){
 				if(this.field.model == 'type' || this.field.model== 'subtype'){
@@ -278,21 +278,37 @@
 				}
 			},
 			srcImageHelp(){
-				console.log("Entro en src IMAGE ")
-				console.log("this.field.model"+this.field.model)
-				let src = "static/";
-				
+				let src = "";
+				console.log("this.localField.model: "+this.localField.model)
 				switch(this.localField.model){
-					case 'type':
-						src +="help_"+this.localModel[this.localField.model]+".jpg";
+					case "type":
+						if(this.localModel[this.localField.model] != ""){
+							src ="help_"+this.localModel[this.localField.model]+".jpg";
+							console.log("this.localModel[this.localField.model]: "+this.localModel[this.localField.model])
+							console.log("src1: "+src)
+						}
 					break;
-					case 'subtype':
-						src +=this.model.type+"_"+this.localModel[this.localField.model]+".jpg";
+					case "subtype":
+						if(this.localModel[this.localField.model] != ""){
+							src =this.localModel.type+"_"+this.localModel[this.localField.model]+".jpg";
+							console.log("this.localModel[type]: "+this.localModel.type)
+							console.log("this.localModel[this.localField.model]:"+this.localModel[this.localField.model])
+							console.log("src2: "+src)
+						}
 					break;
 				}
-				src = "static/modeloA.jpg";
-				console.log("src: "+src)
-				return src;
+				
+				//src = "help_ife.jpg";
+				
+				if(src!= ""){
+					console.log("srcFinal: "+src)
+					console.log("srcRequire: "+'./static/'+src+'')
+					return require('./static/'+src+'')
+				}
+				
+				//:src="require('./static/help_ife.jpg')"
+				//return src
+				//return src;
 			}
 		},
 		data(){
