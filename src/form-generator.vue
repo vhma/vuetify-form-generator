@@ -55,10 +55,10 @@
                                                     <div v-for="field in steps.fields" >
                                                         <v-form-generator-field
                                                         :field="field"
-                                                        :value="localmodel[field.model]"
-                                                        :model="localmodel"
+                                                        :value="model[field.model]"
+                                                        :model="model"
                                                         :fieldmodel="field.model"
-                                                        v-bind.sync="localmodel"  />
+                                                        v-bind.sync="model"  />
                                                      </div>
                                                 </v-flex>
                                             </v-layout>

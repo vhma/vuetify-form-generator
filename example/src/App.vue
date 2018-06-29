@@ -34,10 +34,10 @@
                           "label": "Tipo de Identificación",
                           "helpUrl": "todo.html",
                           "imagesUrl":[
-                            {"type":"image", "imageUrlVariable": "static/modeloA.jpg"},
-                            {"type":"image", "imageUrlVariable": "static/modeloB.jpg"},
-                            {"type":"pdf", "imageUrlVariable": "static/test.pdf"},
-                            {"type":"pdf", "imageUrlVariable": "static/unknown.jpg"},
+                            {"type":"image", "imageUrlVariable": "public/static/modeloA.jpg"},
+                            {"type":"image", "imageUrlVariable": "public/static/modeloB.jpg"},
+                            {"type":"pdf", "imageUrlVariable": "public/static/test.pdf"},
+                            {"type":"pdf", "imageUrlVariable": "public/static/unknown.jpg"},
                           ],
                           "fields": [
                             {
@@ -154,9 +154,10 @@
                       "label": "Captura de Datos",
                       "helpUrl": "todo.html",
                       "imagesUrl":[
-                        {"type":"image", "imageUrlVariable": "static/modeloA.jpg"},
-                        {"type":"image", "imageUrlVariable": "static/modeloB.jpg"},
-                        {"type":"pdf", "imageUrlVariable": "static/test.pdf"},
+                            {"type":"image", "imageUrlVariable": "public/static/modeloA.jpg"},
+                            {"type":"image", "imageUrlVariable": "public/static/modeloB.jpg"},
+                            {"type":"pdf", "imageUrlVariable": "public/static/test.pdf"},
+                            {"type":"pdf", "imageUrlVariable": "public/static/unknown.jpg"},
                       ],
                       "fields": [
                         {

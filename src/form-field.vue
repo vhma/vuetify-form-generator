@@ -57,32 +57,35 @@
               @change="onChangeSelect"
               @blur="onBlur"
             ></v-select>
-			<v-dialog
-				v-model="dialoghelp"
-				fullscreen
-				hide-overlay
-				transition="dialog-bottom-transition"
-				scrollable
-				>
-				<v-card tile>
-					<v-toolbar card dark color="primary">
-					<v-btn icon dark @click.native="dialoghelp = false">
-						<v-icon>close</v-icon>
-					</v-btn>
-					<v-toolbar-title>Ayuda</v-toolbar-title>
-					<v-spacer></v-spacer>
-					</v-toolbar>
-						<P>TEXTO DE MUESTRA</P>
-						<v-card-media
-							v-bind:src="srcImageHelp"
-							
-							height="100%"
-							width="100%"
-							contain>
-						</v-card-media>
-					<div style="flex: 1 1 auto;"></div>
-				</v-card>
-			</v-dialog>			
+			<slot :name="field.model">
+				<v-dialog
+					v-model="dialoghelp"
+					fullscreen
+					hide-overlay
+					transition="dialog-bottom-transition"
+					scrollable
+					>
+					<v-card tile>
+						<v-toolbar card dark color="primary">
+						<v-btn icon dark @click.native="dialoghelp = false">
+							<v-icon>close</v-icon>
+						</v-btn>
+						<v-toolbar-title>Ayuda</v-toolbar-title>
+						<v-spacer></v-spacer>
+						</v-toolbar>
+							<P>TEXTO DE MUESTRA</P>
+							<v-card-media
+								v-model="localValue"
+								v-bind:src="srcImageHelp"
+								height="100%"
+								width="100%"
+								contain>
+							</v-card-media>
+						<div style="flex: 1 1 auto;"></div>
+					</v-card>
+				</v-dialog>	
+			</slot>
+		
 		</div>
 
 
@@ -280,6 +283,7 @@
 			srcImageHelp(){
 				let src = "";
 				console.log("this.localField.model: "+this.localField.model)
+				console.log("this.localModel[this.localField.model]: "+this.localModel[this.localField.model])
 				switch(this.localField.model){
 					case "type":
 						if(this.localModel[this.localField.model] != ""){
@@ -290,10 +294,10 @@
 					break;
 					case "subtype":
 						if(this.localModel[this.localField.model] != ""){
-							src =this.localModel.type+"_"+this.localModel[this.localField.model]+".jpg";
-							console.log("this.localModel[type]: "+this.localModel.type)
-							console.log("this.localModel[this.localField.model]:"+this.localModel[this.localField.model])
-							console.log("src2: "+src)
+							src =this.localModel.type+"_"+this.localValue+".jpg";
+							console.log("2 this.localModel[type]: "+this.localModel.type)
+							console.log("2 this.localModel[this.localField.model]:"+this.localValue)
+							console.log("2 src2: "+src)
 						}
 					break;
 				}
@@ -341,6 +345,8 @@
 			    //this.$emit('update:'+this.field.model, this.localValue)
 			},
             onChangeSelect: function(selected){
+				console.log("onChangeSelect-this.field.model: "+this.field.model)
+				console.log("onChangeSelect-selected: "+selected)
 				this.$emit('update:'+this.field.model, selected)
 			},
 			onFocus: function(){
