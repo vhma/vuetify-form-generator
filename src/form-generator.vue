@@ -2,8 +2,6 @@
 <v-form ref="form" v-model="validForm" lazy-validation>
         <div v-for="(schemaItem, schemaItemIndex) in schema">
             <div v-if="schemaItemIndex == 'forms'">
-            model: {{ model }}
-            modelLocal: {{ localmodel }}
                 <v-stepper v-model="stepper">
                     <v-stepper-header>
                         <template v-for="(steps, index) in schemaItem">

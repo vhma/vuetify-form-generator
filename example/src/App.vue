@@ -34,10 +34,10 @@
                           "label": "Tipo de Identificación",
                           "helpUrl": "todo.html",
                           "imagesUrl":[
-                            {"type":"image", "imageUrlVariable": "public/static/modeloA.jpg"},
-                            {"type":"image", "imageUrlVariable": "public/static/modeloB.jpg"},
-                            {"type":"pdf", "imageUrlVariable": "public/static/test.pdf"},
-                            {"type":"pdf", "imageUrlVariable": "public/static/unknown.jpg"},
+                            {"type":"image", "imageUrlVariable": "public/documents/modeloA.jpg"},
+                            {"type":"image", "imageUrlVariable": "public/documents/modeloB.jpg"},
+                            {"type":"pdf", "imageUrlVariable": "public/documents/test.pdf"},
+                            {"type":"pdf", "imageUrlVariable": "public/documents/unknown.jpg"},
                           ],
                           "fields": [
                             {
@@ -154,10 +154,10 @@
                       "label": "Captura de Datos",
                       "helpUrl": "todo.html",
                       "imagesUrl":[
-                            {"type":"image", "imageUrlVariable": "public/static/modeloA.jpg"},
-                            {"type":"image", "imageUrlVariable": "public/static/modeloB.jpg"},
-                            {"type":"pdf", "imageUrlVariable": "public/static/test.pdf"},
-                            {"type":"pdf", "imageUrlVariable": "public/static/unknown.jpg"},
+                            {"type":"image", "imageUrlVariable": "public/documents/modeloA.jpg"},
+                            {"type":"image", "imageUrlVariable": "public/documents/modeloB.jpg"},
+                            {"type":"pdf", "imageUrlVariable": "public/documents/test.pdf"},
+                            {"type":"pdf", "imageUrlVariable": "public/documents/unknown.jpg"},
                       ],
                       "fields": [
                         {

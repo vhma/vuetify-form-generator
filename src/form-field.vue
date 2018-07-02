@@ -57,35 +57,17 @@
               @change="onChangeSelect"
               @blur="onBlur"
             ></v-select>
-			<slot :name="field.model">
-				<v-dialog
-					v-model="dialoghelp"
-					fullscreen
-					hide-overlay
-					transition="dialog-bottom-transition"
-					scrollable
-					>
-					<v-card tile>
-						<v-toolbar card dark color="primary">
-						<v-btn icon dark @click.native="dialoghelp = false">
-							<v-icon>close</v-icon>
-						</v-btn>
-						<v-toolbar-title>Ayuda</v-toolbar-title>
-						<v-spacer></v-spacer>
-						</v-toolbar>
-							<P>TEXTO DE MUESTRA</P>
-							<v-card-media
-								v-model="localValue"
-								v-bind:src="srcImageHelp"
-								height="100%"
-								width="100%"
-								contain>
-							</v-card-media>
-						<div style="flex: 1 1 auto;"></div>
-					</v-card>
-				</v-dialog>	
-			</slot>
-		
+		formfield {{ dialoghelp }}
+			<v-form-generator-field-dialogBox
+				ref="dialoghelp"
+				:modelSelected="localModel"
+				:field="field"
+				:dialoghelp="dialoghelp"
+				lazy
+			>
+
+
+			</v-form-generator-field-dialogBox>
 		</div>
 
 
@@ -268,7 +250,10 @@
 			model: Object,
 			select: null,
 			show: null
-		},		
+		},
+        components: {
+            'v-form-generator-field-dialogBox': require('./components/dialogBox.vue').default
+        },				
 		computed:{
 			appendiconHelp(){
 				if(this.field.model == 'type' || this.field.model== 'subtype'){
@@ -277,7 +262,9 @@
 			},
 			appendiconHelpCB(){
 				if(this.localField.model == 'type' || this.localField.model== 'subtype'){
+					console.log("dialoghelp actual: "+this.dialoghelp)
 					return () => (this.dialoghelp = !this.dialoghelp)
+
 				}
 			},
 			srcImageHelp(){
@@ -306,8 +293,8 @@
 				
 				if(src!= ""){
 					console.log("srcFinal: "+src)
-					console.log("srcRequire: "+'./static/'+src+'')
-					return require('./static/'+src+'')
+					console.log("srcRequire: "+'documents/'+src+'')
+					//return require('documents/'+src+'')
 				}
 				
 				//:src="require('./static/help_ife.jpg')"
@@ -364,7 +351,7 @@
 			save(date) {
               this.$refs.menu.save(date)
               this.$emit('update:'+this.field.model, date)
-            },
+            },		
             evalInContextValue(string){
                 let evalString = null;
                 try{
