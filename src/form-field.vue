@@ -52,22 +52,78 @@
 		      validate-on-blur
               single-line
               bottom
-			  v-bind:append-icon="appendiconHelp"			  
-			  v-bind:append-icon-cb="appendiconHelpCB"
+			  v-bind:append-icon="'help'"	  
+			  v-bind:append-icon-cb="() => (dialoghelp = !dialoghelp)"
               @change="onChangeSelect"
               @blur="onBlur"
             ></v-select>
-		formfield {{ dialoghelp }}
-			<v-form-generator-field-dialogBox
-				ref="dialoghelp"
-				:modelSelected="localModel"
-				:field="field"
-				:dialoghelp="dialoghelp"
-				lazy
-			>
+				<v-dialog
+					v-model="dialoghelp"
+					fullscreen
+					hide-overlay
+					transition="dialog-bottom-transition"
+					scrollable
+					v-if="localValue=='ife'"
+					>
+					<v-card tile>
+						<v-toolbar card dark color="primary">
+						<v-btn icon dark @click.native="dialoghelp = false">
+							<v-icon>close</v-icon>
+						</v-btn>
+						<v-toolbar-title>Ayuda</v-toolbar-title>
+						<v-spacer></v-spacer>
+						</v-toolbar>
+						<!--aqui va el contenido de la ayuda-->
+						<v-card-media
+						src="public/documents/help_ife.jpg"
+						height="100%"
+						width="100%"
+						contain
+						></v-card-media>
+						<v-card-media
+                            src="public/documents/help_ife.jpg"
+                            height="100%"
+                            width="100%"
+                            v-if="droplist ==='Credencial de Elector'"
+                            contain
+                          ></v-card-media>
+                          <v-card-media
+                            src="static/pasport.JPG"
+                            height="100%"
+                            width="100%"
+                            v-if="droplist ==='Pasaporte'"
+                            contain
+                          ></v-card-media>
+						<div style="flex: 1 1 auto;"></div>
+					</v-card>
+				</v-dialog>
 
-
-			</v-form-generator-field-dialogBox>
+				<v-dialog
+					v-model="dialoghelp"
+					fullscreen
+					hide-overlay
+					transition="dialog-bottom-transition"
+					scrollable
+					v-if="localValue=='passport'"
+					>
+					<v-card tile>
+						<v-toolbar card dark color="primary">
+						<v-btn icon dark @click.native="dialoghelp = false">
+							<v-icon>close</v-icon>
+						</v-btn>
+						<v-toolbar-title>Ayuda</v-toolbar-title>
+						<v-spacer></v-spacer>
+						</v-toolbar>
+						<!--aqui va el contenido de la ayuda-->
+						<v-card-media
+						src="public/documents/ife_ife-c.jpg"
+						height="100%"
+						width="100%"
+						contain
+						></v-card-media>
+						<div style="flex: 1 1 auto;"></div>
+					</v-card>
+				</v-dialog>
 		</div>
 
 

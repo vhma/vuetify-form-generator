@@ -38,6 +38,7 @@
                                                               style="width:100%; height:100%"
                                                               >
                                                             </object>
+
                                                             <v-card-media
                                                               :src="item.imageUrlVariable"
                                                               height="100%"
@@ -140,7 +141,36 @@
             return {
                 stepper:1,
                 validForm:true,
-                localmodel:this.model
+                localmodel:this.model,
+                'zoomerOptions': {
+                    'zoomFactor': 3,
+                    'pane': 'container-round',
+                    'hoverDelay': 300,
+                    'namespace': 'zoomerO',
+                    'move_by_click':false,
+                    'scroll_items': 7,
+                    'choosed_thumb_border_color': "#dd2c00"
+                },
+                'images': {
+                    'thumbs': [
+                        {
+                        'id': 1,
+                        'url': 'public/documents/modeloA.jpg'
+                        }
+                        ],
+                        'normal_size': [
+                        {
+                        'id': 1,
+                        'url': 'public/documents/modeloA.jpg',
+                        }
+                        ],
+                        'large_size': [
+                        {
+                        'id': 1,
+                        'url': 'public/documents/modeloA.jpg'
+                        }
+                    ]
+                }
             }
         },
         created: function () {

@@ -25,7 +25,8 @@
   "homepage": "https://github.com/vhma/vuetify-form-generator.git#readme",
   "dependencies": {
     "vue": "^2.5.3",
-    "vuetify": "^1.0.0"
+    "vuetify": "^1.0.0",
+    "vue-product-zoomer": "github:ovidales/vue-product-zoomer"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
