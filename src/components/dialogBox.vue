@@ -1,7 +1,7 @@
 <template>
     <div>
             <v-dialog
-                v-model="localdialoghelp"
+                v-model="dialoghelp"
                 fullscreen
                 hide-overlay
                 transition="dialog-bottom-transition"
@@ -10,13 +10,12 @@
                 >
                 <v-card tile>
                     <v-toolbar card dark color="primary">
-                    <v-btn icon dark @click.native="localdialoghelp = false" >
+                    <v-btn icon dark @click.native="toogleDialog" >
                         <v-icon>close</v-icon>
                     </v-btn>
                     <v-toolbar-title>Ayuda</v-toolbar-title>
                     <v-spacer></v-spacer>
                     </v-toolbar>
-                        <P>TEXTO DE MUESTRA</P>
                         <v-card-media
                             v-model="localsrc"
                             v-bind:src="'documents/help_ife_ife-a.jpg'"
@@ -36,7 +35,7 @@
         props: {
             'modelSelected': Object,
             'field':Object,
-            'dialoghelp':Boolean
+            'dialoghelp':Boolean,
         }, 
         data(){
             return {
@@ -46,7 +45,6 @@
                 localsrc:"",
                 type:"",
                 subtype:""
-
             }
         },
         computed: {
@@ -58,7 +56,7 @@
         },        
         methods:{
             getImageSrc:function(type, field){
-                let src="@/static/";
+                let src="documents/";
                 switch(type){
                     case "help":
                         src +="help_";
@@ -69,10 +67,8 @@
                 }
             },
             toogleDialog:function(){
-                console.log("toogleDialog ACTUAL: "+this.localdialoghelp)
-                this.localdialoghelp = !this.localdialoghelp
-                console.log("toogleDialog return: "+this.localdialoghelp)
-                this.$emit('update:dialoghelp', this.localdialoghelp)
+                this.dialoghelp = false
+                this.$emit('input',this.dialoghelp)
             }
         }
     }
