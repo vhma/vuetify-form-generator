@@ -1,6 +1,6 @@
 <template>
 	<v-app>
-        <v-form-generator :model="model" :schema="schema" :options="options"/>
+        <v-form-generator :model="model" :schema="schema" :options="options" :imageUrls="imageUrls"/>
 	</v-app>
 </template>
 
@@ -11,6 +11,12 @@
 		},
 		data(){
 			return {
+                "imageUrls":[
+                    "public/documents/modeloA.jpg",
+                    "public/documents/modeloB.jpg",
+                    "public/documents/test.pdf",
+                    "public/documents/unknown.jpg"
+                  ],
                 model: {
                     type:"",
                     subtype:"",
@@ -34,10 +40,10 @@
                           "label": "Tipo de Identificación",
                           "helpUrl": "todo.html",
                           "imagesUrl":[
-                            {"type":"image", "imageUrlVariable": "public/documents/modeloA.jpg"},
-                            {"type":"image", "imageUrlVariable": "public/documents/modeloB.jpg"},
-                            {"type":"pdf", "imageUrlVariable": "public/documents/test.pdf"},
-                            {"type":"pdf", "imageUrlVariable": "public/documents/unknown.jpg"},
+                            "public/documents/modeloA.jpg",
+                            "public/documents/modeloB.jpg",
+                            "public/documents/test.pdf",
+                            "public/documents/unknown.jpg",
                           ],
                           "fields": [
                             {
@@ -154,10 +160,10 @@
                       "label": "Captura de Datos",
                       "helpUrl": "todo.html",
                       "imagesUrl":[
-                            {"type":"image", "imageUrlVariable": "public/documents/modeloA.jpg"},
-                            {"type":"image", "imageUrlVariable": "public/documents/modeloB.jpg"},
-                            {"type":"pdf", "imageUrlVariable": "public/documents/test.pdf"},
-                            {"type":"pdf", "imageUrlVariable": "public/documents/unknown.jpg"},
+                            "public/documents/modeloA.jpg",
+                            "public/documents/modeloB.jpg",
+                            "public/documents/test.pdf",
+                            "public/documents/unknown.jpg",
                       ],
                       "fields": [
                         {

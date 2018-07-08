@@ -29,21 +29,21 @@
                                             <v-layout row align-center justify-center>
                                                 <v-flex xs12 lg5 xl5>
                                                     <v-carousel  :cycle="false" hide-delimiters light>
-                                                        <v-carousel-item v-for="(item,index) in steps.imagesUrl"
+                                                        <v-carousel-item v-for="(item,index) in imageUrls"
                                                             cycle
                                                             :key="`${index}-carousel`">
                                                             <object
-                                                              :data="item.imageUrlVariable"
-                                                              v-if="item.type==='pdf'"
+                                                              :data="item"
+                                                              v-if="typeMimeType(item)==='PDF'"
                                                               style="width:100%; height:100%"
                                                               >
                                                             </object>
                                                             <v-card-media
-                                                              :src="item.imageUrlVariable"
+                                                              :src="item"
                                                               height="100%"
                                                               width="100%"
                                                               style="min-height:10em"
-                                                              v-if="item.type==='image'"
+                                                              v-if="typeMimeType(item)==='IMAGE'"
                                                               contain>
                                                             </v-card-media>
                                                         </v-carousel-item>
@@ -132,7 +132,7 @@
             'model': Object,
             'schema': Object,
             'options': Object,
-            'images': Object
+            'imageUrls': Object
         },
         components: {
             'v-form-generator-field': require('./form-field.vue').default
@@ -185,6 +185,22 @@
                 } else {
                   this.stepper = n + 1
                 }
+            },
+            typeMimeType:function(item){
+                let itemUpper = item.toUpperCase();
+                let type="";
+
+                if(itemUpper.indexOf('PDF') > -1){
+                  type = "PDF";
+                }
+                else if(itemUpper.indexOf('HTML') > -1){
+                  type = "";
+                }else if((itemUpper.indexOf('GIF') > -1)|| (itemUpper.indexOf('JPG') > -1) || (itemUpper.indexOf('PNG') > -1)
+                  || (itemUpper.indexOf('SVG') > -1) ){
+                  type = "IMAGE";
+                }
+
+                return type
             }
         }
     }
