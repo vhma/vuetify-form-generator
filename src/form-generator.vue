@@ -29,12 +29,12 @@
                                             <v-layout row align-center justify-center>
                                                 <v-flex xs12 lg5 xl5>
                                                     <v-carousel  :cycle="false" hide-delimiters light>
-                                                        <v-carousel-item v-for="(item,index) in images"
+                                                        <v-carousel-item v-for="(item,index) in steps.imagesUrl"
                                                             cycle
                                                             :key="`${index}-carousel`">
                                                             <object
                                                               :data="item.imageUrlVariable"
-                                                              v-if="item.type==='PDF'"
+                                                              v-if="item.type==='pdf'"
                                                               style="width:100%; height:100%"
                                                               >
                                                             </object>
@@ -43,7 +43,7 @@
                                                               height="100%"
                                                               width="100%"
                                                               style="min-height:10em"
-                                                              v-if="item.type==='IMAGE'"
+                                                              v-if="item.type==='image'"
                                                               contain>
                                                             </v-card-media>
                                                         </v-carousel-item>
