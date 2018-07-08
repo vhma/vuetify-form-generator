@@ -132,7 +132,7 @@
             'model': Object,
             'schema': Object,
             'options': Object,
-            'imageUrls': Object
+            'imageUrls': Array
         },
         components: {
             'v-form-generator-field': require('./form-field.vue').default
