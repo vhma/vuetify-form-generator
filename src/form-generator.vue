@@ -159,7 +159,7 @@
             },
             onInput: function(value, fieldName) {
                 this.$set(this.model, fieldName, value)
-                this.$emit("update:model", this.model)
+                this.$emit("update_model", this.model)
                 this.resetForm()
             },
             resetForm: function() {
