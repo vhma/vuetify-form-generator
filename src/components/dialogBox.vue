@@ -18,7 +18,7 @@
                     </v-toolbar>
                         <v-card-media
                             v-model="localsrc"
-                            v-bind:src="'documents/help_ife_ife-a.jpg'"
+                            v-bind:src="'static/documents/help_ife_ife-a.jpg'"
                             height="100%"
                             width="100%"
                             contain>
