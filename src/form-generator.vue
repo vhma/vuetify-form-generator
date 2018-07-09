@@ -167,14 +167,16 @@
                 var self = this; //you need this because *this* will refer to Object.keys below`
 
                 //Iterate through each object field, key is name of the object field`
-                Object.keys(this.localmodel).forEach(function(key,index) {
-                  //self.model[key] = '';
-                  //self.$set(self.localmodel, key, '')
-                  self.localmodel[key] = '';
-                });
+                if(this.localmodel){
+                    Object.keys(this.localmodel).forEach(function(key,index) {
+                      //self.model[key] = '';
+                      //self.$set(self.localmodel, key, '')
+                      self.localmodel[key] = '';
+                    });
 
-                //self.$emit("update:model", self.localmodel)
-                this.model = this.localmodel
+                    //self.$emit("update:model", self.localmodel)
+                    this.model = this.localmodel
+                }
 
             },
             nextStep (n, steps) {
