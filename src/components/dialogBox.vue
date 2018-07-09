@@ -56,7 +56,7 @@
         },        
         methods:{
             getImageSrc:function(type, field){
-                let src="documents/";
+                let src="static/documents/";
                 switch(type){
                     case "help":
                         src +="help_";
