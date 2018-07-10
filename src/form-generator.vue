@@ -57,6 +57,8 @@ localmodel: {{ localmodel }}
                                                         :value="localmodel[field.model]"
                                                         :model="localmodel"
                                                         :fieldmodel="field.model"
+                                                        v-bind.sync="localmodel"
+                                                        @input="onInput"
                                                           />
                                                      </div>
                                                 </v-flex>
@@ -143,11 +145,36 @@ localmodel: {{ localmodel }}
             return {
                 stepper:1,
                 validForm:true,
-                localmodel:this.value
             }
         },
         created: function () {
+            this.$on('updatefield', eventDataField => console.log('listen-updatefield',eventDataField))
+            this.$events.on('testevent', eventData => {
+                console.log('listen-testEvent',eventData)
+                this.$events.$emit('updatemodel', this.localmodel)
+
+            });
+
             // On load
+        },
+        mounted(){
+            //this.localmodel = this.cloneObject(this.localmodel)
+        },
+        computed:{
+            localmodel:{
+                get(){
+                    return this.value
+                  /*let cloneModel = {};
+                  if(this.value){
+                    this.isLoaded = true;
+                    cloneModel= this.cloneObject(this.value);
+                    return cloneModel;
+                  }*/
+                },
+                set (value) {
+                  console.log('computed - set- localModel', value);
+                }
+            }
         },
         methods: {
             onBlur: function(){
@@ -206,6 +233,15 @@ localmodel: {{ localmodel }}
                 }
 
                 return type
+            },
+            cloneObject(o) {
+                var output, v, key;
+                output = Array.isArray(o) ? [] : {};
+                for (key in o) {
+                    v = o[key];
+                    output[key] = (typeof v === "object") ? this.cloneObject(v) : v;
+                }
+                return output;
             }
         }
     }

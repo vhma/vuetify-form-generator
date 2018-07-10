@@ -10,6 +10,12 @@
 		components: {
 			'v-form-generator': require('vuetify-form-generator').default
 		},
+		created(){
+		    this.$events.on('updatemodel', eventData => {
+		        console.log('listen-updatemodel',eventData)
+		    });
+
+		},
 		data(){
 			return {
                 "imageUrls":[

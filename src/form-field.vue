@@ -304,7 +304,7 @@
 		data(){
 			return {
 			    localValue: this.value,
-			    localModel: this.model,
+			    localModel: this.modelscope,
 			    localField: this.field,
 				dialoghelp: false,
 				localdialoghelp: false,
@@ -335,7 +335,8 @@
 				console.log("onChangeSelect-this.field.model: "+this.field.model)
 				console.log("onChangeSelect-selected: "+selected)
 				//this.$emit('update:'+this.field.model, selected)
-				this.$emit('updateField', {field:this.field.model, value:selected})
+				//this.$emit('updatefield', {field:this.field.model, value:selected})
+				this.$events.emit('testevent', {field:this.field.model, value:selected});
 			},
 			onFocus: function(){
 				this.$emit('focus')
