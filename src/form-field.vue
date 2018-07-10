@@ -334,13 +334,15 @@
             onChangeSelect: function(selected){
 				console.log("onChangeSelect-this.field.model: "+this.field.model)
 				console.log("onChangeSelect-selected: "+selected)
-				this.$emit('update:'+this.field.model, selected)
+				//this.$emit('update:'+this.field.model, selected)
+				this.$emit('updateField', {field:this.field.model, value:selected})
 			},
 			onFocus: function(){
 				this.$emit('focus')
 			},
 			onInput: function(){
-				this.$emit('update:'+this.field.model, this.localValue)
+				//this.$emit('update:'+this.field.model, this.localValue)
+				this.$emit('updateField', {field:this.field.model, value: this.localValue})
 			},
 			onInputCalculated: function(){
 			    this.localValue = 123;
@@ -350,7 +352,8 @@
 			},
 			save(date) {
               this.$refs.menu.save(date)
-              this.$emit('update:'+this.field.model, date)
+              //this.$emit('update:'+this.field.model, date)
+              this.$emit('updateField', {field:this.field.model, value: date})
             },		
             evalInContextValue(string){
                 let evalString = null;
@@ -379,7 +382,8 @@
                   }
                 }
                 if( !isRender ){
-                    this.$emit('update:'+this.field.model, "");
+                    //this.$emit('update:'+this.field.model, "");
+                    this.$emit('updateField', {field:this.field.model, value: ""})
                 }
 
                 return isRender;

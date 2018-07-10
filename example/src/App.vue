@@ -1,6 +1,7 @@
 <template>
 	<v-app>
-        <v-form-generator :model="model" :schema="schema" :options="options" :imageUrls="imageUrls"/>
+	Main Model: {{ model }}
+        <v-form-generator :value="model" :schema="schema" :options="options" :imageUrls="imageUrls"/>
 	</v-app>
 </template>
 

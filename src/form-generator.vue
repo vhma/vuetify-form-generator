@@ -1,5 +1,6 @@
 <template>
 <v-form ref="form" v-model="validForm" lazy-validation>
+localmodel: {{ localmodel }}
         <div v-for="(schemaItem, schemaItemIndex) in schema">
             <div v-if="schemaItemIndex == 'forms'">
                 <v-stepper v-model="stepper">
@@ -53,10 +54,10 @@
                                                     <div v-for="field in steps.fields" >
                                                         <v-form-generator-field
                                                         :field="field"
-                                                        :value="model[field.model]"
-                                                        :model="model"
+                                                        :value="localmodel[field.model]"
+                                                        :model="localmodel"
                                                         :fieldmodel="field.model"
-                                                        v-bind.sync="localmodel"  />
+                                                          />
                                                      </div>
                                                 </v-flex>
                                             </v-layout>
@@ -130,6 +131,7 @@
         name: 'v-form-generator',
         props: {
             'model': Object,
+            'value': Object,
             'schema': Object,
             'options': Object,
             'imageUrls': Array
@@ -141,7 +143,7 @@
             return {
                 stepper:1,
                 validForm:true,
-                localmodel:this.model
+                localmodel:this.value
             }
         },
         created: function () {
@@ -160,6 +162,7 @@
             onInput: function(value, fieldName) {
                 this.$set(this.model, fieldName, value)
                 this.$emit("updateModel", this.model)
+                console.log("update MODEL", this.model)
                 //this.resetForm()
             },
             resetForm: function() {
