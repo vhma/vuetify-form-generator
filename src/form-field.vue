@@ -242,6 +242,7 @@
 </template>
 
 <script>
+import eventHub from './components/eventHub'
 	export default{
 		name: 'v-form-generator-field',
 		props: {
@@ -329,18 +330,25 @@
 				this.$emit('blur')
 			},
 			onChange: function(){
-			    //this.$emit('update:'+this.field.model, this.localValue)
+			    //this.$emit('update:'+this.field.model, this.localModel)
 			},
             onChangeSelect: function(selected){
 				console.log("onChangeSelect-this.field.model: "+this.field.model)
 				console.log("onChangeSelect-selected: "+selected)
-				this.$emit('update:'+this.field.model, selected)
+				//this.$emit('update:'+this.field.model, selected).bind(this)
+				//eventHub.$emit('update:'+this.field.model, selected)
+				eventHub.$emit('updatefield', {field:this.field.model, value:selected})
+				//eventHub.$emit('updatemodel', this.localModel)
+
 			},
 			onFocus: function(){
 				this.$emit('focus')
 			},
 			onInput: function(){
-				this.$emit('update:'+this.field.model, this.localValue)
+				//this.$emit('update:'+this.field.model, this.localValue)
+				//eventHub.$emit('update:'+this.field.model, this.localValue)
+				eventHub.$emit('updatefield', {field:this.field.model, value:this.localValue})
+				//eventHub.$emit('updatemodel', this.localModel)
 			},
 			onInputCalculated: function(){
 			    this.localValue = 123;
@@ -379,7 +387,10 @@
                   }
                 }
                 if( !isRender ){
-                    this.$emit('update:'+this.field.model, "");
+                    //this.$emit('update:'+this.field.model, "");
+                    eventHub.$emit('update:'+this.field.model, "")
+                    //eventHub.$emit('updatefield', {field:this.field.model, value:""})
+                    //eventHub.$emit('updatemodel', this.localModel)
                 }
 
                 return isRender;

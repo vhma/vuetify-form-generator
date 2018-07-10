@@ -1,5 +1,6 @@
 <template>
 <v-form ref="form" v-model="validForm" lazy-validation>
+localmodelClone {{ localmodelClone }}
         <div v-for="(schemaItem, schemaItemIndex) in schema">
             <div v-if="schemaItemIndex == 'forms'">
                 <v-stepper v-model="stepper">
@@ -53,10 +54,11 @@
                                                     <div v-for="field in steps.fields" >
                                                         <v-form-generator-field
                                                         :field="field"
-                                                        :value="model[field.model]"
-                                                        :model="model"
+                                                        :value="localmodel[field.model]"
+                                                        :model="localmodel"
                                                         :fieldmodel="field.model"
-                                                        v-bind.sync="localmodel"  />
+                                                        v-bind.sync="localmodel"
+                                                       />
                                                      </div>
                                                 </v-flex>
                                             </v-layout>
@@ -126,6 +128,7 @@
 </template>
 
 <script>
+import eventHub from './components/eventHub'
     export default{
         name: 'v-form-generator',
         props: {
@@ -135,17 +138,48 @@
             'imageUrls': Array
         },
         components: {
-            'v-form-generator-field': require('./form-field.vue').default
+            'v-form-generator-field': require('./form-field.vue').default,
+            eventHub
+        },
+        computed:{
+            localmodel:{
+                get(){
+                    return this.localmodelClone
+                    //return this.cloneObject(this.model);
+                },
+                set (value) {
+                    this.localmodelClone = JSON.parse(JSON.stringify(value));
+                    //return JSON.parse(JSON.stringify(value));
+                    console.log('computed - set- formgenerator-localModel', this.localmodelClone);
+                }
+            }
+
         },
         data(){
             return {
                 stepper:1,
                 validForm:true,
-                localmodel:this.model
+                localmodelClone:{}
             }
         },
         created: function () {
             // On load
+            console.log("prop:",this.model)
+            this.localmodelClone = JSON.parse(JSON.stringify(this.model));
+
+            eventHub.$on('updatefield', dataField=>{
+                this.localmodelClone[dataField.field] = this.localmodelClone[dataField.field] = dataField.value
+                console.log("listen-updateField:",dataField)
+            })
+            eventHub.$on('updatemodel', dataModel=>{
+                console.log("listen-updatemodel:",dataModel)
+                this.updateModel(dataModel);
+                this.localmodelClone = dataModel
+            })
+            eventHub.$on('cleanmodel', dataModel=>{
+                console.log("listen-cleanmodel:",dataModel)
+                this.localmodelClone = dataModel
+            })
         },
         methods: {
             onBlur: function(){
@@ -158,8 +192,9 @@
                 console.info('focus')
             },
             onInput: function(value, fieldName) {
-                this.$set(this.model, fieldName, value)
-                this.$emit("updateModel", this.model)
+                console.log('onInput')
+                //this.$set(this.model, fieldName, value)
+                //this.$emit("updatemodel", this.model)
                 //this.resetForm()
             },
             resetForm: function() {
@@ -168,14 +203,18 @@
 
                 //Iterate through each object field, key is name of the object field`
                 if(this.localmodel){
+                    //this.$emit("updatemodel", this.localmodel)
+                    eventHub.$emit("updatemodel", this.localmodel)
+                    this.localmodel = this.localmodelClone;
                     Object.keys(this.localmodel).forEach(function(key,index) {
                       //self.model[key] = '';
                       //self.$set(self.localmodel, key, '')
                       self.localmodel[key] = '';
                     });
+                    eventHub.$emit("cleanmodel", this.localmodel)
 
                     //self.$emit("update:model", self.localmodel)
-                    this.model = this.localmodel
+                    //this.model = this.localmodel
                 }
 
             },
@@ -203,6 +242,19 @@
                 }
 
                 return type
+            },
+            cloneObject(o) {
+                var output, v, key;
+                output = Array.isArray(o) ? [] : {};
+                for (key in o) {
+                    v = o[key];
+                    output[key] = (typeof v === "object") ? this.cloneObject(v) : v;
+                }
+                return output;
+            },
+            updateModel:function(value){
+                this.$root.$emit('updateparentmodel', value)
+
             }
         }
     }

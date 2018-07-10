@@ -3,6 +3,8 @@ import App from './App.vue'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
 
+export var eventHub = new Vue();
+
 Vue.use(Vuetify)
 
 new Vue({

@@ -1,13 +1,35 @@
 <template>
 	<v-app>
+	Main model {{ model }}
         <v-form-generator :model="model" :schema="schema" :options="options" :imageUrls="imageUrls"/>
 	</v-app>
 </template>
 
 <script>
+import {eventHub} from './main'
+
 	export default {
 		components: {
-			'v-form-generator': require('vuetify-form-generator').default
+			'v-form-generator': require('vuetify-form-generator').default,
+			eventHub
+		},
+		created(){
+		    eventHub.$on("updatemodel", dataMainModel=>{
+		    debugger;
+		        if(this.$store){
+		            console.log('Update by commit')
+		        }else{
+		            console.log('Update by emit')
+		        }
+		    })
+		    this.$root.$on("updateparentmodel", dataMainModel=>{
+		    debugger;
+		        if(this.$store){
+		            console.log('Update by commit')
+		        }else{
+		            console.log('Update by emit')
+		        }
+		    })
 		},
 		data(){
 			return {
