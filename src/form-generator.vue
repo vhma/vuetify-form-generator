@@ -165,7 +165,10 @@ import eventHub from './components/eventHub'
         created: function () {
             // On load
             console.log("prop:",this.model)
-            this.localmodelClone = JSON.parse(JSON.stringify(this.model));
+            if(this.model){
+                this.localmodelClone = JSON.parse(JSON.stringify(this.model));
+            }
+
 
             eventHub.$on('updatefield', dataField=>{
                 this.localmodelClone[dataField.field] = this.localmodelClone[dataField.field] = dataField.value
