@@ -164,10 +164,7 @@ import eventHub from './components/eventHub'
         },
         created: function () {
             // On load
-            console.log("prop:",this.model)
-            if(this.model){
-                this.localmodelClone = JSON.parse(JSON.stringify(this.model));
-            }
+
 
 
             eventHub.$on('updatefield', dataField=>{
@@ -184,6 +181,13 @@ import eventHub from './components/eventHub'
                 this.localmodelClone = dataModel
             })
         },
+        beforeMount(){
+            console.log("prop:",this.model)
+            if(this.model){
+                this.localmodelClone = JSON.parse(JSON.stringify(this.model));
+            }
+
+        }
         methods: {
             onBlur: function(){
                 console.info('blur')
