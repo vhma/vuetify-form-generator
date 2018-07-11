@@ -187,7 +187,7 @@ import eventHub from './components/eventHub'
                 this.localmodelClone = JSON.parse(JSON.stringify(this.model));
             }
 
-        }
+        },
         methods: {
             onBlur: function(){
                 console.info('blur')
