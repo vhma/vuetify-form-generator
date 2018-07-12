@@ -1,7 +1,5 @@
 <template>
 <v-form ref="form" v-model="validForm" lazy-validation>
-localmodelClone {{ localmodelClone }}
-    dialoghelp: {{ dialoghelp }}
         <div v-for="(schemaItem, schemaItemIndex) in schema">
             <div v-if="schemaItemIndex == 'forms'">
                 <v-stepper v-model="stepper">
