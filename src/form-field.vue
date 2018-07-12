@@ -6,7 +6,7 @@
 		      :label="field.label"
 		      :required="evalInContextValue(field.required)"
 		      :readonly="evalInContextValue(field.readonly)"
-		      :disabled="field.disabled"
+		      :disabled="evalInContextDisabled( field.disabled || false )"
 		      :placeholder="field.placeholder"
 		      :rules="validationRules.email"
 		      v-if="evalInContext( field.conditionalShow||true )"
@@ -23,7 +23,7 @@
 		      :label="field.label"
 		      :required="evalInContextValue(field.required)"
 		      :readonly="evalInContextValue(field.readonly)"
-		      :disabled="field.disabled"
+		      :disabled="evalInContextDisabled( field.disabled || false )"
 		      :placeholder="field.placeholder"
 		      :append-icon="field.passwordVisible ? 'visibility_off' : 'visibility'"
               :append-icon-cb="appendPasswordIconCheckbox()"
@@ -44,7 +44,7 @@
               :items="field.options"
 		      :required="evalInContextValue(field.required)"
 		      :readonly="evalInContextValue(field.readonly)"
-		      :disabled="field.disabled"
+		      :disabled="evalInContextDisabled( field.disabled || false )"
 		      :placeholder="field.label"
 		      :hint="field.hint"
 		      :rules=" field.required ? validationRules.required : [] "
@@ -56,6 +56,7 @@
 			  v-bind:append-icon-cb="appendiconHelpCB"
               @change="onChangeSelect"
               @blur="onBlur"
+              return-object
             ></v-select>
 			<v-form-generator-field-dialogBox
 				ref="dialoghelp"
@@ -63,11 +64,9 @@
 				:modelSelected="localModel"
 				:field="field"
 				:dialoghelp="dialoghelp"
+				:typeData="'help'"
 				lazy
-
 			>
-
-
 			</v-form-generator-field-dialogBox>
 		</div>
 
@@ -78,7 +77,7 @@
               :label="field.label"
               :required="evalInContextValue(field.required)"
 		      :readonly="evalInContextValue(field.readonly)"
-		      :disabled="field.disabled"
+		      :disabled="evalInContextDisabled( field.disabled || false )"
 		      v-if="evalInContext( field.conditionalShow||true )"
 		      @change="onChangeSelect"
             ></v-checkbox>
@@ -90,7 +89,7 @@
                     v-model="localValue"
                     :required="evalInContextValue(field.required)"
                     :readonly="evalInContextValue(field.readonly)"
-                    :disabled="field.disabled"
+                    :disabled="evalInContextDisabled( field.disabled || false )"
                     :mandatory="field.required"
                     v-if="evalInContext( field.conditionalShow||true )"
                     @change="onChangeSelect"
@@ -107,9 +106,9 @@
                 <v-switch
                     v-model="localValue"
                     :label="field.label"
-                    :disabled="field.disabled"
+                    :disabled="evalInContextValue( field.disabled || false )"
                     :required="evalInContextValue(field.required)"
-                    :readonly="evalInContextValue(field.readonly)"
+                    :readonly="evalInContextDisabled(field.readonly)"
                     v-if="evalInContext( field.conditionalShow||true )"
                     @change="onChangeSelect"
                  />
@@ -122,7 +121,7 @@
 		      :label="field.label"
 		      :required="evalInContextValue(field.required)"
 		      :readonly="evalInContextValue(field.readonly)"
-		      :disabled="field.disabled"
+		      :disabled="evalInContextDisabled( field.disabled || false )"
 		      :placeholder="field.placeholder"
 		      multi-line
 		      v-bind:textarea="field.featured"
@@ -140,7 +139,7 @@
                 :label="field.label"
                 :required="evalInContextValue(field.required)"
                 :readonly="evalInContextValue(field.readonly)"
-                :disabled="field.disabled"
+                :disabled="evalInContextDisabled( field.disabled || false )"
                 :placeholder="field.placeholder"
                 :counter="field.counter"
                 :hint="field.hint"
@@ -159,7 +158,7 @@
 		      :label="field.label"
 		      :required="evalInContextValue(field.required)"
 		      :readonly="evalInContextValue(field.readonly)"
-		      :disabled="field.disabled"
+		      :disabled="evalInContextDisabled( field.disabled || false )"
 		      :placeholder="field.placeholder"
 			  :counter="field.counter"
 			  :hint="field.hint"
@@ -176,7 +175,7 @@
 		      v-model="localValue"
 		      :label="field.label"
 		      :readonly=true
-		      :disabled="field.disabled"
+		      :disabled="evalInContextDisabled( field.disabled || false )"
 			  :counter="field.counter"
 			  v-if="evalInContext( field.conditionalShow||true )"
 		      @blur="onBlur"
@@ -203,6 +202,7 @@
                    slot="activator"
                    v-model="localValue"
                    :label="field.label"
+                   :disabled="evalInContextDisabled( field.disabled || false )"
                    readonly
                  ></v-text-field>
                  <v-date-picker
@@ -221,7 +221,7 @@
 		      :label="field.label"
 		      :required="field.required"
 		      :readonly="field.readonly"
-		      :disabled="field.disabled"
+		      :disabled="evalInContextDisabled( field.disabled || false )"
 		      :placeholder="field.placeholder"
 			  :counter="field.counter"
 			  :hint="field.hint"
@@ -269,22 +269,15 @@ import eventHub from './components/eventHub'
 			},
 			srcImageHelp(){
 				let src = "";
-				console.log("this.localField.model: "+this.localField.model)
-				console.log("this.localModel[this.localField.model]: "+this.localModel[this.localField.model])
 				switch(this.localField.model){
 					case "type":
 						if(this.localModel[this.localField.model] != ""){
 							src ="help_"+this.localModel[this.localField.model]+".jpg";
-							console.log("this.localModel[this.localField.model]: "+this.localModel[this.localField.model])
-							console.log("src1: "+src)
 						}
 					break;
 					case "subtype":
 						if(this.localModel[this.localField.model] != ""){
 							src =this.localModel.type+"_"+this.localValue+".jpg";
-							console.log("2 this.localModel[type]: "+this.localModel.type)
-							console.log("2 this.localModel[this.localField.model]:"+this.localValue)
-							console.log("2 src2: "+src)
 						}
 					break;
 				}
@@ -292,8 +285,6 @@ import eventHub from './components/eventHub'
 				//src = "help_ife.jpg";
 				
 				if(src!= ""){
-					console.log("srcFinal: "+src)
-					console.log("srcRequire: "+'documents/'+src+'')
 					//return require('documents/'+src+'')
 				}
 				
@@ -333,22 +324,20 @@ import eventHub from './components/eventHub'
 			    //this.$emit('update:'+this.field.model, this.localModel)
 			},
             onChangeSelect: function(selected){
-				console.log("onChangeSelect-this.field.model: "+this.field.model)
-				console.log("onChangeSelect-selected: "+selected)
-				//this.$emit('update:'+this.field.model, selected).bind(this)
-				//eventHub.$emit('update:'+this.field.model, selected)
-				eventHub.$emit('updatefield', {field:this.field.model, value:selected})
-				//eventHub.$emit('updatemodel', this.localModel)
-
+                eventHub.$emit('updatefield', {field:this.field.model, value:selected.id})
+                if(selected.remedy){
+                    eventHub.$emit('updatefield', {field:'terminal', value:selected.terminal})
+                    eventHub.$emit('updatefield', {field:'remedy', value:selected.remedy})
+                }else{
+                    eventHub.$emit('updatefield', {field:'terminal', value:''})
+                    eventHub.$emit('updatefield', {field:'remedy', value:''})
+                }
 			},
 			onFocus: function(){
 				this.$emit('focus')
 			},
 			onInput: function(){
-				//this.$emit('update:'+this.field.model, this.localValue)
-				//eventHub.$emit('update:'+this.field.model, this.localValue)
 				eventHub.$emit('updatefield', {field:this.field.model, value:this.localValue})
-				//eventHub.$emit('updatemodel', this.localModel)
 			},
 			onInputCalculated: function(){
 			    this.localValue = 123;
@@ -372,7 +361,6 @@ import eventHub from './components/eventHub'
                   }
                 }
                 return evalString;
-
             },
             evalInContext(string){
                 let model = this.model;
@@ -387,13 +375,30 @@ import eventHub from './components/eventHub'
                   }
                 }
                 if( !isRender ){
-                    //this.$emit('update:'+this.field.model, "");
-                    eventHub.$emit('update:'+this.field.model, "")
-                    //eventHub.$emit('updatefield', {field:this.field.model, value:""})
-                    //eventHub.$emit('updatemodel', this.localModel)
+                    eventHub.$emit('updatefield', {field:this.field.model, value:""})
                 }
 
                 return isRender;
+           },
+            evalInContextDisabled(string){
+                let model = this.model;
+                let isDisabled = false;
+                try{
+                	isDisabled = eval(string);
+                } catch(error) {
+                  try {
+                  	isDisabled = eval(string)
+                  } catch(errorWithoutThis) {
+                  	isDisabled = false;
+                  }
+                }
+
+                if( isDisabled ){
+                    eventHub.$emit('updatefield', {field:this.field.model, value:""})
+
+                }
+
+                return isDisabled;
            },
 
 		},

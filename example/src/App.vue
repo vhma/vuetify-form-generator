@@ -181,6 +181,7 @@ import {eventHub} from './main'
                       "id": "dataCapture",
                       "label": "Captura de Datos",
                       "helpUrl": "todo.html",
+                      "helpIcon": "true",
                       "imagesUrl":[
                             "public/documents/modeloA.jpg",
                             "public/documents/modeloB.jpg",
@@ -222,7 +223,8 @@ import {eventHub} from './main'
                           "label": "Clave de Elector",
                           "hint": "Vigencia de credencial",
                           "required": "true",
-                          "conditionalShow": "model.type == 'ife'"
+                          "disabled": "model.terminal == true",
+                          "conditionalShow": "model.type == 'ife' && model.terminal != true"
                         },
                         {
                           "resultPath": "names",
@@ -230,6 +232,8 @@ import {eventHub} from './main'
                           "type": "textbox",
                           "label": "Nombres",
                           "hint": "Nombre",
+                          "conditionalShow": "model.terminal != true",
+                          "disabled": "model.terminal == true",
                           "required": "true"
                         },
                         {
@@ -239,7 +243,8 @@ import {eventHub} from './main'
                           "label": "Apellido Paterno",
                           "hint": "Apellido Paterno",
                           "required": "true",
-                          "conditionalShow": "model.type != 'ife' || model.electorCode.substring(0, 2) != 'XX'"
+                          "disabled": "model.terminal == true",
+                          "conditionalShow": "(model.type != 'ife' || model.electorCode.substring(0, 2) != 'XX') && model.terminal != true"
                         },
                         {
                           "resultPath": "lastNameMaternal",
@@ -249,7 +254,8 @@ import {eventHub} from './main'
                           "label": "Apellido Materno",
                           "hint": "Apellido Materno",
                           "required": "true",
-                          "conditionalShow": "model.type.substring(0, 3) != 'ife' || model.electorCode.substring(2, 4) != 'XX'"
+                          "disabled": "model.terminal == true",
+                          "conditionalShow": "model.terminal != true && (model.type.substring(0, 3) != 'ife' || model.electorCode.substring(2, 4) != 'XX')"
                         },
                         {
                           "resultPath": "ifeEmissionNumber",
@@ -258,7 +264,8 @@ import {eventHub} from './main'
                           "label": "Número de Emisión",
                           "hint": "Número de Emisión de la credencial",
                           "required": "true",
-                          "conditionalShow": "model.subtype == 'ife-a' || model.subtype == 'ife-b' || model.subtype == 'ife-c'"
+                          "disabled": "model.terminal == true",
+                          "conditionalShow": "model.terminal != true && (model.subtype == 'ife-a' || model.subtype == 'ife-b' || model.subtype == 'ife-c')"
                         },
                         {
                           "resultPath": "ifeVerticalNumber",
@@ -267,7 +274,8 @@ import {eventHub} from './main'
                           "label": "Número Vertical (OCR)",
                           "hint": "Número Vertical (OCR)",
                           "required": "true",
-                          "conditionalShow": "model.subtype == 'ife-a' || model.subtype == 'ife-b' || model.subtype == 'ife-c'"
+                          "disabled": "model.terminal == true",
+                          "conditionalShow": "model.terminal != true && (model.subtype == 'ife-a' || model.subtype == 'ife-b' || model.subtype == 'ife-c')"
                         },
                         {
                           "resultPath": "ifeIdCode",
@@ -276,7 +284,8 @@ import {eventHub} from './main'
                           "label": "Código de Identificación de la Credencial (CIC)",
                           "hint": "Código de Identificación de la Credencial (CIC)",
                           "required": "true",
-                          "conditionalShow": "model.subtype == 'ife-d' || model.subtype == 'ife-e'"
+                          "disabled": "model.terminal == true",
+                          "conditionalShow": "model.terminal != true && (model.subtype == 'ife-d' || model.subtype == 'ife-e')"
                         },
                         {
                           "resultPath": "dateOfBirth",
@@ -285,7 +294,8 @@ import {eventHub} from './main'
                           "label": "Fecha de Nacimiento",
                           "hint": "Fecha de Nacimiento",
                           "required": "true",
-                          "conditionalShow": "model.type == 'passport'"
+                          "disabled": "model.terminal == true",
+                          "conditionalShow": "model.terminal != true && (model.type == 'passport')"
                         },                        
                         {
                           "resultPath": "birthState",
@@ -293,7 +303,8 @@ import {eventHub} from './main'
                           "type": "dropdown",
                           "label": "Entidad Federativa de Nacimiento",
                           "hint": "Entidad Federativa de Nacimiento",
-                          "conditionalShow": "model.type != 'ife'",
+                          "conditionalShow": "model.terminal != true && (model.type != 'ife')",
+                          "disabled": "model.terminal == true",
                           "required": "true",
                           "options": [
                             { "id": "AS", "name": "Aguascalientes"},

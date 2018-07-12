@@ -1,6 +1,7 @@
 <template>
 <v-form ref="form" v-model="validForm" lazy-validation>
 localmodelClone {{ localmodelClone }}
+    dialoghelp: {{ dialoghelp }}
         <div v-for="(schemaItem, schemaItemIndex) in schema">
             <div v-if="schemaItemIndex == 'forms'">
                 <v-stepper v-model="stepper">
@@ -23,12 +24,27 @@ localmodelClone {{ localmodelClone }}
                           :key="`${index+1}-content`"
                           row wrap
                         >
+                            <v-layout row align-right justify-right v-if="steps.helpIcon=='true'">
+                                <v-btn
+                                    absolute
+                                    dark
+                                    fab
+                                    right
+                                    color="accent"
+                                    @click="showHelp"
+                                >
+                                <v-icon x-large light>not_listed_location</v-icon>
+                            </v-btn>
+                            </v-layout>
                             <v-layout row wrap >
                                 <v-flex xs12 lg12 xl12 >
                                     <v-card   ref="`${index+1}-vcontent`" >
+
                                         <v-container  fluid grid-list-lg fill-height >
+
                                             <v-layout row align-center justify-center>
                                                 <v-flex xs12 lg5 xl5>
+
                                                     <v-carousel  :cycle="false" hide-delimiters light>
                                                         <v-carousel-item v-for="(item,index) in imageUrls"
                                                             cycle
@@ -124,6 +140,15 @@ localmodelClone {{ localmodelClone }}
             </div>
         </div>
     </div>
+
+        <v-form-generator-field-dialogBox
+            ref="dialoghelp"
+            v-model="dialoghelp"
+            :modelSelected="localmodel"
+            :dialoghelp="dialoghelp"
+            :typeData="'info'"
+            lazy
+        />
 </v-form>
 </template>
 
@@ -139,7 +164,8 @@ import eventHub from './components/eventHub'
         },
         components: {
             'v-form-generator-field': require('./form-field.vue').default,
-            eventHub
+            eventHub,
+            'v-form-generator-field-dialogBox': require('./components/dialogBox.vue').default
         },
         computed:{
             localmodel:{
@@ -150,39 +176,40 @@ import eventHub from './components/eventHub'
                 set (value) {
                     this.localmodelClone = JSON.parse(JSON.stringify(value));
                     //return JSON.parse(JSON.stringify(value));
-                    console.log('computed - set- formgenerator-localModel', this.localmodelClone);
+                }
+            },
+            dialoghelp:{
+                get(){
+                    return this.localdialoghelp;
+                },
+                set(value){
+                    this.localdialoghelp = value;
                 }
             }
-
         },
         data(){
             return {
                 stepper:1,
                 validForm:true,
-                localmodelClone:{}
+                localmodelClone:{},
+                localdialoghelp:false
             }
         },
         created: function () {
             // On load
 
-
-
             eventHub.$on('updatefield', dataField=>{
                 this.localmodelClone[dataField.field] = this.localmodelClone[dataField.field] = dataField.value
-                console.log("listen-updateField:",dataField)
             })
             eventHub.$on('updatemodel', dataModel=>{
-                console.log("listen-updatemodel:",dataModel)
                 this.updateModel(dataModel);
                 this.localmodelClone = dataModel
             })
             eventHub.$on('cleanmodel', dataModel=>{
-                console.log("listen-cleanmodel:",dataModel)
                 this.localmodelClone = dataModel
             })
         },
         beforeMount(){
-            console.log("prop:",this.model)
             if(this.model){
                 this.localmodelClone = JSON.parse(JSON.stringify(this.model));
             }
@@ -200,9 +227,6 @@ import eventHub from './components/eventHub'
             },
             onInput: function(value, fieldName) {
                 console.log('onInput')
-                //this.$set(this.model, fieldName, value)
-                //this.$emit("updatemodel", this.model)
-                //this.resetForm()
             },
             resetForm: function() {
 
@@ -210,7 +234,6 @@ import eventHub from './components/eventHub'
 
                 //Iterate through each object field, key is name of the object field`
                 if(this.localmodel){
-                    //this.$emit("updatemodel", this.localmodel)
                     eventHub.$emit("updatemodel", this.localmodel)
                     this.localmodel = this.localmodelClone;
                     Object.keys(this.localmodel).forEach(function(key,index) {
@@ -226,10 +249,14 @@ import eventHub from './components/eventHub'
 
             },
             nextStep (n, steps) {
+                //Si es terminal se finaliza la captura
+                if(this.localmodel.terminal){
+                    n = steps;
+                }
+
                 if (n == steps) {
                     this.resetForm()
-
-                  this.stepper = 1
+                    this.stepper = 1
                 } else {
                   this.stepper = n + 1
                 }
@@ -262,6 +289,9 @@ import eventHub from './components/eventHub'
             updateModel:function(value){
                 this.$root.$emit('updateparentmodel', value)
 
+            },
+            showHelp:function(){
+                this.dialoghelp = !this.dialoghelp
             }
         }
     }

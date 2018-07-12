@@ -18,7 +18,7 @@
                     </v-toolbar>
                         <v-card-media
                             v-model="localsrc"
-                            v-bind:src="'static/documents/help_ife_ife-a.jpg'"
+                            v-bind:src="getImageSrc()"
                             height="100%"
                             width="100%"
                             contain>
@@ -36,18 +36,27 @@
             'modelSelected': Object,
             'field':Object,
             'dialoghelp':Boolean,
+            'typeData':String,
         }, 
         data(){
             return {
                 localmodelSelected:this.modelSelected,
                 localfield:this.field,
                 localdialoghelp:this.dialoghelp,
-                localsrc:"",
                 type:"",
-                subtype:""
+                subtype:"",
+                localtypeData:this.typeData,
             }
         },
-        computed: {
+        computed:{
+            localsrc:{
+                get(){
+                    this.getImageSrc();
+                },
+                set(){
+
+                }
+            }
         },
         watch: {
             localdialoghelp: function (show) {
@@ -55,16 +64,35 @@
             }
         },        
         methods:{
-            getImageSrc:function(type, field){
+            getImageSrc:function(){
                 let src="static/documents/";
-                switch(type){
+                switch(this.localtypeData){
                     case "help":
                         src +="help_";
+                        src +=this.localmodelSelected.type;
+                        if(this.localmodelSelected.subtype && this.localmodelSelected.subtype != ""){
+                            src +="_"+this.localmodelSelected.subtype;
+                        }
+                        src +=".jpg";
+
                     break;
                     case "info": 
                         src +="info_";
+                        src +=this.localmodelSelected.type;
+                        if(this.localmodelSelected.subtype && this.localmodelSelected.subtype != ""){
+                            src +="_"+this.localmodelSelected.subtype;
+                        }
+                        src +=".jpg";
+                    break;
+                    default:
+                        src +=this.localmodelSelected.type;
+                        if(this.localmodelSelected.subtype && this.localmodelSelected.subtype != ""){
+                            src +="_"+this.localmodelSelected.subtype;
+                        }
+                        src +=".jpg";
                     break;
                 }
+                return src;
             },
             toogleDialog:function(){
                 this.dialoghelp = false
