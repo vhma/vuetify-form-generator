@@ -44,23 +44,24 @@
                                                 <v-flex xs12 lg5 xl5>
 
                                                     <v-carousel  :cycle="false" hide-delimiters light>
-                                                        <v-carousel-item v-for="(item,index) in imageUrls"
+                                                        <v-carousel-item v-for="(item,index) in imageArr"
                                                             cycle
                                                             :key="`${index}-carousel`">
                                                             <object
-                                                              :data="item"
-                                                              v-if="typeMimeType(item)==='PDF'"
+                                                              :data="item.images.normal_size[0].url"
+                                                              v-if="typeMimeType(item.images.normal_size[0].url)==='PDF'"
                                                               style="width:100%; height:100%"
+                                                              container
                                                               >
                                                             </object>
-                                                            <v-card-media
-                                                              :src="item"
-                                                              height="100%"
-                                                              width="100%"
-                                                              style="min-height:10em"
-                                                              v-if="typeMimeType(item)==='IMAGE'"
-                                                              contain>
-                                                            </v-card-media>
+                                                              <div height="100%"
+                                                                    width="100%"
+                                                                    style="min-height:50em" v-if="typeMimeType(item.images.normal_size[0].url)==='IMAGE'">
+                                                                   <ProductZoomer
+                                                                     :nameSpaceOptions="`step_${steps.id}_${index}`"
+                                                                     :base-images="item.images"
+                                                                     :base-zoomer-options="item.containerSquareOptions"/>
+                                                              </div>
                                                         </v-carousel-item>
                                                     </v-carousel>
                                                 </v-flex>
@@ -152,6 +153,8 @@
 
 <script>
 import eventHub from './components/eventHub'
+import ProductZoomer from 'vue-product-zoomer'
+
     export default{
         name: 'v-form-generator',
         props: {
@@ -163,7 +166,8 @@ import eventHub from './components/eventHub'
         components: {
             'v-form-generator-field': require('./form-field.vue').default,
             eventHub,
-            'v-form-generator-field-dialogBox': require('./components/dialogBox.vue').default
+            'v-form-generator-field-dialogBox': require('./components/dialogBox.vue').default,
+            ProductZoomer
         },
         computed:{
             localmodel:{
@@ -183,6 +187,33 @@ import eventHub from './components/eventHub'
                 set(value){
                     this.localdialoghelp = value;
                 }
+            },
+            imageArr (){
+                //Objeto con un elemento raiz, y en cada uno de ellos crea una instancia de un objeto interno
+                let arrimg = this.imageUrls;
+                let arrFinal = []
+                let i = 0;
+                for( i=0;i<arrimg.length; i++){
+                  arrFinal.push(
+                    {
+                      images: {
+                        normal_size: [
+                          {
+                            id:i,
+                            url:arrimg[i]
+                          }
+                        ]
+                      },
+                      'containerSquareOptions': {
+                        'zoomFactor': 4,
+                        'pane': 'container-square',
+                        // 'namespace': 'inline-zoomer'+i,
+                        'hoverDelay': 300,
+                      }
+                    }
+                  )
+                }
+                return arrFinal;
             }
         },
         data(){

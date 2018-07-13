@@ -7,15 +7,16 @@
 
 <script>
 import {eventHub} from './main'
+import ProductZoomer from 'vue-product-zoomer'
 
 	export default {
 		components: {
 			'v-form-generator': require('vuetify-form-generator').default,
-			eventHub
+			eventHub,
+			ProductZoomer
 		},
 		created(){
 		    eventHub.$on("updatemodel", dataMainModel=>{
-		    debugger;
 		        if(this.$store){
 		            console.log('Update by commit')
 		        }else{
@@ -30,6 +31,36 @@ import {eventHub} from './main'
 		            console.log('Update by emit')
 		        }
 		    })
+		},
+		computed:{
+            imageArr (){
+                //Objeto con un elemento raiz, y en cada uno de ellos crea una instancia de un objeto interno
+                let arrimg = this.imageUrls;
+                let arrFinal = []
+                let i = 0;
+                for( i=0;i<arrimg.length; i++){
+                  console.log("element" +arrimg[i]);
+                  arrFinal.push(
+                    {
+                      images: {
+                        normal_size: [
+                          {
+                            id:i,
+                            url:arrimg[i]
+                          }
+                        ]
+                      },
+                      'containerSquareOptions': {
+                        'zoomFactor': 4,
+                        'pane': 'container-square',
+                        // 'namespace': 'inline-zoomer'+i,
+                        'hoverDelay': 300,
+                      }
+                    }
+                  )
+                }
+                return arrFinal;
+          }
 		},
 		data(){
 			return {
