@@ -7,11 +7,11 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "preinstall": "npm install ovidales/vue-product-zoomer --save vue-product-zoomer"
+    "preinstall": "npm install ovidales/vue-product-zoomer#master-nuxt --save vue-product-zoomer"
   },
   "dependencies": {
     "vue": "^2.5.3",
-    "vue-product-zoomer": "github:ovidales/vue-product-zoomer",
+    "vue-product-zoomer": "github:ovidales/vue-product-zoomer#master-nuxt",
     "vuetify": "^1.0.0"
   },
   "devDependencies": {
