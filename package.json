@@ -4,8 +4,7 @@
   "description": "A form generator for Vuetify",
   "main": "src/form-generator.vue",
   "scripts": {
-    "test": "mocha",
-    "preinstall": "npm install ovidales/vue-product-zoomer#master-nuxt --save vue-product-zoomer"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -26,7 +25,7 @@
   "homepage": "https://github.com/vhma/vuetify-form-generator.git#readme",
   "dependencies": {
     "vue": "^2.5.3",
-    "vue-product-zoomer": "github:ovidales/vue-product-zoomer#master-nuxt",
+    "vue-product-zoomer": "github:ovidales/vue-product-zoomer",
     "vuetify": "^1.0.0"
   },
   "devDependencies": {
