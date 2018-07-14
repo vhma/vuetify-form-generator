@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "vue": "^2.5.3",
-    "vue-product-zoomer": "github:ovidales/vue-product-zoomer",
+    "vue-product-zoomer": "github:ovidales/vue-product-zoomer#master-nuxt",
     "vuetify": "^1.0.0"
   },
   "devDependencies": {
