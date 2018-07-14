@@ -4,8 +4,7 @@
   "description": "A form generator for Vuetify",
   "main": "src/form-generator.vue",
   "scripts": {
-    "test": "mocha",
-    "preinstall": "npm install ovidales/vue-product-zoomer --save vue-product-zoomer"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
