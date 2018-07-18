@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
+import App2 from './App2.vue'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.css'
 

@@ -1,7 +1,23 @@
 <template>
 	<v-app>
 	Main model {{ model }}
-        <v-form-generator :model="model" :schema="schema" :options="options" :imageUrls="imageUrls"/>
+	localValue {{ localValue }}
+	field {{ field }}
+
+<v-text-field
+  v-model="localValue"
+  :label="field.label"
+  :required="evalInContextValue(field.required)"
+  :readonly="evalInContextValue(field.readonly)"
+  :disabled="evalInContextDisabled( field.disabled || false )"
+  :placeholder="field.placeholder"
+  :counter="field.counter"
+  :hint="field.hint"
+  mask="##############################"
+  v-if="evalInContext( field.conditionalShow||true )"
+></v-text-field>
+
+        <!--<v-form-generator :model="model" :schema="schema" :options="options" :imageUrls="imageUrls"/>-->
 	</v-app>
 </template>
 
@@ -64,6 +80,18 @@ import ProductZoomer from 'vue-product-zoomer'
 		},
 		data(){
 			return {
+			    localValue: "",
+                field:{
+                  "resultPath": "electorCode",
+                  "model": "electorCode",
+                  "type": "textbox",
+                  "label": "Clave de Elector",
+                  "hint": "Vigencia de credencial",
+                  "required": "true",
+                  "disabled": "model.terminal == true",
+                  "conditionalShow": "true",
+                  "counter": "2"
+                },
                 "imageUrls":[
                     "public/documents/modeloA.jpg",
                     "public/documents/modeloB.jpg",
@@ -382,5 +410,58 @@ import ProductZoomer from 'vue-product-zoomer'
                 }
 			}
 		},
+		methods: {
+            evalInContextValue(string){
+                let evalString = null;
+                try{
+                    evalString = eval(string);
+                } catch(error) {
+                  try {
+                    evalString = eval(string)
+                  } catch(errorWithoutThis) {
+                    evalString = null;
+                  }
+                }
+                return evalString;
+            },
+            evalInContext(string){
+                let model = this.model;
+                let isRender = true;
+                try{
+                	isRender = eval(string);
+                } catch(error) {
+                  try {
+                  	isRender = eval(string)
+                  } catch(errorWithoutThis) {
+                  	isRender = true;
+                  }
+                }
+                if( !isRender ){
+                    eventHub.$emit('updatefield', {field:this.field.model, value:""})
+                }
+
+                return isRender;
+           },
+            evalInContextDisabled(string){
+                let model = this.model;
+                let isDisabled = false;
+                try{
+                	isDisabled = eval(string);
+                } catch(error) {
+                  try {
+                  	isDisabled = eval(string)
+                  } catch(errorWithoutThis) {
+                  	isDisabled = false;
+                  }
+                }
+
+                if( isDisabled ){
+                    eventHub.$emit('updatefield', {field:this.field.model, value:""})
+
+                }
+
+                return isDisabled;
+           },
+		}
 	}
 </script>
