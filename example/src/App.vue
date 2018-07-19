@@ -16,7 +16,7 @@ import ProductZoomer from 'vue-product-zoomer'
 			ProductZoomer
 		},
 		created(){
-		    eventHub.$on("updatemodel", dataMainModel=>{
+		    eventHub.$on("updateparentmodel", dataMainModel=>{
 		        if(this.$store){
 		            console.log('Update by commit')
 		        }else{
@@ -24,7 +24,6 @@ import ProductZoomer from 'vue-product-zoomer'
 		        }
 		    })
 		    this.$root.$on("updateparentmodel", dataMainModel=>{
-		    debugger;
 		        if(this.$store){
 		            console.log('Update by commit')
 		        }else{
@@ -72,19 +71,10 @@ import ProductZoomer from 'vue-product-zoomer'
                   ],
                 model: {
                     type:"",
-                    subtype:"",
                     valid:"",
-                    electorCode:"",
-                    names:"",
-                    lastNamePaternal:"",
-                    lastNameMaternal:"",
-                    ifeEmissionNumber:"",
-                    ifeVerticalNumber:"",
-                    ifeIdCode:"",
-                    dateOfBirth:"",
-                    birthState:"",
                     remedy:"",
-                    terminal:""
+                    terminal:"",
+                    curp:""
                 },
                 schema: {
                     "forms": [
@@ -108,12 +98,8 @@ import ProductZoomer from 'vue-product-zoomer'
                               "required": "true",
                               "options": [
                                 {
-                                  "id": "passport",
-                                  "name": "Pasaporte"
-                                },
-                                {
-                                  "id": "ife",
-                                  "name": "Credencial de Elector"
+                                  "id": "CURP",
+                                  "name": "CURP"
                                 },
                                 {
                                   "id": "unknown",
@@ -124,7 +110,7 @@ import ProductZoomer from 'vue-product-zoomer'
                                     "options": {
                                       "multiPage": true
                                     },
-                                    "label": "Favor de proporcionar una identificación oficial válida, IFE por ambos lados o pasaporte",
+                                    "label": "Favor de proporcionar una CURP válida",
                                     "cause": "Documento desconocido o equivocado"
                                   }
                                 },
@@ -137,74 +123,11 @@ import ProductZoomer from 'vue-product-zoomer'
                                     "options": {
                                       "multiPage": true
                                     },
-                                    "label": "Favor de proporcionar una identificación oficial válida, IFE por ambos lados o pasaporte",
+                                    "label": "Favor de proporcionar una CURP válida",
                                     "cause": "Documento incompleto o ilegible"
                                   }
                                 }
                               ]
-                            },
-                            {
-                              "resultPathNode": "subtype",
-                              "model": "subtype",
-                              "type": "dropdown",
-                              "label": "Modelo de IFE",
-                              "hint": "Tipo de documento",
-                              "required": "true",
-                              "options": [
-                                {
-                                  "id": "ife-a",
-                                  "name": "IFE Tipo A",
-                                  "terminal": true,
-                                  "remedy": {
-                                    "type": "uploadDocument",
-                                    "options": {
-                                      "multiPage": true
-                                    },
-                                    "label": "Favor de proporcionar una identificación oficial válida, IFE por ambos lados o pasaporte",
-                                    "cause": "IFE vencido"
-                                  }
-                                },
-                                {
-                                  "id": "ife-b",
-                                  "name": "IFE Tipo B"
-                                },
-                                {
-                                  "id": "ife-c",
-                                  "name": "IFE Tipo C"
-                                },
-                                {
-                                  "id": "ife-d",
-                                  "name": "IFE Tipo D"
-                                },
-                                {
-                                  "id": "ife-d",
-                                  "name": "IFE Tipo E"
-                                }
-                              ],
-                              "conditionalShow": "model.type == 'ife'"
-                            },
-                            {
-                              "resultPathNode": "subtype",
-                              "model": "subtype",
-                              "type": "dropdown",
-                              "label": "Modelo de Pasaporte",
-                              "hint": "Tipo de documento",
-                              "required": "true",
-                              "options": [
-                                {
-                                  "id": "ordinary",
-                                  "name": "Ordinario (Verde)"
-                                },
-                                {
-                                  "id": "official",
-                                  "name": "Oficial (Gris)"
-                                },
-                                {
-                                  "id": "diplomatic",
-                                  "name": "Diplomático (Vino)"
-                                }
-                              ],
-                              "conditionalShow": "model.type == 'passport'"
                             }
                           ]
                         },
@@ -225,7 +148,7 @@ import ProductZoomer from 'vue-product-zoomer'
                           "model": "valid",
                           "type": "dropdown",
                           "label": "Vigencia",
-                          "hint": "Vigencia de credencial",
+                          "hint": "Vigencia de CURP",
                           "required": "true",
                           "options": [
                             {
@@ -241,137 +164,22 @@ import ProductZoomer from 'vue-product-zoomer'
                                 "options": {
                                   "multiPage": true
                                 },
-                                "label": "Favor de proporcionar una identificación oficial válida, IFE por ambos lados o pasaporte",
-                                "cause": "Identificación vencida"
+                                "label": "Favor de proporcionar una CURP válida",
+                                "cause": "CURP vencida"
                               }
                             }
                           ]
                         },
                         {
-                          "resultPath": "electorCode",
-                          "model": "electorCode",
+                          "resultPath": "CURP",
+                          "model": "CURP",
                           "type": "textbox",
-                          "label": "Clave de Elector",
-                          "hint": "Vigencia de credencial",
+                          "label": "CURP",
+                          "hint": "Clave CURP",
                           "required": "true",
                           "disabled": "model.terminal == true",
-                          "conditionalShow": "model.type == 'ife' && model.terminal != true"
-                        },
-                        {
-                          "resultPath": "names",
-                          "model": "names",
-                          "type": "textbox",
-                          "label": "Nombres",
-                          "hint": "Nombre",
-                          "conditionalShow": "model.terminal != true",
-                          "disabled": "model.terminal == true",
-                          "required": "true"
-                        },
-                        {
-                          "resultPath": "lastNamePaternal",
-                          "model": "lastNamePaternal",
-                          "type": "textbox",
-                          "label": "Apellido Paterno",
-                          "hint": "Apellido Paterno",
-                          "required": "true",
-                          "disabled": "model.terminal == true",
-                          "conditionalShow": "(model.type != 'ife' || model.electorCode.substring(0, 2) != 'XX') && model.terminal != true"
-                        },
-                        {
-                          "resultPath": "lastNameMaternal",
-                          "model": "lastNameMaternal",
-                          "model": "lastNameMaternal",
-                          "type": "textbox",
-                          "label": "Apellido Materno",
-                          "hint": "Apellido Materno",
-                          "required": "true",
-                          "disabled": "model.terminal == true",
-                          "conditionalShow": "model.terminal != true && (model.type.substring(0, 3) != 'ife' || model.electorCode.substring(2, 4) != 'XX')"
-                        },
-                        {
-                          "resultPath": "ifeEmissionNumber",
-                          "model": "ifeEmissionNumber",
-                          "type": "textbox",
-                          "label": "Número de Emisión",
-                          "hint": "Número de Emisión de la credencial",
-                          "required": "true",
-                          "disabled": "model.terminal == true",
-                          "conditionalShow": "model.terminal != true && (model.subtype == 'ife-a' || model.subtype == 'ife-b' || model.subtype == 'ife-c')"
-                        },
-                        {
-                          "resultPath": "ifeVerticalNumber",
-                          "model": "ifeVerticalNumber",
-                          "type": "textbox",
-                          "label": "Número Vertical (OCR)",
-                          "hint": "Número Vertical (OCR)",
-                          "required": "true",
-                          "disabled": "model.terminal == true",
-                          "conditionalShow": "model.terminal != true && (model.subtype == 'ife-a' || model.subtype == 'ife-b' || model.subtype == 'ife-c')"
-                        },
-                        {
-                          "resultPath": "ifeIdCode",
-                          "model": "ifeIdCode",
-                          "type": "textbox",
-                          "label": "Código de Identificación de la Credencial (CIC)",
-                          "hint": "Código de Identificación de la Credencial (CIC)",
-                          "required": "true",
-                          "disabled": "model.terminal == true",
-                          "conditionalShow": "model.terminal != true && (model.subtype == 'ife-d' || model.subtype == 'ife-e')"
-                        },
-                        {
-                          "resultPath": "dateOfBirth",
-                          "model": "dateOfBirth",
-                          "type": "date",
-                          "label": "Fecha de Nacimiento",
-                          "hint": "Fecha de Nacimiento",
-                          "required": "true",
-                          "disabled": "model.terminal == true",
-                          "conditionalShow": "model.terminal != true && (model.type == 'passport')"
-                        },                        
-                        {
-                          "resultPath": "birthState",
-                          "model": "birthState",
-                          "type": "dropdown",
-                          "label": "Entidad Federativa de Nacimiento",
-                          "hint": "Entidad Federativa de Nacimiento",
-                          "conditionalShow": "model.terminal != true && (model.type != 'ife')",
-                          "disabled": "model.terminal == true",
-                          "required": "true",
-                          "options": [
-                            { "id": "AS", "name": "Aguascalientes"},
-                            { "id": "BC", "name": "Baja California"},
-                            { "id": "BS", "name": "Baja California Sur"},
-                            { "id": "CC", "name": "Campeche"},
-                            { "id": "CS", "name": "Chiapas"},
-                            { "id": "CH", "name": "Chihuahua"},
-                            { "id": "CL", "name": "Coahuila"},
-                            { "id": "CM", "name": "Colima"},
-                            { "id": "DF", "name": "Distrito Federal"},
-                            { "id": "DG", "name": "Durango"},
-                            { "id": "GT", "name": "Guanajuato"},
-                            { "id": "GR", "name": "Guerrero"},
-                            { "id": "HG", "name": "Hidalgo"},
-                            { "id": "JC", "name": "Jalisco"},
-                            { "id": "MC", "name": "México"},
-                            { "id": "MN", "name": "Michoacan"},
-                            { "id": "MS", "name": "Morelos"},
-                            { "id": "NT", "name": "Nayarit"},
-                            { "id": "NL", "name": "Nuevo León"},
-                            { "id": "OC", "name": "Oaxaca"},
-                            { "id": "PL", "name": "Puebla"},
-                            { "id": "QT", "name": "Querétaro"},
-                            { "id": "QR", "name": "Quintana Roo"},
-                            { "id": "SP", "name": "San Luis Potosí"},
-                            { "id": "SL", "name": "Sinaloa"},
-                            { "id": "SR", "name": "Sonora"},
-                            { "id": "TC", "name": "Tabasco"},
-                            { "id": "TL", "name": "Tlaxcala"},
-                            { "id": "TS", "name": "Tamaulipas"},
-                            { "id": "VZ", "name": "Veracruz"},
-                            { "id": "YN", "name": "Yucatán"},
-                            { "id": "ZS", "name": "Zacatecas"},
-                            { "id": "NE", "name": "Nacido en el Extranjero"}
-                          ]
+                          "conditionalShow": "model.type == 'CURP' && model.terminal != true",
+                          "mask":"AAAA######AAAAAA##"
                         }
                       ]
                     }
@@ -382,5 +190,58 @@ import ProductZoomer from 'vue-product-zoomer'
                 }
 			}
 		},
+		methods: {
+            evalInContextValue(string){
+                let evalString = null;
+                try{
+                    evalString = eval(string);
+                } catch(error) {
+                  try {
+                    evalString = eval(string)
+                  } catch(errorWithoutThis) {
+                    evalString = null;
+                  }
+                }
+                return evalString;
+            },
+            evalInContext(string){
+                let model = this.model;
+                let isRender = true;
+                try{
+                	isRender = eval(string);
+                } catch(error) {
+                  try {
+                  	isRender = eval(string)
+                  } catch(errorWithoutThis) {
+                  	isRender = true;
+                  }
+                }
+                if( !isRender ){
+                    eventHub.$emit('updatefield', {field:this.field.model, value:""})
+                }
+
+                return isRender;
+           },
+            evalInContextDisabled(string){
+                let model = this.model;
+                let isDisabled = false;
+                try{
+                	isDisabled = eval(string);
+                } catch(error) {
+                  try {
+                  	isDisabled = eval(string)
+                  } catch(errorWithoutThis) {
+                  	isDisabled = false;
+                  }
+                }
+
+                if( isDisabled ){
+                    eventHub.$emit('updatefield', {field:this.field.model, value:""})
+
+                }
+
+                return isDisabled;
+           },
+		}
 	}
 </script>

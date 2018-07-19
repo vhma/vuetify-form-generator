@@ -82,7 +82,7 @@
                                    <div class="right">
                                         <v-btn flat
                                             v-if="index+1 !== 1"
-                                            @click="nextStep(index-1,schemaItem.length)">
+                                            @click="prevStep(index+1,schemaItem.length)">
                                                 Cancel
                                         </v-btn>
                                         <v-btn color="primary"
@@ -289,6 +289,9 @@ import ProductZoomer from 'vue-product-zoomer'
                 } else {
                   this.stepper = n + 1
                 }
+            },
+            prevStep (n, steps) {
+                this.stepper = n - 1
             },
             typeMimeType:function(item){
                 let itemUpper = item.toUpperCase();
