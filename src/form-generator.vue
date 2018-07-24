@@ -2,7 +2,7 @@
 <v-form ref="form" v-model="validForm" lazy-validation>
         <div v-for="(schemaItem, schemaItemIndex) in schema">
             <div v-if="schemaItemIndex == 'forms'">
-                <v-stepper v-model="stepper">
+                <v-stepper v-model="stepper" class="step">
                     <v-stepper-header>
                         <template v-for="(steps, index) in schemaItem">
                             <v-stepper-step

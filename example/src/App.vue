@@ -1,5 +1,6 @@
 <template>
 	<v-app>
+<div style="background-color:#333">
 	Main model {{ model }}
 
 <v-autocomplete
@@ -11,9 +12,10 @@
         persistent-hint
         prepend-icon="mdi-city"
 />
+
         <v-form-generator :model="model" :schema="schema" :options="options" :imageUrls="imageUrls"/>
 
-
+</div>
 	</v-app>
 </template>
 
