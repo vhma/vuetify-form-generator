@@ -50,7 +50,7 @@
                                                             <object
                                                               :data="item.images.normal_size[0].url"
                                                               v-if="typeMimeType(item.images.normal_size[0].url)==='OBJECT'"
-                                                              style="width:100%; height:100%"
+                                                              style="min-height:50em; width:100%; height:100%"
                                                               container
                                                               >
                                                             </object>
