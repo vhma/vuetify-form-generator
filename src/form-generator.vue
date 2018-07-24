@@ -49,7 +49,7 @@
                                                             :key="`${index}-carousel`">
                                                             <object
                                                               :data="item.images.normal_size[0].url"
-                                                              v-if="typeMimeType(item.images.normal_size[0].url)==='PDF'"
+                                                              v-if="typeMimeType(item.images.normal_size[0].url)==='OBJECT'"
                                                               style="width:100%; height:100%"
                                                               container
                                                               >
@@ -295,15 +295,18 @@ import ProductZoomer from 'vue-product-zoomer'
             },
             typeMimeType:function(item){
                 let itemUpper = item.toUpperCase();
-                let type="";
+                let type="OBJECT";
 
                 if(itemUpper.indexOf('PDF') > -1){
-                  type = "PDF";
+                  type = "OBJECT";
                 }
                 else if(itemUpper.indexOf('HTML') > -1){
                   type = "";
-                }else if((itemUpper.indexOf('GIF') > -1)|| (itemUpper.indexOf('JPG') > -1) || (itemUpper.indexOf('PNG') > -1)
-                  || (itemUpper.indexOf('SVG') > -1) ){
+                }else if((itemUpper.indexOf('GIF') > -1)
+                    || (itemUpper.indexOf('JPG') > -1)
+                    || (itemUpper.indexOf('JPEG') > -1)
+                    || (itemUpper.indexOf('PNG') > -1)
+                    || (itemUpper.indexOf('SVG') > -1) ){
                   type = "IMAGE";
                 }
 

@@ -190,6 +190,25 @@
 		    ></v-text-field>
         </div>
 
+        <div v-else-if="field.type == 'autocomplete'">
+			 <v-autocomplete
+               v-model="localValue"
+               item-text="name"
+               item-value="id"
+               :items="field.options"
+              :required="evalInContextValue(field.required)"
+              :readonly="evalInContextValue(field.readonly)"
+              :disabled="evalInContextDisabled( field.disabled || false )"
+              :placeholder="field.label"
+              :hint="field.hint"
+              :rules=" field.required ? validationRules.required : [] "
+              :prepend-icon="field.prependIcon"
+              v-if="evalInContext( field.conditionalShow||true )"
+              return-object
+               @change="onChangeAutocomplete"
+               @blur="onBlur"
+             ></v-autocomplete>
+        </div>
         <div v-else-if="field.type == 'date'">
 			 <v-menu
                  ref="menu"
@@ -331,6 +350,23 @@ import eventHub from './components/eventHub'
 			},
             onChangeSelect: function(selected){
                 eventHub.$emit('updatefield', {field:this.field.model, value:selected.id})
+                if(selected.remedy){
+                    eventHub.$emit('updatefield', {field:'terminal', value:selected.terminal})
+                    eventHub.$emit('updatefield', {field:'remedy', value:selected.remedy})
+                }else{
+                    eventHub.$emit('updatefield', {field:'terminal', value:''})
+                    eventHub.$emit('updatefield', {field:'remedy', value:''})
+                }
+			},
+            onChangeAutocomplete: function(selected){
+                eventHub.$emit('updatefield', {field:this.field.model, value:selected.id})
+                if(this.field.targetid){
+                    eventHub.$emit('updatefield', {field:this.field.targetid, value:selected.id})
+                }
+                if(this.field.targettext){
+                    eventHub.$emit('updatefield', {field:this.field.targettext, value:selected.name})
+                }
+
                 if(selected.remedy){
                     eventHub.$emit('updatefield', {field:'terminal', value:selected.terminal})
                     eventHub.$emit('updatefield', {field:'remedy', value:selected.remedy})
