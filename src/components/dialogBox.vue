@@ -2,13 +2,13 @@
     <div>
             <v-dialog
                 v-model="dialoghelp"
-                fullscreen
+                width="50%"
                 hide-overlay
-                transition="dialog-bottom-transition"
-                scrollable
+                transition="dialog-center-transition"
                 lazy
+                content-class="dialogCustom"
                 >
-                <v-card tile>
+                <v-card height="40em">
                     <v-toolbar card dark color="primary">
                     <v-btn icon dark @click.native="toogleDialog" >
                         <v-icon>close</v-icon>
@@ -25,7 +25,7 @@
                         </v-card-media>
                     <div style="flex: 1 1 auto;"></div>
                 </v-card>
-            </v-dialog>
+           </v-dialog>
     </div>
 </template>
 
@@ -69,10 +69,16 @@
                 switch(this.localtypeData){
                     case "help":
                         src +="help_";
-                        src +=this.localmodelSelected.type;
-                        if(this.localmodelSelected.subtype && this.localmodelSelected.subtype != ""){
-                            src +="_"+this.localmodelSelected.subtype;
+//                        src +=this.localmodelSelected.type;
+                        if(this.localfield.model == "type"){
+                            src +=this.localmodelSelected.type;
                         }
+                        if(this.localfield.model == "subtype"){
+                            src +=this.localmodelSelected.type+"_"+this.localmodelSelected.subtype;
+                        }
+//                        if(this.localmodelSelected.subtype && this.localmodelSelected.subtype != ""){
+//                            src +="_"+this.localmodelSelected.subtype;
+//                        }
                         src +=".jpg";
 
                     break;
@@ -101,3 +107,8 @@
         }
     }
 </script>
+<style>
+.dialogCustom{
+    margin-left:45%
+}
+</style>

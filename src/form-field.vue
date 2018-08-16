@@ -190,23 +190,40 @@
 		    ></v-text-field>
         </div>
 
+		<div v-else-if="field.type == 'button'">
+		    <v-btn
+		        flat
+		        small
+		        color="primary"
+		        :to="field.to"
+		        :target="field.target"
+		        :round="field.round"
+		        :replace="field.replace"
+		        :nuxt="field.nuxt"
+		        :href="field.href"
+		        :value="field.label"
+		   >
+		   field.label
+		    </v-btn>
+        </div>
+
         <div v-else-if="field.type == 'autocomplete'">
 			 <v-autocomplete
-               v-model="localValue"
-               item-text="name"
-               item-value="id"
-               :items="field.options"
-              :required="evalInContextValue(field.required)"
-              :readonly="evalInContextValue(field.readonly)"
-              :disabled="evalInContextDisabled( field.disabled || false )"
-              :placeholder="field.label"
-              :hint="field.hint"
-              :rules=" field.required ? validationRules.required : [] "
-              :prepend-icon="field.prependIcon"
-              v-if="evalInContext( field.conditionalShow||true )"
-              return-object
-               @change="onChangeAutocomplete"
-               @blur="onBlur"
+			    v-model="localValue"
+                item-text="name"
+                item-value="id"
+                :items="field.options"
+                :required="evalInContextValue(field.required)"
+                :readonly="evalInContextValue(field.readonly)"
+                :disabled="evalInContextDisabled( field.disabled || false )"
+                :placeholder="field.label"
+                :hint="field.hint"
+                :rules=" field.required ? validationRules.required : [] "
+                :prepend-icon="field.prependIcon"
+                v-if="evalInContext( field.conditionalShow||true )"
+                return-object
+                @change="onChangeAutocomplete"
+                @blur="onBlur"
              ></v-autocomplete>
         </div>
         <div v-else-if="field.type == 'date'">
