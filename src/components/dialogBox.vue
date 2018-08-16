@@ -107,8 +107,3 @@
         }
     }
 </script>
-<style>
-.dialogCustom{
-    margin-left:45%
-}
-</style>
