@@ -69,16 +69,12 @@
                 switch(this.localtypeData){
                     case "help":
                         src +="help_";
-//                        src +=this.localmodelSelected.type;
                         if(this.localfield.model == "type"){
                             src +=this.localmodelSelected.type;
                         }
                         if(this.localfield.model == "subtype"){
                             src +=this.localmodelSelected.type+"_"+this.localmodelSelected.subtype;
                         }
-//                        if(this.localmodelSelected.subtype && this.localmodelSelected.subtype != ""){
-//                            src +="_"+this.localmodelSelected.subtype;
-//                        }
                         src +=".jpg";
 
                     break;

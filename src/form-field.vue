@@ -367,6 +367,11 @@ import eventHub from './components/eventHub'
 			},
             onChangeSelect: function(selected){
                 eventHub.$emit('updatefield', {field:this.field.model, value:selected.id})
+
+                if((selected.id == 'unknown' || selected.id == 'low-quality') && this.field.document){
+                    eventHub.$emit('updatefield', {field:'subtype', value:this.field.document})
+                }
+
                 if(selected.remedy){
                     eventHub.$emit('updatefield', {field:'terminal', value:selected.terminal})
                     eventHub.$emit('updatefield', {field:'remedy', value:selected.remedy})
