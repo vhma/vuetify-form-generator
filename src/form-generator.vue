@@ -51,13 +51,13 @@
                                                             <object
                                                               :data="item.images.normal_size[0].url"
                                                               v-if="typeMimeType(item.images.normal_size[0].url)==='OBJECT'"
-                                                              style="min-height:50em; width:100%; height:100%"
+                                                              style="min-height:20em; width:100%; height:100%"
                                                               container
                                                               >
                                                             </object>
                                                               <div height="100%"
                                                                     width="100%"
-                                                                    style="min-height:50em" v-if="typeMimeType(item.images.normal_size[0].url)==='IMAGE'">
+                                                                    style="min-height:20em" v-if="typeMimeType(item.images.normal_size[0].url)==='IMAGE'">
                                                                    <ProductZoomer
                                                                      :nameSpaceOptions="`step_${steps.id}_${index}`"
                                                                      :base-images="item.images"
