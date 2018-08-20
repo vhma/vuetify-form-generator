@@ -87,15 +87,18 @@
 
 		<div v-else-if="field.type == 'radio'">
 		    <v-container fluid>
+
                 <v-radio-group
                     v-model="localValue"
                     :required="evalInContextValue(field.required)"
                     :readonly="evalInContextValue(field.readonly)"
                     :disabled="evalInContextDisabled( field.disabled || false )"
-                    :mandatory="field.required"
+                    :mandatory="evalInContextValue(field.mandatory)"
                     v-if="evalInContext( field.conditionalShow||true )"
+                    row
                     @change="onChangeSelect"
                 >
+                <div class="divLabelRadio subheading"><span class="spanLabelRadio ">{{ field.label }}:  </span></div>
 				<div v-for="option in field.options">
 					<v-radio :label="option.name" :value="option.id" ></v-radio>
 				</div>
