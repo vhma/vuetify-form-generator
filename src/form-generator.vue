@@ -1,6 +1,6 @@
 <template>
 <v-form ref="form" v-model="validForm" lazy-validation>
-        <sub-header v-if="schema.title"><p><h3 class="display-1 titleDocumentLabel"><span>Documento: </span><strong class="titleDocument"> {{ schema.title }}</strong></h3></p></sub-header>
+        <v-subheader v-if="schema.title"><p><h3 class="display-1 titleDocumentLabel"><span>Documento: </span><strong class="titleDocument"> {{ schema.title }}</strong></h3></p></v-subheader>
         <div v-for="(schemaItem, schemaItemIndex) in schema">
             <div v-if="schemaItemIndex == 'forms'">
                 <v-stepper v-model="stepper" class="step">
