@@ -94,7 +94,8 @@
                 :mandatory="evalInContextValue(field.mandatory)"
                 v-if="evalInContext( field.conditionalShow||true )"
                 row
-                @change="onChangeSelect"
+                @change="onInput"
+                @input="onInput"
             >
             <div class="divLabelRadio subheading"><span class="spanLabelRadio ">{{ field.label }}:  </span></div>
             <div v-for="option in field.options">
