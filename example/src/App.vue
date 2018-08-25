@@ -373,6 +373,7 @@ import ProductZoomer from 'vue-product-zoomer'
                       "label": "Pegar evidencia de captura de pantalla aquí",
                       "hint": "Copia la imagen de la liga de verificación",
                       "required": "true",
+                      "readonly": "true",
                       "disabled": "model.terminal == true"
                     }
                 ]

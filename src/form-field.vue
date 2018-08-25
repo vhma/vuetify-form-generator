@@ -154,25 +154,13 @@
 		    ></v-text-field>
 		</div>
 		<div v-else-if="field.type == 'textareaImage'">
-			 <v-text-field
-		      v-model="localValue"
-		      :label="field.label"
-		      :required="evalInContextValue(field.required)"
-		      :readonly="evalInContextValue(field.readonly)"
-		      :disabled="evalInContextDisabled( field.disabled || false )"
-		      :placeholder="field.placeholder"
-		      :mask="field.mask"
-		      multi-line
-		      v-bind:textarea="field.featured"
-		      v-if="evalInContext( field.conditionalShow||true )"
-		      @blur="onBlur"
-		      @change="onChange"
-		      @focus="onFocus"
-		      @input="onInput"
-		      @paste="onPaste"
-		    ></v-text-field>
-
-		    <img id="pastedImage" width="60%" heigth="50%">
+                <v-form-generator-imageCapture
+                				ref="imageCapture"
+                				v-model="images"
+                				:modelSelected="localModel"
+                				:field="field"
+                			>
+                </v-form-generator-imageCapture>
 		</div>
 		<div v-else-if="field.type == 'number'">
 			 <v-text-field
@@ -334,7 +322,8 @@ import eventHub from './components/eventHub'
 			show: null
 		},
         components: {
-            'v-form-generator-field-dialogBox': require('./components/dialogBox.vue').default
+            'v-form-generator-field-dialogBox': require('./components/dialogBox.vue').default,
+            'v-form-generator-imageCapture': require('./components/ImageCapture.vue').default,
         },				
 		computed:{
 			appendiconHelp(){
@@ -444,30 +433,6 @@ import eventHub from './components/eventHub'
 			onInputCalculated: function(){
 			    this.localValue = 123;
 			},
-            onPaste(event) {
-            debugger;
-                var items = (event.clipboardData  || event.originalEvent.clipboardData).items;
-                console.log(JSON.stringify(items)); // le dará los tipos de mimo
-                // buscar imagen pegada entre los elementos pegados
-                var blob = null;
-                for (var i = 0; i < items.length; i++) {
-                  if (items[i].type.indexOf("image") === 0) {
-                    blob = items[i].getAsFile();
-                  }
-                }
-                // cargar imagen si hay una imagen pegada
-                if (blob !== null) {
-                  var reader = new FileReader();
-                  reader.onload = function(event) {
-                    console.log(event.target.result); // data url!
-                    document.getElementById("pastedImage").src = event.target.result;
-                  };
-                  reader.readAsDataURL(blob);
-                  var imagen = new File([blob], "subir_imagen.jpg", { type: "image/jpeg", lastModified: Date.now()})
-                  this.ruta= imagen
-
-                }
-            },
 			appendPasswordIconCheckbox(){
 				return () => this.field.passwordVisible = !this.field.passwordVisible
 			},
