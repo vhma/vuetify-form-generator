@@ -67,7 +67,39 @@
                                                     </v-carousel>
                                                 </v-flex>
                                                 <v-flex xs10 lg7 xl7 >
-                                                    <div v-for="field in steps.fields" >
+                                                <div v-for="field in steps.fields" >
+                                                     <div v-if="field.groups">
+                                                        <v-tabs color="blue" dark slider-color="yellow">
+                                                            <v-tab
+                                                                v-for="tabs in field.groups"
+                                                                :key="tabs.key"
+                                                                :href="'#' + tabs.key"
+                                                                ripple>
+                                                                {{tabs.legend}}
+                                                            </v-tab>
+                                                            <v-tab-item
+                                                              v-for="tabs in field.groups"
+                                                              :key="tabs.key"
+                                                              :id="tabs.key"
+                                                            >
+                                                              <v-card flat>
+                                                                <div class="ma-3">
+                                                                    <div v-for="field in tabs.fields">
+                                                                        <v-form-generator-field
+                                                                        :field="field"
+                                                                        :value="localmodel[field.model]"
+                                                                        :model="localmodel"
+                                                                        :fieldmodel="field.model"
+                                                                        v-bind.sync="localmodel"
+                                                                        @input="onInput"
+                                                                        />
+                                                                    </div>
+                                                                 </div>
+                                                              </v-card>
+                                                            </v-tab-item>
+                                                          </v-tabs>
+                                                     </div>
+                                                    <div v-else>
                                                         <v-form-generator-field
                                                         :field="field"
                                                         :value="localmodel[field.model]"
@@ -75,7 +107,9 @@
                                                         :fieldmodel="field.model"
                                                         v-bind.sync="localmodel"
                                                        />
-                                                     </div>
+                                                    </div>
+                                                </div>
+
                                                 </v-flex>
                                             </v-layout>
                                         </v-container>
@@ -162,7 +196,8 @@ import ProductZoomer from 'vue-product-zoomer'
             'model': Object,
             'schema': Object,
             'options': Object,
-            'imageUrls': Array
+            'imageUrls': Array,
+            'context':Object
         },
         components: {
             'v-form-generator-field': require('./form-field.vue').default,
@@ -298,16 +333,16 @@ import ProductZoomer from 'vue-product-zoomer'
                 let itemUpper = item.toUpperCase();
                 let type="OBJECT";
 
-                if(itemUpper.indexOf('PDF') > -1){
+                if(itemUpper.indexOf('.PDF') > -1){
                   type = "OBJECT";
                 }
-                else if(itemUpper.indexOf('HTML') > -1){
+                else if(itemUpper.indexOf('.HTML') > -1){
                   type = "";
-                }else if((itemUpper.indexOf('GIF') > -1)
-                    || (itemUpper.indexOf('JPG') > -1)
-                    || (itemUpper.indexOf('JPEG') > -1)
-                    || (itemUpper.indexOf('PNG') > -1)
-                    || (itemUpper.indexOf('SVG') > -1) ){
+                }else if((itemUpper.indexOf('.GIF') > -1)
+                    || (itemUpper.indexOf('.JPG') > -1)
+                    || (itemUpper.indexOf('.JPEG') > -1)
+                    || (itemUpper.indexOf('.PNG') > -1)
+                    || (itemUpper.indexOf('.SVG') > -1) ){
                   type = "IMAGE";
                 }
 

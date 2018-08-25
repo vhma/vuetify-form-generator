@@ -37,6 +37,23 @@
 		      @input="onInput"
 		    ></v-text-field>
 		</div>
+        <div v-else-if="field.type == 'button'">
+            <v-btn
+                :flat="evalInContextValue(field.flat)"
+                :disabled="evalInContextDisabled( field.disabled || false )"
+                :href="evalInContextLink(field.href)"
+                :to="field.to"
+                :target="field.target"
+                :nuxt="field.nuxt"
+                :icon="field.icon"
+                :fab="evalInContextValue(field.fab)"
+                :exact="evalInContextValue(field.exact)"
+
+            >
+
+                {{ field.label }}
+            </v-btn>
+        </div>
 
 		<div v-else-if="field.type == 'select' || field.type == 'dropdown'">
 		    <v-select
@@ -136,7 +153,27 @@
 		      @input="onInput"
 		    ></v-text-field>
 		</div>
+		<div v-else-if="field.type == 'textareaImage'">
+			 <v-text-field
+		      v-model="localValue"
+		      :label="field.label"
+		      :required="evalInContextValue(field.required)"
+		      :readonly="evalInContextValue(field.readonly)"
+		      :disabled="evalInContextDisabled( field.disabled || false )"
+		      :placeholder="field.placeholder"
+		      :mask="field.mask"
+		      multi-line
+		      v-bind:textarea="field.featured"
+		      v-if="evalInContext( field.conditionalShow||true )"
+		      @blur="onBlur"
+		      @change="onChange"
+		      @focus="onFocus"
+		      @input="onInput"
+		      @paste="onPaste"
+		    ></v-text-field>
 
+		    <img id="pastedImage" width="60%" heigth="50%">
+		</div>
 		<div v-else-if="field.type == 'number'">
 			 <v-text-field
                 v-model="localValue"
@@ -407,6 +444,30 @@ import eventHub from './components/eventHub'
 			onInputCalculated: function(){
 			    this.localValue = 123;
 			},
+            onPaste(event) {
+            debugger;
+                var items = (event.clipboardData  || event.originalEvent.clipboardData).items;
+                console.log(JSON.stringify(items)); // le dará los tipos de mimo
+                // buscar imagen pegada entre los elementos pegados
+                var blob = null;
+                for (var i = 0; i < items.length; i++) {
+                  if (items[i].type.indexOf("image") === 0) {
+                    blob = items[i].getAsFile();
+                  }
+                }
+                // cargar imagen si hay una imagen pegada
+                if (blob !== null) {
+                  var reader = new FileReader();
+                  reader.onload = function(event) {
+                    console.log(event.target.result); // data url!
+                    document.getElementById("pastedImage").src = event.target.result;
+                  };
+                  reader.readAsDataURL(blob);
+                  var imagen = new File([blob], "subir_imagen.jpg", { type: "image/jpeg", lastModified: Date.now()})
+                  this.ruta= imagen
+
+                }
+            },
 			appendPasswordIconCheckbox(){
 				return () => this.field.passwordVisible = !this.field.passwordVisible
 			},
@@ -416,6 +477,21 @@ import eventHub from './components/eventHub'
             },		
             evalInContextValue(string){
                 let evalString = null;
+                try{
+                    evalString = eval(string);
+                } catch(error) {
+                  try {
+                    evalString = eval(string)
+                  } catch(errorWithoutThis) {
+                    evalString = null;
+                  }
+                }
+                return evalString;
+            },
+            evalInContextLink(string){
+                debugger;
+                let evalString = null;
+                let model = this.model;
                 try{
                     evalString = eval(string);
                 } catch(error) {

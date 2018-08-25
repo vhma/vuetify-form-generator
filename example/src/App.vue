@@ -1,17 +1,7 @@
 <template>
 	<v-app>
-<div style="background-color:#333">
+<div>
 	Main model {{ model }}
-
-<v-autocomplete
-        v-model="model2"
-        :hint="!isEditing ? 'Click the icon to edit' : 'Click the icon to save'"
-        :items="states"
-        :readonly="!isEditing"
-        :label="`State — ${isEditing ? 'Editable' : 'Readonly'}`"
-        persistent-hint
-        prepend-icon="mdi-city"
-/>
 
         <v-form-generator :model="model" :schema="schema" :options="options" :imageUrls="imageUrls"/>
 
@@ -45,58 +35,8 @@ import ProductZoomer from 'vue-product-zoomer'
 		        }
 		    })
 		},
-		computed:{
-            imageArr (){
-                //Objeto con un elemento raiz, y en cada uno de ellos crea una instancia de un objeto interno
-                let arrimg = this.imageUrls;
-                let arrFinal = []
-                let i = 0;
-                for( i=0;i<arrimg.length; i++){
-                  console.log("element" +arrimg[i]);
-                  arrFinal.push(
-                    {
-                      images: {
-                        normal_size: [
-                          {
-                            id:i,
-                            url:arrimg[i]
-                          }
-                        ]
-                      },
-                      'containerSquareOptions': {
-                        'zoomFactor': 4,
-                        'pane': 'container-square',
-                        // 'namespace': 'inline-zoomer'+i,
-                        'hoverDelay': 300,
-                      }
-                    }
-                  )
-                }
-                return arrFinal;
-          }
-		},
 		data(){
 			return {
-
-        isEditing: false,
-        model2: null,
-        states: [
-          'Alabama', 'Alaska', 'American Samoa', 'Arizona',
-          'Arkansas', 'California', 'Colorado', 'Connecticut',
-          'Delaware', 'District of Columbia', 'Federated States of Micronesia',
-          'Florida', 'Georgia', 'Guam', 'Hawaii', 'Idaho',
-          'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky',
-          'Louisiana', 'Maine', 'Marshall Islands', 'Maryland',
-          'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
-          'Missouri', 'Montana', 'Nebraska', 'Nevada',
-          'New Hampshire', 'New Jersey', 'New Mexico', 'New York',
-          'North Carolina', 'North Dakota', 'Northern Mariana Islands', 'Ohio',
-          'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico',
-          'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee',
-          'Texas', 'Utah', 'Vermont', 'Virgin Island', 'Virginia',
-          'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-        ],
-
                 "imageUrls":[
                     "public/documents/modeloA.jpg",
                     "public/documents/modeloB.jpg",
@@ -104,216 +44,347 @@ import ProductZoomer from 'vue-product-zoomer'
                     "public/documents/unknown.jpg"
                   ],
                 model: {
-                    type:"",
-                    valid:"",
-                    remedy:"",
-                    terminal:"",
-                    clabe:"",
-                    streetType:"",
-                    streetName:"",
-                    exteriorNumber:"",
-                    settlementType:"",
-                    zip:"",
-                    locationCode:"",
-                    locationName:"",
-                    countyCode:"",
-                    countyName:"",
-                    stateName:"",
-                    stateCode:""
-                },
-                schema: {
-                    "forms": [
-                        {
-                          "id": "idType",
-                          "label": "Tipo de Identificación",
-                          "helpUrl": "todo.html",
-                          "imagesUrl":[
-                            "public/documents/modeloA.jpg",
-                            "public/documents/modeloB.jpg",
-                            "public/documents/test.pdf",
-                            "public/documents/unknown.jpg",
-                          ],
-                          "fields": [
-                            {
-                              "resultPathNode": "type",
-                              "model": "type",
-                              "type": "dropdown",
-                              "label": "Tipo de Documento",
-                              "hint": "Tipo de Documento",
-                              "required": "true",
-                              "options": [
-                                {
-                                  "id": "bankStatement",
-                                  "name": "Estado de Cuenta"
-                                },
-                                {
-                                  "id": "unknown",
-                                  "name": "Desconocido o Equivocado",
-                                  "terminal": true,
-                                  "remedy": {
-                                    "type": "uploadDocument",
-                                    "options": {
-                                      "multiPage": true
-                                    },
-                                    "label": "Favor de proporcionar una Estado de Cuenta válido",
-                                    "cause": "Documento desconocido o equivocado"
-                                  }
-                                },
-                                {
-                                  "id": "low-quality",
-                                  "name": "Borroso, incompleto o de baja calidad",
-                                  "terminal": true,
-                                  "remedy": {
-                                    "type": "uploadDocument",
-                                    "options": {
-                                      "multiPage": true
-                                    },
-                                    "label": "Favor de proporcionar una Estado de Cuenta válido",
-                                    "cause": "Documento incompleto o ilegible"
-                                  }
-                                }
-                              ]
-                            }
-                          ]
-                        },
-                     {
-                      "id": "dataCapture",
-                      "label": "Captura de Datos",
-                      "helpUrl": "todo.html",
-                      "helpIcon": "true",
-                      "imagesUrl":[
-                            "public/documents/modeloA.jpg",
-                            "public/documents/modeloB.jpg",
-                            "public/documents/test.pdf",
-                            "public/documents/unknown.jpg",
-                      ],
-                      "fields": [
-                        {
-                          "resultPath": "clabe",
-                          "model": "clabe",
-                          "type": "textbox",
-                          "label": "CLABE",
-                          "hint": "Clabe Interbancaria",
-                          "required": "true",
-                          "disabled": "model.terminal == true",
-                          "conditionalShow": "model.type == 'bankStatement' && model.terminal != true",
-                          "mask":"##################"
-                        },
-                        {
-                          "resultPath": "streetType",
-                          "model": "streetType",
-                          "type": "textbox",
-                          "label": "Tipo Calle",
-                          "hint": "Tipo de calle",
-                          "required": "true",
-                          "disabled": "model.terminal == true",
-                          "conditionalShow": "model.type == 'bankStatement' && model.terminal != true",
-                          "mask":"NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN"
-                        },
-                        {
-                            "resultPath": "streetName",
-                            "model": "streetName",
-                            "type": "textbox",
-                            "label": "Calle",
-                            "hint": "Nombre de la Calle",
-                            "required": "true",
-                            "disabled": "model.terminal == true",
-                            "conditionalShow": "model.type == 'bankStatement' && model.terminal != true",
-                            "mask":"NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN"
-                        },
-                        {
-                            "resultPath": "exteriorNumber",
-                            "model": "exteriorNumber",
-                            "type": "textbox",
-                            "label": "Número Exterior",
-                            "hint": "Número Exterior",
-                            "required": "true",
-                            "disabled": "model.terminal == true",
-                            "conditionalShow": "model.type == 'bankStatement' && model.terminal != true"
-                        },
-                        {
-                            "resultPath": "interiorNumber",
-                            "model": "interiorNumber",
-                            "type": "textbox",
-                            "label": "Número Interior",
-                            "hint": "Número Interior",
-                            "required": "true",
-                            "disabled": "model.terminal == true",
-                            "conditionalShow": "model.type == 'bankStatement' && model.terminal != true"
-                        },
-                        {
-                            "resultPath": "zip",
-                            "model": "zip",
-                            "type": "textbox",
-                            "label": "Código Postal",
-                            "hint": "Código Postal",
-                            "required": "true",
-                            "disabled": "model.terminal == true",
-                            "conditionalShow": "model.type == 'bankStatement' && model.terminal != true",
-                            "mask":"#######"
-                        },
-                        {
-                          "resultPath": "settlementType",
-                          "model": "settlementType",
-                          "type": "textbox",
-                          "label": "Tipo Asentamiento",
-                          "hint": "Colonia, Ejido, etc",
-                          "required": "true",
-                          "disabled": "model.terminal == true",
-                          "conditionalShow": "model.type == 'bankStatement' && model.terminal != true",
-                          "mask":"NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN"
-                        },
-                        {
-                          "resultPathNode": "locationCode",
-                          "model": "locationCode",
-                          "targettext": "locationName",
-                          "type": "autocomplete",
-                          "label": "Estado",
-                          "hint": "Selecciona un estado",
-                          "required": "true",
-                          "conditionalShow": "model.type == 'bankStatement'",
-                          "options": [
-                            {"id":"1","name":"Aguascalientes"},
-                            {"id":"2","name":"Baja California"},
-                            {"id":"3","name":"Baja California Sur"},
-                            {"id":"4","name":"Campeche"},
-                            {"id":"7","name":"Chiapas"},
-                            {"id":"8","name":"Chihuahua"},
-                            {"id":"9","name":"Ciudad de México"},
-                            {"id":"5","name":"Coahuila de Zaragoza"},
-                            {"id":"6","name":"Colima"},
-                            {"id":"10","name":"Durango"},
-                            {"id":"11","name":"Guanajuato"},
-                            {"id":"12","name":"Guerrero"},
-                            {"id":"13","name":"Hidalgo"},
-                            {"id":"14","name":"Jalisco"},
-                            {"id":"15","name":"México"},
-                            {"id":"16","name":"Michoacán de Ocampo"},
-                            {"id":"17","name":"Morelos"},
-                            {"id":"18","name":"Nayarit"},
-                            {"id":"19","name":"Nuevo León"},
-                            {"id":"20","name":"Oaxaca"},
-                            {"id":"21","name":"Puebla"},
-                            {"id":"22","name":"Querétaro"},
-                            {"id":"23","name":"Quintana Roo"},
-                            {"id":"24","name":"San Luis Potosí"},
-                            {"id":"25","name":"Sinaloa"},
-                            {"id":"26","name":"Sonora"},
-                            {"id":"27","name":"Tabasco"},
-                            {"id":"28","name":"Tamaulipas"},
-                            {"id":"29","name":"Tlaxcala"},
-                            {"id":"30","name":"Veracruz de Ignacio de la Llave"},
-                            {"id":"31","name":"Yucatán"},
-                            {"id":"32","name":"Zacatecas"}
-                          ]
-                        }
-                      ]
-                    }
-                    ]
-                },
-                options: {
+                    "type":"ife",
+                    "subtype":"ife-c",
+                    "valid":"true",
+                    "electorCode":"",
+                    "names":"Victor",
+                    "lastNamePaternal":"MARTINEZ",
+                    "lastNameMaternal":"",
+                    "ifeEmissionNumber":"",
+                    "ifeVerticalNumber":"",
+                    "ifeIdCode":"",
+                    "gender":"M",
+                    "dateOfBirth":"",
+                    "birthState":"",
+                    "remedy":"",
+                    "terminal":"",
+                    "images":[],
+                    "validationTime": "2018-05-25T12:45:34.354Z"
 
-                }
+                 },
+                schema: {
+ "forms": [
+  {
+    "id": "dataCapture",
+    "label": "Captura de Datos",
+    "helpUrl": "todo.html",
+    "helpIcon": "true",
+    "fields": [
+    {
+        "groups":[
+            {
+                "legend":"Datos Capturados",
+                "key":"idType1",
+                "fields":[
+{
+        "resultPathNode": "type",
+        "model": "type",
+        "type": "dropdown",
+        "label": "Tipo de Identificación",
+        "hint": "Tipo de Identificación",
+        "required": "true",
+        "readonly": "true",
+        "options": [
+          {
+            "id": "passport",
+            "name": "Pasaporte"
+          },
+          {
+            "id": "ife",
+            "name": "Credencial de Elector"
+          },
+          {
+            "id": "unknown",
+            "name": "Desconocido o Equivocado",
+            "terminal": true,
+            "document": "ife",
+            "remedy": {
+              "type": "uploadDocument",
+              "options": {
+                "multiPage": true
+              },
+              "label": "Favor de proporcionar una identificación oficial válida, IFE por ambos lados o pasaporte",
+              "cause": "Documento desconocido o equivocado"
+            }
+          },
+          {
+            "id": "low-quality",
+            "name": "Borroso, incompleto o de baja calidad",
+            "terminal": true,
+            "document": "ife",
+            "remedy": {
+              "type": "uploadDocument",
+              "options": {
+                "multiPage": true
+              },
+              "label": "Favor de proporcionar una identificación oficial válida, IFE por ambos lados o pasaporte",
+              "cause": "Documento incompleto o ilegible"
+            }
+          }
+        ]
+      },
+      {
+        "resultPathNode": "subtype",
+        "model": "subtype",
+        "type": "dropdown",
+        "label": "Modelo de IFE",
+        "hint": "Tipo de documento",
+        "required": "true",
+        "readonly": "true",
+        "options": [
+          {
+            "id": "ife-a",
+            "name": "IFE Tipo A",
+            "terminal": true,
+            "remedy": {
+              "type": "uploadDocument",
+              "options": {
+                "multiPage": true
+              },
+              "label": "Favor de proporcionar una identificación oficial válida, IFE por ambos lados o pasaporte",
+              "cause": "IFE vencido"
+            }
+          },
+          {
+            "id": "ife-b",
+            "name": "IFE Tipo B"
+          },
+          {
+            "id": "ife-c",
+            "name": "IFE Tipo C"
+          },
+          {
+            "id": "ife-d",
+            "name": "IFE Tipo D"
+          },
+          {
+            "id": "ife-e",
+            "name": "IFE Tipo E"
+          }
+        ],
+        "conditionalShow": "model.type == 'ife'"
+      },
+      {
+        "resultPathNode": "valid",
+        "model": "valid",
+        "type": "dropdown",
+        "label": "Vigencia",
+        "hint": "Vigencia de credencial",
+        "required": "true",
+        "options": [
+          {
+            "id": "true",
+            "name": "Vigente"
+          },
+          {
+            "id": "false",
+            "name": "Expirada",
+            "terminal": true,
+            "remedy": {
+              "type": "uploadDocument",
+              "options": {
+                "multiPage": true
+              },
+              "label": "Favor de proporcionar una identificación oficial válida, IFE por ambos lados o pasaporte",
+              "cause": "Identificación vencida"
+            }
+          }
+        ]
+      },
+      {
+        "resultPath": "electorCode",
+        "model": "electorCode",
+        "type": "textbox",
+        "label": "Clave de Elector",
+        "hint": "Clave electoral de identificación",
+        "required": "true",
+        "disabled": "model.terminal == true",
+        "conditionalShow": "model.type == 'ife' && model.terminal != true"
+      },
+      {
+        "resultPath": "names",
+        "model": "names",
+        "type": "textbox",
+        "label": "Nombres",
+        "hint": "Nombre",
+        "conditionalShow": "model.terminal != true",
+        "disabled": "model.terminal == true",
+        "required": "true"
+      },
+      {
+        "resultPath": "lastNamePaternal",
+        "model": "lastNamePaternal",
+        "type": "textbox",
+        "label": "Apellido Paterno",
+        "hint": "Apellido Paterno",
+        "required": "true",
+        "disabled": "model.terminal == true",
+        "conditionalShow": "(model.type != 'ife' || model.electorCode.substring(0, 2) != 'XX') && model.terminal != true"
+      },
+      {
+        "resultPath": "lastNameMaternal",
+        "model": "lastNameMaternal",
+        "type": "textbox",
+        "label": "Apellido Materno",
+        "hint": "Apellido Materno",
+        "required": "true",
+        "disabled": "model.terminal == true",
+        "conditionalShow": "model.terminal != true && (model.type.substring(0, 3) != 'ife' || model.electorCode.substring(2, 4) != 'XX')"
+      },
+      {
+        "resultPath": "ifeEmissionNumber",
+        "model": "ifeEmissionNumber",
+        "type": "textbox",
+        "label": "Número de Emisión",
+        "hint": "Número de Emisión de la credencial",
+        "required": "true",
+        "disabled": "model.terminal == true",
+        "conditionalShow": "model.terminal != true && (model.subtype == 'ife-a' || model.subtype == 'ife-b' || model.subtype == 'ife-c')",
+        "mask":"NNNNNNN"
+      },
+      {
+        "resultPath": "ifeVerticalNumber",
+        "model": "ifeVerticalNumber",
+        "type": "textbox",
+        "label": "Número Vertical (OCR)",
+        "hint": "Número Vertical (OCR)",
+        "required": "true",
+        "disabled": "model.terminal == true",
+        "conditionalShow": "model.terminal != true && (model.subtype == 'ife-a' || model.subtype == 'ife-b' || model.subtype == 'ife-c')",
+        "mask":"###############"
+      },
+      {
+        "resultPath": "ifeIdCode",
+        "model": "ifeIdCode",
+        "type": "textbox",
+        "label": "Código de Identificación de la Credencial (CIC)",
+        "hint": "Código de Identificación de la Credencial (CIC)",
+        "required": "true",
+        "disabled": "model.terminal == true",
+        "conditionalShow": "model.terminal != true && (model.subtype == 'ife-d' || model.subtype == 'ife-e')",
+        "mask":"###############"
+      },
+      {
+        "resultPath": "dateOfBirth",
+        "model": "dateOfBirth",
+        "type": "date",
+        "label": "Fecha de Nacimiento",
+        "hint": "Fecha de Nacimiento",
+        "required": "true",
+        "disabled": "model.terminal == true",
+        "conditionalShow": "model.terminal != true && (model.type == 'passport')"
+      },
+      {
+        "resultPath": "gender",
+        "model": "gender",
+        "type": "radio",
+        "label": "Género",
+        "hint": "Género",
+        "required": "true",
+        "mandatory": "false",
+        "conditionalShow": "model.terminal != true && (model.type != 'unknown' && model.type != 'low-quality' )",
+        "options": [
+          { "id": "M", "name": "Masculino"},
+          { "id": "F", "name": "Femenino"}
+        ]
+      },
+      {
+        "resultPath": "birthState",
+        "model": "birthState",
+        "type": "dropdown",
+        "label": "Entidad Federativa de Nacimiento",
+        "hint": "Entidad Federativa de Nacimiento",
+        "conditionalShow": "model.terminal != true && (model.type != 'ife')",
+        "disabled": "model.terminal == true",
+        "required": "true",
+        "options": [
+          { "id": "AS", "name": "Aguascalientes"},
+          { "id": "BC", "name": "Baja California"},
+          { "id": "BS", "name": "Baja California Sur"},
+          { "id": "CC", "name": "Campeche"},
+          { "id": "CS", "name": "Chiapas"},
+          { "id": "CH", "name": "Chihuahua"},
+          { "id": "CL", "name": "Coahuila"},
+          { "id": "CM", "name": "Colima"},
+          { "id": "DF", "name": "Distrito Federal"},
+          { "id": "DG", "name": "Durango"},
+          { "id": "GT", "name": "Guanajuato"},
+          { "id": "GR", "name": "Guerrero"},
+          { "id": "HG", "name": "Hidalgo"},
+          { "id": "JC", "name": "Jalisco"},
+          { "id": "MC", "name": "México"},
+          { "id": "MN", "name": "Michoacan"},
+          { "id": "MS", "name": "Morelos"},
+          { "id": "NT", "name": "Nayarit"},
+          { "id": "NL", "name": "Nuevo León"},
+          { "id": "OC", "name": "Oaxaca"},
+          { "id": "PL", "name": "Puebla"},
+          { "id": "QT", "name": "Querétaro"},
+          { "id": "QR", "name": "Quintana Roo"},
+          { "id": "SP", "name": "San Luis Potosí"},
+          { "id": "SL", "name": "Sinaloa"},
+          { "id": "SR", "name": "Sonora"},
+          { "id": "TC", "name": "Tabasco"},
+          { "id": "TL", "name": "Tlaxcala"},
+          { "id": "TS", "name": "Tamaulipas"},
+          { "id": "VZ", "name": "Veracruz"},
+          { "id": "YN", "name": "Yucatán"},
+          { "id": "ZS", "name": "Zacatecas"},
+          { "id": "NE", "name": "Nacido en el Extranjero"}
+        ]
+      }
+
+
+
+
+                ]
+            },
+            {
+                "legend":"Captura de pantalla",
+                "key":"idType2",
+                "fields":[
+                    {
+                      "model": "linkVerificación",
+                      "type": "button",
+                      "label": "Verifica documento",
+                      "disabled": "model.terminal == true",
+                      "href": "((model.type == 'ife')?((model.subtype == 'ife-a' || model.subtype == 'ife-b' || model.subtype == 'ife-c')?'https://listanominal.ine.mx/scpln/src/consultaModeloA.html':((model.subtype == 'ife-d')?'https://listanominal.ine.mx/scpln/src/consultaModeloD.html':((model.subtype == 'ife-e')?'https://listanominal.ine.mx/scpln/src/consultaModeloE.html':''))):'')"
+                      ,"target": "_blank"
+                    },
+                    {
+                        "resultPath": "validateProof",
+                        "model": "validateProof",
+                        "type": "radio",
+                        "label": "Documento",
+                        "hint": "El documento concuerda con la verificacón externa",
+                        "required": "true",
+                        "mandatory": "false",
+                        "conditionalShow": "model.terminal != true && (model.type != 'unknown' && model.type != 'low-quality' )",
+                        "options": [
+                          { "id": "true", "name": "Válido"},
+                          { "id": "false", "name": "Inválido"}
+                        ]
+                    },
+                    {
+                      "resultPath": "images",
+                      "model": "images",
+                      "type": "textareaImage",
+                      "label": "Pegar evidencia de captura de pantalla aquí",
+                      "hint": "Copia la imagen de la liga de verificación",
+                      "required": "true",
+                      "disabled": "model.terminal == true"
+                    }
+                ]
+            }
+        ]
+    },
+    ]
+  }
+]
+                },
+                options: {},
+                context:{}
 			}
 		},
 		methods: {

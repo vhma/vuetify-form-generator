@@ -26,6 +26,9 @@
   "dependencies": {
     "vue": "^2.5.3",
     "vue-product-zoomer": "github:ovidales/vue-product-zoomer",
+    "vue-clipboard2": "^0.2.1",
+    "vue-upload-component": "^2.8.11",
+    "html2canvas": "^1.0.0-alpha.12",
     "vuetify": "^1.0.0"
   },
   "devDependencies": {
