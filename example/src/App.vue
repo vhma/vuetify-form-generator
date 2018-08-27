@@ -25,13 +25,15 @@ import ProductZoomer from 'vue-product-zoomer'
 		            console.log('Update by commit')
 		        }else{
 		            console.log('Update by emit')
+		            console.log('parentmodel',this.model)
 		        }
 		    })
 		    this.$root.$on("updateparentmodel", dataMainModel=>{
 		        if(this.$store){
-		            console.log('Update by commit')
+		            console.log('Update by commit2')
 		        }else{
-		            console.log('Update by emit')
+		            console.log('Update by emit2')
+		            console.log('parentmodel2',this.model)
 		        }
 		    })
 		},
@@ -44,12 +46,12 @@ import ProductZoomer from 'vue-product-zoomer'
                     "public/documents/unknown.jpg"
                   ],
                 model: {
-                    "type":"ife",
-                    "subtype":"ife-c",
+                    "type":"",
+                    "subtype":"",
                     "valid":"true",
                     "electorCode":"",
-                    "names":"Victor",
-                    "lastNamePaternal":"MARTINEZ",
+                    "names":"",
+                    "lastNamePaternal":"",
                     "lastNameMaternal":"",
                     "ifeEmissionNumber":"",
                     "ifeVerticalNumber":"",
@@ -60,8 +62,8 @@ import ProductZoomer from 'vue-product-zoomer'
                     "remedy":"",
                     "terminal":"",
                     "images":[],
-                    "validationTime": "2018-05-25T12:45:34.354Z"
-
+                    "validateImages":{},
+                    "validationTime": ""
                  },
                 schema: {
  "forms": [
@@ -84,7 +86,6 @@ import ProductZoomer from 'vue-product-zoomer'
         "label": "Tipo de Identificación",
         "hint": "Tipo de Identificación",
         "required": "true",
-        "readonly": "true",
         "options": [
           {
             "id": "passport",
@@ -131,7 +132,6 @@ import ProductZoomer from 'vue-product-zoomer'
         "label": "Modelo de IFE",
         "hint": "Tipo de documento",
         "required": "true",
-        "readonly": "true",
         "options": [
           {
             "id": "ife-a",
@@ -367,8 +367,8 @@ import ProductZoomer from 'vue-product-zoomer'
                         ]
                     },
                     {
-                      "resultPath": "images",
-                      "model": "images",
+                      "resultPath": "validateImages",
+                      "model": "validateImages",
                       "type": "textareaImage",
                       "label": "Pegar evidencia de captura de pantalla aquí",
                       "hint": "Copia la imagen de la liga de verificación",

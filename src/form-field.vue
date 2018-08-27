@@ -156,7 +156,7 @@
 		<div v-else-if="field.type == 'textareaImage'">
                 <v-form-generator-imageCapture
                 				ref="imageCapture"
-                				v-model="images"
+                				v-model="localValue"
                 				:modelSelected="localModel"
                 				:field="field"
                 			>
@@ -454,7 +454,6 @@ import eventHub from './components/eventHub'
                 return evalString;
             },
             evalInContextLink(string){
-                debugger;
                 let evalString = null;
                 let model = this.model;
                 try{

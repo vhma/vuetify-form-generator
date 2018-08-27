@@ -18,10 +18,24 @@
 
     <img id="pastedImage" width="60%" heigth="50%">
 
+    <v-btn @click="uploadImage()">subir imagen</v-btn>
+
 </div>
 </template>
 
 <script>
+import eventHub from './eventHub'
+/**
+import firebase from 'firebase'
+var config =({
+    apiKey: "AIzaSyAHYUFnVgSpAJI6RbmgD_ofUyF6uLsWNW0",
+    authDomain: "alphax-m2-integration.firebaseapp.com",
+    databaseURL: "https://alphax-m2-integration.firebaseio.com",
+    storageBucket:"gs://alphax-m2-integration.appspot.com",
+    projectId: "alphax-m2-integration"
+  })
+firebase.initializeApp(config)
+**/
     export default{
         name: 'imageCapture',
         props: {
@@ -34,7 +48,8 @@
                 localmodelSelected:this.modelSelected,
                 localfield:this.field,
                 localContext:this.context,
-                localImages:[]
+                localImages:[],
+                localValue: this.value
             }
         },
         computed:{
@@ -51,6 +66,27 @@
         },        
         methods:{
             loadImage(){
+
+            },
+            uploadImage(){
+            var uploadTask,
+            self = this;
+                if (this.localImages ===null || this.localImages.length == 0) {
+                  console.log('No hay imagenes para subir')
+                }
+                else{
+                  console.log('mensaje dos entro a la funcion')
+                  //var storageRef = firebase.storage().ref('users/amzn1.account.AF66SPCV5BICRUDXBMSBOTVL7V3Q/images/mx-projecta-credit-application/269/');
+                  //console.log('firebasePath', storageRef)
+                  //for( var i=0; i<this.localImages.length; i++){
+                    //console.log('image', this.localImages[i])
+                    //uploadTask = storageRef.child(this.localImages[i].name).put(this.localImages[i])
+                  //}
+                  console.log('uploadImages updatefield',  {field:this.field.model, value:self.localImages})
+                  eventHub.$emit('updatefield', {field:this.field.model, value:{data:this.localImages} })
+                  eventHub.$emit('updatefield', {field:'validationTime', value:new Date(Date.now()).toJSON().slice(0,19).replace("T","-").replace(/:/g,"-")})
+                }
+
 
             },
             onPaste(event) {
@@ -71,10 +107,9 @@
                     document.getElementById("pastedImage").src = event.target.result;
                   };
                   reader.readAsDataURL(blob);
-                  var imagen = new File([blob], "proof_image_"+Date.now()+".jpg", { type: "image/jpeg", lastModified: Date.now()})
+                  var imagen = new File([blob], "proof_image_"+new Date(Date.now()).toJSON().slice(0,19).replace("T","-").replace(/:/g,"-")+".jpg", { type: "image/jpeg", lastModified: Date.now()})
 
-                  this.localImages.push(imagen)
-debugger;
+                  this.localImages.push(imagen);
                 }
             },
             evalInContextValue(string){
@@ -91,7 +126,6 @@ debugger;
                 return evalString;
             },
             evalInContextLink(string){
-                debugger;
                 let evalString = null;
                 let model = this.model;
                 try{
