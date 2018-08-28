@@ -136,7 +136,7 @@
 		</div>
 
 		<div v-else-if="field.type == 'textarea'">
-			 <v-text-field
+			 <v-textarea
 		      v-model="localValue"
 		      :label="field.label"
 		      :required="evalInContextValue(field.required)"
@@ -144,23 +144,21 @@
 		      :disabled="evalInContextDisabled( field.disabled || false )"
 		      :placeholder="field.placeholder"
 		      :mask="field.mask"
-		      multi-line
-		      v-bind:textarea="field.featured"
 		      v-if="evalInContext( field.conditionalShow||true )"
 		      @blur="onBlur"
 		      @change="onChange"
 		      @focus="onFocus"
 		      @input="onInput"
-		    ></v-text-field>
+		    ></v-textarea>
 		</div>
 		<div v-else-if="field.type == 'textareaImage'">
-                <v-form-generator-imageCapture
-                				ref="imageCapture"
-                				v-model="localValue"
-                				:modelSelected="localModel"
-                				:field="field"
-                			>
-                </v-form-generator-imageCapture>
+            <v-form-generator-imageCapture
+                            ref="imageCapture"
+                            v-model="localValue"
+                            :modelSelected="localModel"
+                            :field="field"
+                        >
+            </v-form-generator-imageCapture>
 		</div>
 		<div v-else-if="field.type == 'number'">
 			 <v-text-field

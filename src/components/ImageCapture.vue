@@ -2,7 +2,7 @@
 
 <div>
 
-    <v-text-field
+    <v-textarea
       v-model="localValue"
       :label="field.label"
       :required="evalInContextValue(field.required)"
@@ -10,11 +10,10 @@
       :disabled="evalInContextDisabled( field.disabled || false )"
       :placeholder="field.placeholder"
       :mask="field.mask"
-      multi-line
       v-bind:textarea="field.featured"
       v-if="evalInContext( field.conditionalShow||true )"
       @paste="onPaste"
-    ></v-text-field>
+    ></v-textarea>
 
 <div v-if="proofImages.length > 0">
     <v-carousel  :cycle="false" hide-delimiters light height="50%"  width="50%">
