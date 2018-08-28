@@ -16,9 +16,10 @@
       @paste="onPaste"
     ></v-text-field>
 
-    <img id="pastedImage" width="60%" heigth="50%">
+    <div v-for="image in proofImages">
+        <img :id="image.id" width="50%" heigth="50%">
+    </div>
 
-    <v-btn @click="uploadImage()">subir imagen</v-btn>
 
 </div>
 </template>
@@ -53,11 +54,14 @@ firebase.initializeApp(config)
             }
         },
         computed:{
-            uploadPath:{
+            proofImages:{
                 get(){
+                    console.log("get proofImages",this.localImages)
+                    return this.localImages;
                 },
-                set(){
-
+                set(image){
+                    console.log("set proofImages",image)
+                    this.localImages.push(image)
                 }
             }
         },
@@ -65,33 +69,44 @@ firebase.initializeApp(config)
 
         },        
         methods:{
-            loadImage(){
+            renderImages(){
+            // cargar imagen si hay una imagen pegada
+                var reader = new FileReader();
+                var dataURL, output,i,dataURL, targetImage;
+                var self = this;
+                if (this.localImages !== null && this.localImages.length > 0) {
+                    for(i=0; i<this.localImages.length; i++){
+                        targetImage = self.localImages[i];
+                        reader = new FileReader();
+                        reader.onload = function(event){
+                          dataURL = reader.result;
+                          output = document.getElementById(targetImage.id);
+                          output.src = dataURL;
+                        };
 
+                        //TODO: function to destroy FileReader after put URLS (reader.onload finish)
+
+                        reader.readAsDataURL(targetImage.data);
+                    }
+                }
             },
             uploadImage(){
-            var uploadTask,
-            self = this;
                 if (this.localImages ===null || this.localImages.length == 0) {
-                  console.log('No hay imagenes para subir')
+
                 }
                 else{
-                  console.log('mensaje dos entro a la funcion')
                   //var storageRef = firebase.storage().ref('users/amzn1.account.AF66SPCV5BICRUDXBMSBOTVL7V3Q/images/mx-projecta-credit-application/269/');
                   //console.log('firebasePath', storageRef)
                   //for( var i=0; i<this.localImages.length; i++){
                     //console.log('image', this.localImages[i])
                     //uploadTask = storageRef.child(this.localImages[i].name).put(this.localImages[i])
-                  //}
-                  console.log('uploadImages updatefield',  {field:this.field.model, value:self.localImages})
+                    //}
                   eventHub.$emit('updatefield', {field:this.field.model, value:{data:this.localImages} })
                   eventHub.$emit('updatefield', {field:'validationTime', value:new Date(Date.now()).toJSON().slice(0,19).replace("T","-").replace(/:/g,"-")})
                 }
-
-
             },
             onPaste(event) {
                 var items = (event.clipboardData  || event.originalEvent.clipboardData).items;
-                console.log(JSON.stringify(items)); // le dará los tipos de mimo
                 // buscar imagen pegada entre los elementos pegados
                 var blob = null;
                 for (var i = 0; i < items.length; i++) {
@@ -101,15 +116,13 @@ firebase.initializeApp(config)
                 }
                 // cargar imagen si hay una imagen pegada
                 if (blob !== null) {
-                  var reader = new FileReader();
-                  reader.onload = function(event) {
-                    console.log(event.target.result); // data url!
-                    document.getElementById("pastedImage").src = event.target.result;
-                  };
-                  reader.readAsDataURL(blob);
-                  var imagen = new File([blob], "proof_image_"+new Date(Date.now()).toJSON().slice(0,19).replace("T","-").replace(/:/g,"-")+".jpg", { type: "image/jpeg", lastModified: Date.now()})
+                  var path = "proof_image_"+new Date(Date.now()).toJSON().slice(0,19).replace("T","-").replace(/:/g,"-")+".jpg",
+                      pathId = "proof_image_"+Date.now();
+                  var imagen = new File([blob], path, { type: "image/jpeg", lastModified: Date.now(), id:pathId} )
+                      ,objImage ={ id:pathId, data:imagen }
 
-                  this.localImages.push(imagen);
+                  this.localImages.push(objImage);
+                  this.renderImages();
                 }
             },
             evalInContextValue(string){
