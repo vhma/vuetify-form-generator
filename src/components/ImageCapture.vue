@@ -16,9 +16,18 @@
       @paste="onPaste"
     ></v-text-field>
 
-    <div v-for="image in proofImages">
-        <img :id="image.id" width="50%" heigth="50%">
-    </div>
+<div v-if="proofImages.length > 0">
+    <v-carousel  :cycle="false" hide-delimiters light height="50%"  width="50%">
+        <v-carousel-item v-for="(image, index) in proofImages"
+        cycle
+        :key="`${index}-carousel-proof`"
+        >
+            <div >
+                <img :id="image.id" width="100%" />
+          </div>
+        </v-carousel-item>
+    </v-carousel>
+</div>
 
 
 </div>
@@ -56,11 +65,9 @@ firebase.initializeApp(config)
         computed:{
             proofImages:{
                 get(){
-                    console.log("get proofImages",this.localImages)
                     return this.localImages;
                 },
                 set(image){
-                    console.log("set proofImages",image)
                     this.localImages.push(image)
                 }
             }
