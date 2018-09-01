@@ -290,6 +290,7 @@ import dataGridEditbox from './dataGrid-editbox.vue';
                 //this.$emit('update:'+this.field.model, JSON.parse(JSON.stringify(value)))
             },
             getDataHeader(key) {
+            debugger;
                 var dataHeader={};
 
                 for(var i=0; i<this.headers.length;i++ ){

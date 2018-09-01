@@ -50,167 +50,166 @@ import ProductZoomer from 'vue-product-zoomer'
                     "debtAcquisitionLetters": []
                  },
                 schema: {
-                    "forms": [
-                      {
-                        "id": "dataCapture",
-                        "label": "Captura de Datos",
-                        "helpUrl": "todo.html",
-                        "helpIcon": "true",
-                        "fields": [
-                            {
-                                "resultPathNode": "debtAcquisitionLetters",
-                                "model": "debtAcquisitionLetters",
-                                "type": "dataGrid",
-                                "table": {
-                                    "headers":[
-                                        {
-                                          text: "Acreedor/Titular del Crédito",
-                                          value: "creditorName",
-                                          align: 'center',
-                                          sortable: true,
-                                          class: '',
-                                          field:{
-                                            "model": "creditorName",
-                                            "type": "textbox",
-                                            "hint": "Nombre Acreedor/Titular del Crédito",
-                                            "label": "Acreedor/Titular del Crédito",
-                                            "conditionalShow": "true",
-                                            "required": "true",
-                                          }
-                                        },
-                                        {
-                                          text: "Folio del crédito",
-                                          value: "creditFolio",
-                                          align: 'center',
-                                          sortable: true,
-                                          class: '',
-                                          field:{
-                                            "model": "creditFolio",
-                                            "type": "textbox",
-                                            "label": "Folio del crédito",
-                                            "hint": "Número de Folio del Crédito",
-                                            "conditionalShow": "true",
-                                            "required": "true",
-                                          }
-                                        },
-                                        {
-                                          text: "Fecha de otorgamiento",
-                                          value: "grantDate",
-                                          align: 'center',
-                                          sortable: true,
-                                          class: '',
-                                          field:{
-                                            "model": "grantDate",
-                                            "type": "date",
-                                            "label": "Fecha de otorgamiento",
-                                            "hint": "Fecha en que se otrogo el crédito",
-                                            "conditionalShow": "true",
-                                            "required": "true",
-                                          }
-                                        },
-                                        {
-                                          text: "Monto principal (Pesos M.N)",
-                                          value: "principalAmount",
-                                          align: 'right',
-                                          sortable: true,
-                                          class: '',
-                                          field:{
-                                            "model": "principalAmount",
-                                            "type": "textbox",
-                                            "label": "Monto principal (Pesos M.N)",
-                                            "hint": "Monto total del crédito",
-                                            "conditionalShow": "true",
-                                            "required": "true",
-                                          }
-                                        },
-                                        {
-                                          text: "Saldo Insoluto (Pesos M.N)",
-                                          value: "outstandingBalance",
-                                          align: 'right',
-                                          sortable: true,
-                                          class: '',
-                                          field:{
-                                            "model": "outstandingBalance",
-                                            "type": "textbox",
-                                            "label": "Saldo Insoluto (Pesos M.N)",
-                                            "hint": "Saldo Insoluto del crédito",
-                                            "conditionalShow": "true",
-                                            "required": "true",
-                                          }
-                                        },
-                                        {
-                                          text: "Plazo",
-                                          value: "terms",
-                                          align: 'right',
-                                          sortable: true,
-                                          class: '',
-                                          visible:false,
-                                          field:{
-                                            "model": "terms",
-                                            "type": "number",
-                                            "label": "Plazo",
-                                            "hint": "Plazo",
-                                            "conditionalShow": "true",
-                                            "required": "true",
-                                            "mask": "###",
-                                          }
-                                        },
-                                        {
-                                          text: "Periodo",
-                                          value: "periodicity",
-                                          align: 'center',
-                                          sortable: true,
-                                          class: '',
-                                          field:{
-                                              "model": "periodicity",
-                                              "type": "dropdownObject",
-                                              "label": "Periodo",
-                                              "hint": "Tipo de periodo",
-                                              "required": "true",
-                                              "options": [
-                                                {
-                                                    "id": "biMonthly",
-                                                    "name": "Quincenal"
-                                                },
-                                                {
-                                                    "id": "monthly",
-                                                    "name": "Mensual"
-                                                },
-                                                {
-                                                    "id": "twoWeeks",
-                                                    "name": "Catorcenal"
-                                                },
-                                                {
-                                                    "id": "weekly",
-                                                    "name": "Semanal"
-                                                }
-                                              ]
-                                          }
-                                        }
-                                    ],
-                                    "filter":"",
-                                    "sort":"",
-                                    "expand":false,
-                                    "hide-actions":false,
-                                    "hide-headers":false,
-                                    "loading":false,
-                                    "no-data-text":"No hay registros",
-                                    "select-all":"false"
-                                },
-                                "items":[],
-                                "defaultItem":{
-                                  "creditorName": "",
-                                  "creditFolio": "",
-                                  "grantDate": "2018-01-01",
-                                  "principalAmount": 0,
-                                  "outstandingBalance": 0,
-                                  "terms": 0,
-                                  "periodicity": { "id": "months","name": "Meses"}
-                                }
-                            }
-                        ]
-                      }
-                    ]
+"forms":[
+    {
+      "id": "dataCapture",
+      "label": "Captura de Datos",
+      "helpUrl": "todo.html",
+      "helpIcon": "true",
+      "fields": [
+        {
+          "resultPathNode": "debtAcquisitionLetters",
+          "model": "debtAcquisitionLetters",
+          "type": "dataGrid",
+          "table": {
+            "headers":[
+              {
+                "text": "Acreedor/Titular del Crédito",
+                "value": "creditorName",
+                "align": "center",
+                "sortable": true,
+                "class": "",
+                "field":{
+                  "model": "creditorName",
+                  "type": "textbox",
+                  "hint": "Nombre Acreedor/Titular del Crédito",
+                  "label": "Acreedor/Titular del Crédito",
+                  "conditionalShow": "true",
+                  "required": "true"
+                }
+              },
+              {
+                "text": "Folio del crédito",
+                "value": "creditFolio",
+                "align": "center",
+                "sortable": true,
+                "class": "",
+                "field":{
+                  "model": "creditFolio",
+                  "type": "textbox",
+                  "label": "Folio del crédito",
+                  "hint": "Número de Folio del Crédito",
+                  "conditionalShow": "true",
+                  "required": "true"
+                }
+              },
+              {
+                "text": "Fecha de otorgamiento",
+                "value": "grantDate",
+                "align": "center",
+                "sortable": true,
+                "class": "",
+                "field":{
+                  "model": "grantDate",
+                  "type": "date",
+                  "label": "Fecha de otorgamiento",
+                  "hint": "Fecha en que se otrogo el crédito",
+                  "conditionalShow": "true",
+                  "required": "true"
+                }
+              },
+              {
+                "text": "Monto principal (Pesos M.N)",
+                "value": "principalAmount",
+                "align": "center",
+                "sortable": true,
+                "class": "",
+                "field":{
+                  "model": "principalAmount",
+                  "type": "textbox",
+                  "label": "Monto principal (Pesos M.N)",
+                  "hint": "Monto total del crédito",
+                  "conditionalShow": "true",
+                  "required": "true"
+                }
+              },
+              {
+                "text": "Saldo Insoluto (Pesos M.N)",
+                "value": "outstandingBalance",
+                "align": "center",
+                "sortable": true,
+                "class": "",
+                "field":{
+                  "model": "outstandingBalance",
+                  "type": "textbox",
+                  "label": "Saldo Insoluto (Pesos M.N)",
+                  "hint": "Saldo Insoluto del crédito",
+                  "conditionalShow": "true",
+                  "required": "true"
+                }
+              },
+              {
+                "text": "Plazo",
+                "value": "terms",
+                "align": "center",
+                "sortable": true,
+                "class": "",
+                "visible":false,
+                "field":{
+                  "model": "terms",
+                  "type": "number",
+                  "label": "Plazo",
+                  "hint": "Plazo",
+                  "conditionalShow": "true",
+                  "required": "true",
+                  "mask": "###"
+                }
+              },
+              {
+                "text": "Periodo",
+                "value": "periodicity",
+                "align": "center",
+                "sortable": true,
+                "class": "",
+                "field":{
+                  "model": "periodicity",
+                  "type": "dropdownObject",
+                  "label": "Periodo",
+                  "hint": "Tipo de periodo",
+                  "required": "true",
+                  "options": [
+                    {
+                      "id": "biMonthly",
+                      "name": "Quincenal"
+                    },
+                    {
+                      "id": "monthly",
+                      "name": "Mensual"
+                    },
+                    {
+                      "id": "twoWeeks",
+                      "name": "Catorcenal"
+                    },
+                    {
+                      "id": "weekly",
+                      "name": "Semanal"
+                    }
+                  ]
+                }
+              }
+            ],
+            "filter":"",
+            "sort":"",
+            "expand":false,
+            "hide-actions":false,
+            "hide-headers":false,
+            "loading":false,
+            "no-data-text":"No hay registros"
+          },
+          "items":[],
+          "defaultItem":{
+            "creditorName": "",
+            "creditFolio": "",
+            "grantDate": "2018-01-01",
+            "principalAmount": 0,
+            "outstandingBalance": 0,
+            "terms": 0,
+            "periodicity": { "id": "months","name": "Meses"}
+          }
+        }
+      ]
+    }
+  ]
                 },
                 options: {},
                 context:{}
