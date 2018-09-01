@@ -218,6 +218,7 @@
 		<div v-else-if="field.type == 'textbox'">
 			 <v-text-field
 		      v-model="localValue"
+		      ref="reftexbox"
 		      :label="((options)?options.label:false) || field.label"
 		      :required="evalInContextValue(field.required)"
 		      :readonly="evalInContextValue(field.readonly)"

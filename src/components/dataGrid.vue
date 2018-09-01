@@ -1,37 +1,40 @@
 <template>
 <div>
+    <!--  actions buttons  --->
     <v-toolbar flat color="white">
-      <v-spacer> </v-spacer>
-        <v-dialog v-model="dialog" max-width="500px">
-                <v-btn slot="activator" color="primary" dark class="mb-2">Agregar</v-btn>
-                <v-card>
-                  <v-card-title>
-                    <span class="headline">Agregar registro</span>
-                  </v-card-title>
+    <v-spacer> </v-spacer>
+    <v-dialog v-model="dialog" max-width="500px">
+        <v-btn slot="activator" fab dark color="green" small>
+          <v-icon dark>add</v-icon>
+        </v-btn>
+        <v-card>
+          <v-card-title>
+            <span class="headline">Agregar registro</span>
+          </v-card-title>
 
-                  <v-card-text>
-                    <v-container grid-list-lg>
-                      <div v-for="header in headers">
-                            <formFields
-                                :field="header.field"
-                                :value="editedItem[header.field.model]"
-                                :model="editedItem"
-                                :fieldmodel="header.field.model"
-                                v-bind.sync="editedItem"
-                               />
-                         <br/><br/>
-                      </div>
+          <v-card-text>
+            <v-container grid-list-lg>
+              <div v-for="header in headers">
+                    <formFields
+                        :field="header.field"
+                        :value="editedItem[header.field.model]"
+                        :model="editedItem"
+                        :fieldmodel="header.field.model"
+                        v-bind.sync="editedItem"
+                       />
+                 <br/><br/>
+              </div>
 
-                      </v-layout>
-                    </v-container>
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
-                    <v-btn color="blue darken-1" flat @click.native="save">Save</v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
+            <v-btn color="blue darken-1" flat @click.native="save">Save</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-toolbar>
 
     <!--  datatable  --->
@@ -39,10 +42,10 @@
       :headers="headers"
       :items="dataItems"
       class="elevation-1"
+      rows-per-page-text="Registros"
     >
       <template slot="items" slot-scope="props">
             <td v-for="(item, key) in props.item" :key="key">
-
                 <v-edit-dialog
                     lazy
                     @save="saveItem"
@@ -65,8 +68,6 @@
                        />
                 </v-edit-dialog>
 
-
-
             </td>
             <td class="justify-center layout px-1">
               <v-icon
@@ -82,6 +83,8 @@
         <div class="justify-center layout  ">No hay registros</div>
       </template>
     </v-data-table>
+
+
   </div>
 
 </template>
