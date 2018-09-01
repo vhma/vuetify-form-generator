@@ -14,16 +14,19 @@
 
           <v-card-text>
             <v-container grid-list-lg>
-              <div v-for="header in headers">
-                    <formFields
-                        :field="header.field"
-                        :value="editedItem[header.field.model]"
-                        :model="editedItem"
-                        :fieldmodel="header.field.model"
-                        v-bind.sync="editedItem"
-                       />
-                 <br/><br/>
-              </div>
+                <v-form ref="formGrid" lazy-validation>
+                  <div v-for="header in headers">
+                        <formFields
+                            :field="header.field"
+                            :value="editedItem[header.field.model]"
+                            :model="editedItem"
+                            :refNode="formGridInput"
+
+                            v-bind.sync="editedItem"
+                           />
+                     <br/><br/>
+                  </div>
+                </v-form>
 
               </v-layout>
             </v-container>
@@ -119,7 +122,8 @@ import dataGridEditbox from './dataGrid-editbox.vue';
                 headers: this.table.headers,
                 dataItems: [],
                 editedIndex: -1,
-                editedItem: {}
+                editedItem: {},
+                formGridInput:"formGridInput"
             }
         },
         computed:{
@@ -222,9 +226,23 @@ import dataGridEditbox from './dataGrid-editbox.vue';
             close () {
                 this.dialog = false
                 setTimeout(() => {
+                  //this.clearForms()
                   this.localeditedItem = this.localDefaultItem;
                   this.editedIndex = -1
+
                 }, 300)
+            },
+            clearForms(){
+                this.$refs.formGrid.reset();
+                /**
+                this.$refs.formGrid.$children.forEach(function(i,idx){
+                debugger;
+                    if(i.$refs.formGridInput){
+                        debugger;
+                        i.$refs.formGridInput.value=''
+                    }
+
+                })**/
             },
             save () {
                 if (this.editedIndex > -1) {

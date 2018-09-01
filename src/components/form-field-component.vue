@@ -218,7 +218,7 @@
 		<div v-else-if="field.type == 'textbox'">
 			 <v-text-field
 		      v-model="localValue"
-		      ref="reftexbox"
+		      :ref="localRef"
 		      :label="((options)?options.label:false) || field.label"
 		      :required="evalInContextValue(field.required)"
 		      :readonly="evalInContextValue(field.readonly)"
@@ -337,7 +337,8 @@ import datePicker from './datePicker'
 			model: Object,
 			select: null,
 			show: null,
-			options:Object
+			options:Object,
+			refNode: String,
 		},
         components: {
             'v-form-generator-field-dialogBox': require('./dialogBox.vue').default,
@@ -380,15 +381,27 @@ import datePicker from './datePicker'
 				//:src="require('./static/help_ife.jpg')"
 				//return src
 				//return src;
-			}
+			},
+            localValue:{
+                get(){
+                    //return this.localValueProp
+                    return this.value;
+                },
+                set (value) {
+                    //this.localValueProp = value;
+                    this.value = null;
+                    return this.value = value;
+                }
+            },
 		},
 		data(){
 			return {
-			    localValue: this.value,
+			    localValueProp: this.value,
 			    localModel: this.model,
 			    localField: this.field,
 				dialoghelp: false,
 				localdialoghelp: false,
+				localRef: this.refNode,
 				validationRules: {
 					email: [
 						(v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || this.validationErrorMessages.emailInvalid
@@ -404,6 +417,7 @@ import datePicker from './datePicker'
 		},
 		created: function () {
 			// On load
+			console.log("se ejecuta created", this.localValueProp)
 		},
 		methods: {
 			onBlur: function(){
