@@ -3,7 +3,7 @@
 <div>
 	Main model {{ model }}
 
-        <v-form-generator :model="model" :schema="schema" :options="options" :imageUrls="imageUrls"/>
+        <v-form-generator :model="model" :schema="schema" :options="options" :imageUrls="imageUrls" :context="context" />
 
 </div>
 	</v-app>
@@ -34,6 +34,7 @@ import ProductZoomer from 'vue-product-zoomer'
 		        }else{
 		            console.log('Update by emit2')
 		            console.log('parentmodel2',this.model)
+		            console.log('dataMainModel',dataMainModel)
 		        }
 		    })
 		},
@@ -46,343 +47,170 @@ import ProductZoomer from 'vue-product-zoomer'
                     "public/documents/unknown.jpg"
                   ],
                 model: {
-                    "type":"",
-                    "subtype":"",
-                    "valid":"true",
-                    "electorCode":"",
-                    "names":"",
-                    "lastNamePaternal":"",
-                    "lastNameMaternal":"",
-                    "ifeEmissionNumber":"",
-                    "ifeVerticalNumber":"",
-                    "ifeIdCode":"",
-                    "gender":"M",
-                    "dateOfBirth":"",
-                    "birthState":"",
-                    "remedy":"",
-                    "terminal":"",
-                    "images":[],
-                    "validateImages":{},
-                    "validationTime": ""
+                    "debtAcquisitionLetters": []
                  },
                 schema: {
- "forms": [
-  {
-    "id": "dataCapture",
-    "label": "Captura de Datos",
-    "helpUrl": "todo.html",
-    "helpIcon": "true",
-    "fields": [
-    {
-        "groups":[
-            {
-                "legend":"Datos Capturados",
-                "key":"idType1",
-                "fields":[
-{
-        "resultPathNode": "type",
-        "model": "type",
-        "type": "dropdown",
-        "label": "Tipo de Identificación",
-        "hint": "Tipo de Identificación",
-        "required": "true",
-        "options": [
-          {
-            "id": "passport",
-            "name": "Pasaporte"
-          },
-          {
-            "id": "ife",
-            "name": "Credencial de Elector"
-          },
-          {
-            "id": "unknown",
-            "name": "Desconocido o Equivocado",
-            "terminal": true,
-            "document": "ife",
-            "remedy": {
-              "type": "uploadDocument",
-              "options": {
-                "multiPage": true
-              },
-              "label": "Favor de proporcionar una identificación oficial válida, IFE por ambos lados o pasaporte",
-              "cause": "Documento desconocido o equivocado"
-            }
-          },
-          {
-            "id": "low-quality",
-            "name": "Borroso, incompleto o de baja calidad",
-            "terminal": true,
-            "document": "ife",
-            "remedy": {
-              "type": "uploadDocument",
-              "options": {
-                "multiPage": true
-              },
-              "label": "Favor de proporcionar una identificación oficial válida, IFE por ambos lados o pasaporte",
-              "cause": "Documento incompleto o ilegible"
-            }
-          }
-        ]
-      },
-      {
-        "resultPathNode": "subtype",
-        "model": "subtype",
-        "type": "dropdown",
-        "label": "Modelo de IFE",
-        "hint": "Tipo de documento",
-        "required": "true",
-        "options": [
-          {
-            "id": "ife-a",
-            "name": "IFE Tipo A",
-            "terminal": true,
-            "remedy": {
-              "type": "uploadDocument",
-              "options": {
-                "multiPage": true
-              },
-              "label": "Favor de proporcionar una identificación oficial válida, IFE por ambos lados o pasaporte",
-              "cause": "IFE vencido"
-            }
-          },
-          {
-            "id": "ife-b",
-            "name": "IFE Tipo B"
-          },
-          {
-            "id": "ife-c",
-            "name": "IFE Tipo C"
-          },
-          {
-            "id": "ife-d",
-            "name": "IFE Tipo D"
-          },
-          {
-            "id": "ife-e",
-            "name": "IFE Tipo E"
-          }
-        ],
-        "conditionalShow": "model.type == 'ife'"
-      },
-      {
-        "resultPathNode": "valid",
-        "model": "valid",
-        "type": "dropdown",
-        "label": "Vigencia",
-        "hint": "Vigencia de credencial",
-        "required": "true",
-        "options": [
-          {
-            "id": "true",
-            "name": "Vigente"
-          },
-          {
-            "id": "false",
-            "name": "Expirada",
-            "terminal": true,
-            "remedy": {
-              "type": "uploadDocument",
-              "options": {
-                "multiPage": true
-              },
-              "label": "Favor de proporcionar una identificación oficial válida, IFE por ambos lados o pasaporte",
-              "cause": "Identificación vencida"
-            }
-          }
-        ]
-      },
-      {
-        "resultPath": "electorCode",
-        "model": "electorCode",
-        "type": "textbox",
-        "label": "Clave de Elector",
-        "hint": "Clave electoral de identificación",
-        "required": "true",
-        "disabled": "model.terminal == true",
-        "conditionalShow": "model.type == 'ife' && model.terminal != true"
-      },
-      {
-        "resultPath": "names",
-        "model": "names",
-        "type": "textbox",
-        "label": "Nombres",
-        "hint": "Nombre",
-        "conditionalShow": "model.terminal != true",
-        "disabled": "model.terminal == true",
-        "required": "true"
-      },
-      {
-        "resultPath": "lastNamePaternal",
-        "model": "lastNamePaternal",
-        "type": "textbox",
-        "label": "Apellido Paterno",
-        "hint": "Apellido Paterno",
-        "required": "true",
-        "disabled": "model.terminal == true",
-        "conditionalShow": "(model.type != 'ife' || model.electorCode.substring(0, 2) != 'XX') && model.terminal != true"
-      },
-      {
-        "resultPath": "lastNameMaternal",
-        "model": "lastNameMaternal",
-        "type": "textbox",
-        "label": "Apellido Materno",
-        "hint": "Apellido Materno",
-        "required": "true",
-        "disabled": "model.terminal == true",
-        "conditionalShow": "model.terminal != true && (model.type.substring(0, 3) != 'ife' || model.electorCode.substring(2, 4) != 'XX')"
-      },
-      {
-        "resultPath": "ifeEmissionNumber",
-        "model": "ifeEmissionNumber",
-        "type": "textbox",
-        "label": "Número de Emisión",
-        "hint": "Número de Emisión de la credencial",
-        "required": "true",
-        "disabled": "model.terminal == true",
-        "conditionalShow": "model.terminal != true && (model.subtype == 'ife-a' || model.subtype == 'ife-b' || model.subtype == 'ife-c')",
-        "mask":"NNNNNNN"
-      },
-      {
-        "resultPath": "ifeVerticalNumber",
-        "model": "ifeVerticalNumber",
-        "type": "textbox",
-        "label": "Número Vertical (OCR)",
-        "hint": "Número Vertical (OCR)",
-        "required": "true",
-        "disabled": "model.terminal == true",
-        "conditionalShow": "model.terminal != true && (model.subtype == 'ife-a' || model.subtype == 'ife-b' || model.subtype == 'ife-c')",
-        "mask":"###############"
-      },
-      {
-        "resultPath": "ifeIdCode",
-        "model": "ifeIdCode",
-        "type": "textbox",
-        "label": "Código de Identificación de la Credencial (CIC)",
-        "hint": "Código de Identificación de la Credencial (CIC)",
-        "required": "true",
-        "disabled": "model.terminal == true",
-        "conditionalShow": "model.terminal != true && (model.subtype == 'ife-d' || model.subtype == 'ife-e')",
-        "mask":"###############"
-      },
-      {
-        "resultPath": "dateOfBirth",
-        "model": "dateOfBirth",
-        "type": "date",
-        "label": "Fecha de Nacimiento",
-        "hint": "Fecha de Nacimiento",
-        "required": "true",
-        "disabled": "model.terminal == true",
-        "conditionalShow": "model.terminal != true && (model.type == 'passport')"
-      },
-      {
-        "resultPath": "gender",
-        "model": "gender",
-        "type": "radio",
-        "label": "Género",
-        "hint": "Género",
-        "required": "true",
-        "mandatory": "false",
-        "conditionalShow": "model.terminal != true && (model.type != 'unknown' && model.type != 'low-quality' )",
-        "options": [
-          { "id": "M", "name": "Masculino"},
-          { "id": "F", "name": "Femenino"}
-        ]
-      },
-      {
-        "resultPath": "birthState",
-        "model": "birthState",
-        "type": "dropdown",
-        "label": "Entidad Federativa de Nacimiento",
-        "hint": "Entidad Federativa de Nacimiento",
-        "conditionalShow": "model.terminal != true && (model.type != 'ife')",
-        "disabled": "model.terminal == true",
-        "required": "true",
-        "options": [
-          { "id": "AS", "name": "Aguascalientes"},
-          { "id": "BC", "name": "Baja California"},
-          { "id": "BS", "name": "Baja California Sur"},
-          { "id": "CC", "name": "Campeche"},
-          { "id": "CS", "name": "Chiapas"},
-          { "id": "CH", "name": "Chihuahua"},
-          { "id": "CL", "name": "Coahuila"},
-          { "id": "CM", "name": "Colima"},
-          { "id": "DF", "name": "Distrito Federal"},
-          { "id": "DG", "name": "Durango"},
-          { "id": "GT", "name": "Guanajuato"},
-          { "id": "GR", "name": "Guerrero"},
-          { "id": "HG", "name": "Hidalgo"},
-          { "id": "JC", "name": "Jalisco"},
-          { "id": "MC", "name": "México"},
-          { "id": "MN", "name": "Michoacan"},
-          { "id": "MS", "name": "Morelos"},
-          { "id": "NT", "name": "Nayarit"},
-          { "id": "NL", "name": "Nuevo León"},
-          { "id": "OC", "name": "Oaxaca"},
-          { "id": "PL", "name": "Puebla"},
-          { "id": "QT", "name": "Querétaro"},
-          { "id": "QR", "name": "Quintana Roo"},
-          { "id": "SP", "name": "San Luis Potosí"},
-          { "id": "SL", "name": "Sinaloa"},
-          { "id": "SR", "name": "Sonora"},
-          { "id": "TC", "name": "Tabasco"},
-          { "id": "TL", "name": "Tlaxcala"},
-          { "id": "TS", "name": "Tamaulipas"},
-          { "id": "VZ", "name": "Veracruz"},
-          { "id": "YN", "name": "Yucatán"},
-          { "id": "ZS", "name": "Zacatecas"},
-          { "id": "NE", "name": "Nacido en el Extranjero"}
-        ]
-      }
-
-
-
-
-                ]
-            },
-            {
-                "legend":"Captura de pantalla",
-                "key":"idType2",
-                "fields":[
-                    {
-                      "model": "linkVerificación",
-                      "type": "button",
-                      "label": "Verifica documento",
-                      "disabled": "model.terminal == true",
-                      "href": "((model.type == 'ife')?((model.subtype == 'ife-a' || model.subtype == 'ife-b' || model.subtype == 'ife-c')?'https://listanominal.ine.mx/scpln/src/consultaModeloA.html':((model.subtype == 'ife-d')?'https://listanominal.ine.mx/scpln/src/consultaModeloD.html':((model.subtype == 'ife-e')?'https://listanominal.ine.mx/scpln/src/consultaModeloE.html':''))):'')"
-                      ,"target": "_blank"
-                    },
-                    {
-                        "resultPath": "validateProof",
-                        "model": "validateProof",
-                        "type": "radio",
-                        "label": "Documento",
-                        "hint": "El documento concuerda con la verificacón externa",
-                        "required": "true",
-                        "mandatory": "false",
-                        "conditionalShow": "model.terminal != true && (model.type != 'unknown' && model.type != 'low-quality' )",
-                        "options": [
-                          { "id": "true", "name": "Válido"},
-                          { "id": "false", "name": "Inválido"}
+                    "forms": [
+                      {
+                        "id": "dataCapture",
+                        "label": "Captura de Datos",
+                        "helpUrl": "todo.html",
+                        "helpIcon": "true",
+                        "fields": [
+                            {
+                                "resultPathNode": "debtAcquisitionLetters",
+                                "model": "debtAcquisitionLetters",
+                                "type": "dataGrid",
+                                "table": {
+                                    "headers":[
+                                        {
+                                          text: "Acreedor/Titular del Crédito",
+                                          value: "creditorName",
+                                          align: 'center',
+                                          sortable: true,
+                                          class: '',
+                                          field:{
+                                            "model": "creditorName",
+                                            "type": "textbox",
+                                            "hint": "Nombre Acreedor/Titular del Crédito",
+                                            "label": "Acreedor/Titular del Crédito",
+                                            "conditionalShow": "true",
+                                            "required": "true",
+                                          }
+                                        },
+                                        {
+                                          text: "Folio del crédito",
+                                          value: "creditFolio",
+                                          align: 'center',
+                                          sortable: true,
+                                          class: '',
+                                          field:{
+                                            "model": "creditFolio",
+                                            "type": "textbox",
+                                            "label": "Folio del crédito",
+                                            "hint": "Número de Folio del Crédito",
+                                            "conditionalShow": "true",
+                                            "required": "true",
+                                          }
+                                        },
+                                        {
+                                          text: "Fecha de otorgamiento",
+                                          value: "grantDate",
+                                          align: 'center',
+                                          sortable: true,
+                                          class: '',
+                                          field:{
+                                            "model": "grantDate",
+                                            "type": "date",
+                                            "label": "Fecha de otorgamiento",
+                                            "hint": "Fecha en que se otrogo el crédito",
+                                            "conditionalShow": "true",
+                                            "required": "true",
+                                          }
+                                        },
+                                        {
+                                          text: "Monto principal (Pesos M.N)",
+                                          value: "principalAmount",
+                                          align: 'right',
+                                          sortable: true,
+                                          class: '',
+                                          field:{
+                                            "model": "principalAmount",
+                                            "type": "textbox",
+                                            "label": "Monto principal (Pesos M.N)",
+                                            "hint": "Monto total del crédito",
+                                            "conditionalShow": "true",
+                                            "required": "true",
+                                          }
+                                        },
+                                        {
+                                          text: "Saldo Insoluto (Pesos M.N)",
+                                          value: "outstandingBalance",
+                                          align: 'right',
+                                          sortable: true,
+                                          class: '',
+                                          field:{
+                                            "model": "outstandingBalance",
+                                            "type": "textbox",
+                                            "label": "Saldo Insoluto (Pesos M.N)",
+                                            "hint": "Saldo Insoluto del crédito",
+                                            "conditionalShow": "true",
+                                            "required": "true",
+                                          }
+                                        },
+                                        {
+                                          text: "Plazo",
+                                          value: "terms",
+                                          align: 'right',
+                                          sortable: true,
+                                          class: '',
+                                          visible:false,
+                                          field:{
+                                            "model": "terms",
+                                            "type": "number",
+                                            "label": "Plazo",
+                                            "hint": "Plazo",
+                                            "conditionalShow": "true",
+                                            "required": "true",
+                                            "mask": "###",
+                                          }
+                                        },
+                                        {
+                                          text: "Periodo",
+                                          value: "periodicity",
+                                          align: 'center',
+                                          sortable: true,
+                                          class: '',
+                                          field:{
+                                              "model": "periodicity",
+                                              "type": "dropdownObject",
+                                              "label": "Periodo",
+                                              "hint": "Tipo de periodo",
+                                              "required": "true",
+                                              "options": [
+                                                {
+                                                    "id": "biMonthly",
+                                                    "name": "Quincenal"
+                                                },
+                                                {
+                                                    "id": "monthly",
+                                                    "name": "Mensual"
+                                                },
+                                                {
+                                                    "id": "twoWeeks",
+                                                    "name": "Catorcenal"
+                                                },
+                                                {
+                                                    "id": "weekly",
+                                                    "name": "Semanal"
+                                                }
+                                              ]
+                                          }
+                                        }
+                                    ],
+                                    "filter":"",
+                                    "sort":"",
+                                    "expand":false,
+                                    "hide-actions":false,
+                                    "hide-headers":false,
+                                    "loading":false,
+                                    "no-data-text":"No hay registros",
+                                    "select-all":"false"
+                                },
+                                "items":[],
+                                "defaultItem":{
+                                  "creditorName": "",
+                                  "creditFolio": "",
+                                  "grantDate": "2018-01-01",
+                                  "principalAmount": 0,
+                                  "outstandingBalance": 0,
+                                  "terms": 0,
+                                  "periodicity": { "id": "months","name": "Meses"}
+                                }
+                            }
                         ]
-                    },
-                    {
-                      "resultPath": "validateImages",
-                      "model": "validateImages",
-                      "type": "textareaImage",
-                      "label": "Pegar evidencia de captura de pantalla aquí",
-                      "hint": "Copia la imagen de la liga de verificación",
-                      "required": "true",
-                      "readonly": "true",
-                      "disabled": "model.terminal == true"
-                    }
-                ]
-            }
-        ]
-    },
-    ]
-  }
-]
+                      }
+                    ]
                 },
                 options: {},
                 context:{}

@@ -187,6 +187,7 @@
 		<div v-else-if="field.type == 'dataGrid'">
             <v-form-generator-dataGrid
                             ref="dataGrid"
+                            v-model="localValue"
                             :modelSelected="localModel"
                             :field="field"
                             :table="field.table"
@@ -217,13 +218,13 @@
 		<div v-else-if="field.type == 'textbox'">
 			 <v-text-field
 		      v-model="localValue"
-		      :label="field.label"
+		      :label="((options)?options.label:false) || field.label"
 		      :required="evalInContextValue(field.required)"
 		      :readonly="evalInContextValue(field.readonly)"
 		      :disabled="evalInContextDisabled( field.disabled || false )"
-		      :placeholder="field.placeholder"
-			  :counter="field.counter"
-			  :hint="field.hint"
+		      :placeholder="((options)?options.placeholder:false) || field.placeholder"
+			  :counter="((options)?options.counter:false) || field.counter"
+			  :hint="((options)?options.hint:false) || field.hint"
 			  :mask="field.mask"
 			  v-if="evalInContext( field.conditionalShow||true )"
 		      @blur="onBlur"
@@ -286,33 +287,13 @@
              ></v-autocomplete>
         </div>
         <div v-else-if="field.type == 'date'">
-			 <v-menu
-                 ref="menu"
-                 :close-on-content-click="false"
-                 v-model="menu"
-                 :nudge-right="40"
-                 lazy
-                 transition="scale-transition"
-                 offset-y
-                 full-width
-                 min-width="290px"
-                 v-if="evalInContext( field.conditionalShow||true )"
-               >
-                 <v-text-field
-                   slot="activator"
-                   v-model="localValue"
-                   :label="field.label"
-                   :disabled="evalInContextDisabled( field.disabled || false )"
-                   readonly
-                 ></v-text-field>
-                 <v-date-picker
-                   ref="picker"
-                   v-model="localValue"
-                   :max="new Date().toISOString().substr(0, 10)"
-                   min="1950-01-01"
-                   @change="save"
-                 ></v-date-picker>
-               </v-menu>
+            <datePicker
+                :field="field"
+                :value="model[field.model]"
+                :model="model"
+                v-bind.sync="model"
+            />
+
         </div>
 
 		<div v-else>
@@ -343,21 +324,25 @@
 </template>
 
 <script>
-import eventHub from './components/eventHub'
+import eventHub from './eventHub'
+import datePicker from './datePicker'
+
 	export default{
-		name: 'v-form-generator-field',
+		name: 'v-form-generator-field-component',
 		props: {
 			field: Object,
 			value: null,
 			menu: false,
 			model: Object,
 			select: null,
-			show: null
+			show: null,
+			options:Object
 		},
         components: {
-            'v-form-generator-field-dialogBox': require('./components/dialogBox.vue').default,
-            'v-form-generator-imageCapture': require('./components/ImageCapture.vue').default,
-            'v-form-generator-dataGrid': require('./components/dataGrid.vue').default
+            'v-form-generator-field-dialogBox': require('./dialogBox.vue').default,
+            'v-form-generator-imageCapture': require('./ImageCapture.vue').default,
+            'v-form-generator-dataGrid': require('./dataGrid.vue').default,
+            "datePicker":datePicker
         },
 		computed:{
 			appendiconHelp(){
@@ -443,6 +428,7 @@ import eventHub from './components/eventHub'
 			},
             onChangeSelectObject: function(selected){
                 eventHub.$emit('updatefield', {field:this.field.model, value:selected})
+                this.$emit('update:'+this.field.model, selected)
 
                 if((selected.id == 'unknown' || selected.id == 'low-quality') && this.field.document){
                     eventHub.$emit('updatefield', {field:'subtype', value:this.field.document})
@@ -474,7 +460,8 @@ import eventHub from './components/eventHub'
 				this.$emit('focus')
 			},
 			onInput: function(){
-				eventHub.$emit('updatefield', {field:this.field.model, value:this.localValue})
+				//eventHub.$emit('updatefield', {field:this.field.model, value:this.localValue})
+				this.$emit('update:'+this.field.model, this.localValue)
 			},
 			onInputCalculated: function(){
 			    this.localValue = 123;

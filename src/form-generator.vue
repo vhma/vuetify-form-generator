@@ -359,7 +359,6 @@ import ProductZoomer from 'vue-product-zoomer'
             },
             updateModel:function(value){
                 this.$root.$emit('updateparentmodel', value)
-
             },
             showHelp:function(){
                 this.dialoghelp = !this.dialoghelp
