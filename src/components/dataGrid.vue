@@ -55,10 +55,12 @@
                 <td v-if=" header.value == itemkey ">
                     <v-edit-dialog
                         lazy
-                        @save="saveItem"
-                        @cancel="cancelItem"
-                        @open="openItem"
-                        @close="closeItem"
+                        large
+                        :return-value.sync="props.item[itemkey]"
+                        @save="saveItem(props)"
+                        @cancel="cancelItem(props)"
+                        @open="openItem(props)"
+                        @close="closeItem(props)"
                     >
                     <div>
                         <span v-if="item.id">{{ item.name }}</span>
@@ -71,6 +73,7 @@
                             :value="props.item[itemkey]"
                             :model="props.item"
                             :options="{ label:' ',hint:' ' }"
+                            :return-value.sync="props.item[itemkey]"
                             v-bind.sync="props.item"
                            />
                     </v-edit-dialog>
@@ -124,7 +127,8 @@ import dataGridEditbox from './dataGrid-editbox.vue';
                 dataItems: [],
                 editedIndex: -1,
                 editedItem: {},
-                formGridInput:"formGridInput"
+                formGridInput:"formGridInput",
+                localCancelItem:{}
             }
         },
         computed:{
@@ -263,23 +267,36 @@ import dataGridEditbox from './dataGrid-editbox.vue';
                 this.updateModel(this.dataItems);
                 this.close()
             },
-            saveItem () {
+            saveItem (item) {
+                //save the current item
+                Object.assign(this.dataItems[this.editedIndex], this.editedItem)
+                this.updateModel(this.dataItems);
+
                 this.snack = true
                 this.snackColor = 'success'
                 this.snackText = 'Data saved'
             },
-            cancelItem () {
+            cancelItem (item) {
                 this.snack = true
                 this.snackColor = 'error'
                 this.snackText = 'Canceled'
+
+                //Reset variables
+                this.localCancelItem = {}
             },
-            openItem () {
+            openItem (item) {
+                //TODO:prevItem for cancel tasks
+                this.editedIndex = item.index;
+                this.editedItem = item.item;
+                this.localCancelItem = JSON.parse(JSON.stringify(item.item));
+
                 this.snack = true
                 this.snackColor = 'info'
                 this.snackText = 'Dialog opened'
             },
-            closeItem () {
+            closeItem (item) {
                 console.log('Dialog closed')
+                this.close();
             },
             cleanModel(){
                 var self = this; //you need this because *this* will refer to Object.keys below`
@@ -297,6 +314,7 @@ import dataGridEditbox from './dataGrid-editbox.vue';
             },
             updateModel:function(value){
                eventHub.$emit('updatefield', {field:this.field.model, value: JSON.parse(JSON.stringify(value)) })
+               //this.$emit('updatefield', {field:this.field.model, value: JSON.parse(JSON.stringify(value)) })
                 //this.$emit('update:'+this.field.model, JSON.parse(JSON.stringify(value)))
             },
             getDataHeader(key) {

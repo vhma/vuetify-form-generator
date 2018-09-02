@@ -442,7 +442,7 @@ import datePicker from './datePicker'
                 }
 			},
             onChangeSelectObject: function(selected){
-                eventHub.$emit('updatefield', {field:this.field.model, value:selected})
+                //eventHub.$emit('updatefield', {field:this.field.model, value:selected})
                 this.$emit('update:'+this.field.model, selected)
 
                 if((selected.id == 'unknown' || selected.id == 'low-quality') && this.field.document){
