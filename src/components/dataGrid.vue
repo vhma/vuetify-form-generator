@@ -48,7 +48,7 @@
       rows-per-page-text="Registros"
     >
       <template slot="items" slot-scope="props">
-            <td v-for="(item, key) in props.item" :key="key">
+            <td v-for="(item, key, index) in props.item" :key="index">
                 <v-edit-dialog
                     lazy
                     @save="saveItem"
@@ -135,6 +135,15 @@ import dataGridEditbox from './dataGrid-editbox.vue';
                     //this.editedItem = Object.assign({}, this.editedItem, value);
                     this.editedItem = JSON.parse(JSON.stringify(value));
                 }
+            },
+            getHeaderGrid:{
+                get(){
+                    return this.editedItem
+                },
+                set (value) {
+                    //this.editedItem = Object.assign({}, this.editedItem, value);
+                    this.editedItem = JSON.parse(JSON.stringify(value));
+                }
             }
         },
         watch: {
@@ -144,7 +153,10 @@ import dataGridEditbox from './dataGrid-editbox.vue';
             this.initialize()
         },
         beforeMount(){
-            this.editedItem = JSON.parse(JSON.stringify(this.localDefaultItem));
+        debugger;
+            //this.editedItem = JSON.parse(JSON.stringify(this.localDefaultItem));
+
+            this.editedItem = Object.assign({}, this.localDefaultItem)
         },
         methods:{
             evalInContextValue(string){
@@ -286,6 +298,7 @@ import dataGridEditbox from './dataGrid-editbox.vue';
                 }
             },
             updateModel:function(value){
+            debugger;
                eventHub.$emit('updatefield', {field:this.field.model, value: JSON.parse(JSON.stringify(value)) })
                 //this.$emit('update:'+this.field.model, JSON.parse(JSON.stringify(value)))
             },

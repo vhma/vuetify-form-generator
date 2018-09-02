@@ -47,7 +47,20 @@ import ProductZoomer from 'vue-product-zoomer'
                     "public/documents/unknown.jpg"
                   ],
                 model: {
-                    "debtAcquisitionLetters": []
+                    "debtAcquisitionLetters": [
+{
+  "creditFolio": "folio 334",
+  "creditorName": "Compañía a pagar",
+  "grantDate": "2018-04-25",
+  "outstandingBalance": 3456.67,
+  "periodicity": {
+    "id": "months",
+    "name": "Meses"
+  },
+  "principalAmount": 50000.45,
+  "terms": 20
+}
+                    ]
                  },
                 schema: {
 "forms":[
