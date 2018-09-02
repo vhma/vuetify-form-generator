@@ -64,7 +64,7 @@
                         <span v-if="item.id">{{ item.name }}</span>
                         <span v-else>{{ item }}</span>
                     </div>
-                    <div slot="input" class="mt-3 title">Actualizar {{ header.text }}</div>
+                    <div slot="input" class="mt-3 title title-dialog">Actualizar {{ header.text }}</div>
                         <formFields
                             slot="input"
                             :field="header.field"
@@ -77,6 +77,9 @@
                 </td>
             </template>
         </template>
+        <td class="justify-center layout px-1">
+          <v-icon small @click="deleteItem(props.item)" > delete  </v-icon>
+        </td>
       </tr>
       </template>
 
