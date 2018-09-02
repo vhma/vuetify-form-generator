@@ -47,39 +47,37 @@
       class="elevation-1"
       rows-per-page-text="Registros"
     >
-      <template slot="items" slot-scope="props">
-            <td v-for="(item, key, index) in props.item" :key="index">
-                <v-edit-dialog
-                    lazy
-                    @save="saveItem"
-                    @cancel="cancelItem"
-                    @open="openItem"
-                    @close="closeItem"
-                >
-                <div>
-                    <span v-if="item.id">{{ item.name }}</span>
-                    <span v-else>{{ item }}</span>
-                </div>
-                <div slot="input" class="mt-3 title">Actualizar {{ getDataHeader(key).text }}</div>
-                    <formFields
-                        slot="input"
-                        :field="getDataHeader(key).field"
-                        :value="props.item[key]"
-                        :model="props.item"
-                        :options="{ label:' ',hint:' ' }"
-                        v-bind.sync="props.item"
-                       />
-                </v-edit-dialog>
 
-            </td>
-            <td class="justify-center layout px-1">
-              <v-icon
-                small
-                @click="deleteItem(props.item)"
-              >
-                delete
-              </v-icon>
-            </td>
+      <template slot="items" slot-scope="props">
+      <tr>
+        <template v-for="(header,headerkey) in headers">
+            <template v-for="(item,itemkey) in props.item">
+                <td v-if=" header.value == itemkey ">
+                    <v-edit-dialog
+                        lazy
+                        @save="saveItem"
+                        @cancel="cancelItem"
+                        @open="openItem"
+                        @close="closeItem"
+                    >
+                    <div>
+                        <span v-if="item.id">{{ item.name }}</span>
+                        <span v-else>{{ item }}</span>
+                    </div>
+                    <div slot="input" class="mt-3 title">Actualizar {{ header.text }}</div>
+                        <formFields
+                            slot="input"
+                            :field="header.field"
+                            :value="props.item[itemkey]"
+                            :model="props.item"
+                            :options="{ label:' ',hint:' ' }"
+                            v-bind.sync="props.item"
+                           />
+                    </v-edit-dialog>
+                </td>
+            </template>
+        </template>
+      </tr>
       </template>
 
       <template slot="no-data">
@@ -153,10 +151,9 @@ import dataGridEditbox from './dataGrid-editbox.vue';
             this.initialize()
         },
         beforeMount(){
-        debugger;
-            //this.editedItem = JSON.parse(JSON.stringify(this.localDefaultItem));
+            this.editedItem = JSON.parse(JSON.stringify(this.localDefaultItem));
 
-            this.editedItem = Object.assign({}, this.localDefaultItem)
+            //this.editedItem = Object.assign({}, this.localDefaultItem)
         },
         methods:{
             evalInContextValue(string){
@@ -248,9 +245,7 @@ import dataGridEditbox from './dataGrid-editbox.vue';
                 this.$refs.formGrid.reset();
                 /**
                 this.$refs.formGrid.$children.forEach(function(i,idx){
-                debugger;
                     if(i.$refs.formGridInput){
-                        debugger;
                         i.$refs.formGridInput.value=''
                     }
 
@@ -298,12 +293,10 @@ import dataGridEditbox from './dataGrid-editbox.vue';
                 }
             },
             updateModel:function(value){
-            debugger;
                eventHub.$emit('updatefield', {field:this.field.model, value: JSON.parse(JSON.stringify(value)) })
                 //this.$emit('update:'+this.field.model, JSON.parse(JSON.stringify(value)))
             },
             getDataHeader(key) {
-            debugger;
                 var dataHeader={};
 
                 for(var i=0; i<this.headers.length;i++ ){

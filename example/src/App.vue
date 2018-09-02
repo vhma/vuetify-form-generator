@@ -211,13 +211,16 @@ import ProductZoomer from 'vue-product-zoomer'
           },
           "items":[],
           "defaultItem":{
-            "creditorName": "",
-            "creditFolio": "",
-            "grantDate": "2018-01-01",
-            "principalAmount": 0,
-            "outstandingBalance": 0,
-            "terms": 0,
-            "periodicity": { "id": "months","name": "Meses"}
+  "creditFolio": "",
+  "creditorName": "",
+  "grantDate": "2018-01-01",
+  "outstandingBalance": "",
+  "periodicity": {
+    "id": "months",
+    "name": "Meses"
+  },
+  "principalAmount": "",
+  "terms": ""
           }
         }
       ]
