@@ -47,181 +47,253 @@ import ProductZoomer from 'vue-product-zoomer'
                     "public/documents/unknown.jpg"
                   ],
                 model: {
-                    "debtAcquisitionLetters": [
-{
-  "creditFolio": "folio 334",
-  "creditorName": "Compañía a pagar",
-  "grantDate": "2018-04-25",
-  "outstandingBalance": 3456.67,
-  "periodicity": {
-    "id": "months",
-    "name": "Meses"
-  },
-  "principalAmount": 50000.45,
-  "terms": 20
-}
-                    ]
+    "type":"cfe",
+    "streetName":"",
+    "externalNumber":"",
+    "settlementName":"",
+    "zip":"",
+    "county":"",
+    "city":"",
+    "stateName":"",
+    "country":"",
+
+    "serviceNumber":"",
+    "serviceName":"",
+    "images":"",
+    "validationTime":""
                  },
                 schema: {
-"forms":[
+  "forms":[
     {
-      "id": "dataCapture",
-      "label": "Captura de Datos",
-      "helpUrl": "todo.html",
-      "helpIcon": "true",
-      "fields": [
+      "id":"dataCapture",
+      "label":"Validación de Comprobante CFE",
+      "helpUrl":"todo.html",
+      "helpIcon":"false",
+      "fields":[
         {
-          "resultPathNode": "debtAcquisitionLetters",
-          "model": "debtAcquisitionLetters",
-          "type": "dataGrid",
-          "table": {
-            "headers":[
-              {
-                "text": "Acreedor/Titular del Crédito",
-                "value": "creditorName",
-                "align": "center",
-                "sortable": true,
-                "class": "",
-                "field":{
-                  "model": "creditorName",
-                  "type": "textbox",
-                  "hint": "Nombre Acreedor/Titular del Crédito",
-                  "label": "Acreedor/Titular del Crédito",
-                  "conditionalShow": "true",
-                  "required": "true"
-                }
-              },
-              {
-                "text": "Folio del crédito",
-                "value": "creditFolio",
-                "align": "center",
-                "sortable": true,
-                "class": "",
-                "field":{
-                  "model": "creditFolio",
-                  "type": "textbox",
-                  "label": "Folio del crédito",
-                  "hint": "Número de Folio del Crédito",
-                  "conditionalShow": "true",
-                  "required": "true"
-                }
-              },
-              {
-                "text": "Fecha de otorgamiento",
-                "value": "grantDate",
-                "align": "center",
-                "sortable": true,
-                "class": "",
-                "field":{
-                  "model": "grantDate",
-                  "type": "date",
-                  "label": "Fecha de otorgamiento",
-                  "hint": "Fecha en que se otrogo el crédito",
-                  "conditionalShow": "true",
-                  "required": "true"
-                }
-              },
-              {
-                "text": "Monto principal (Pesos M.N)",
-                "value": "principalAmount",
-                "align": "center",
-                "sortable": true,
-                "class": "",
-                "field":{
-                  "model": "principalAmount",
-                  "type": "textbox",
-                  "label": "Monto principal (Pesos M.N)",
-                  "hint": "Monto total del crédito",
-                  "conditionalShow": "true",
-                  "required": "true"
-                }
-              },
-              {
-                "text": "Saldo Insoluto (Pesos M.N)",
-                "value": "outstandingBalance",
-                "align": "center",
-                "sortable": true,
-                "class": "",
-                "field":{
-                  "model": "outstandingBalance",
-                  "type": "textbox",
-                  "label": "Saldo Insoluto (Pesos M.N)",
-                  "hint": "Saldo Insoluto del crédito",
-                  "conditionalShow": "true",
-                  "required": "true"
-                }
-              },
-              {
-                "text": "Plazo",
-                "value": "terms",
-                "align": "center",
-                "sortable": true,
-                "class": "",
-                "visible":false,
-                "field":{
-                  "model": "terms",
-                  "type": "number",
-                  "label": "Plazo",
-                  "hint": "Plazo",
-                  "conditionalShow": "true",
-                  "required": "true",
-                  "mask": "###"
-                }
-              },
-              {
-                "text": "Periodo",
-                "value": "periodicity",
-                "align": "center",
-                "sortable": true,
-                "class": "",
-                "field":{
-                  "model": "periodicity",
-                  "type": "dropdownObject",
-                  "label": "Periodo",
-                  "hint": "Tipo de periodo",
-                  "required": "true",
-                  "options": [
+          "groups":[
+            {
+              "legend":"Datos Capturados",
+              "key":"idType1",
+              "fields":[
+                {
+                  "resultPathNode": "type",
+                  "model": "type",
+                  "type": "dropdown",
+                  "label": "Valida Recibo",
+                  "hint": "Selecciona",
+                  "required": true,
+                  "options":[
                     {
-                      "id": "biMonthly",
-                      "name": "Quincenal"
+                      "id": "cfe",
+                      "name": "CFE"
                     },
                     {
-                      "id": "monthly",
-                      "name": "Mensual"
+                      "id":"unknown",
+                      "name":"Desconocido o Equivocado",
+                      "terminal":"true",
+                      "remedy":{
+                        "type":"uploadDocument",
+                        "options":{
+                          "multiPage":true
+                        },
+                        "label":"Favor de proporcionar un comprobante válido",
+                        "cause":"Documento desconocido o equivocado"
+                      }
                     },
                     {
-                      "id": "twoWeeks",
-                      "name": "Catorcenal"
-                    },
-                    {
-                      "id": "weekly",
-                      "name": "Semanal"
+                      "id":"low-quality",
+                      "name":"Borroso, incompleto o de baja calidad",
+                      "terminal":true,
+                      "remedy":{
+                        "type":"uploadDocument",
+                        "options":{
+                          "multiPage":true
+                        },
+                        "label": "Favor de proporcionar un comprobante válido",
+                        "cause": "Documento incompleto o ilegible"
+                      }
                     }
                   ]
+                },
+                {
+                  "resultPath": "streetName",
+                  "model": "streetName",
+                  "type": "textbox",
+                  "label": "Calle",
+                  "hint": "Nombre de la Calle",
+                  "required": "true",
+                  "disabled": "model.terminal == true",
+                  "conditionalShow": "model.terminal != true"
+                },
+                {
+                  "resultPath": "externalNumber",
+                  "model": "externalNumber",
+                  "type": "textbox",
+                  "label": "Número Exterior/Interior",
+                  "hint": "Número Exterior",
+                  "required": "true",
+                  "disabled": "model.terminal == true",
+                  "conditionalShow": "model.terminal != true"
+                },
+                {
+                  "resultPath": "settlementName",
+                  "model": "settlementName",
+                  "type": "textbox",
+                  "label": "Colonia",
+                  "hint": "Colonia, Ejido, Ranchería, etc",
+                  "required": "true",
+                  "disabled": "model.terminal == true",
+                  "conditionalShow": "model.terminal != true"
+                },
+                {
+                  "resultPath": "zip",
+                  "model": "zip",
+                  "type": "textbox",
+                  "label": "Código Postal",
+                  "hint": "Código Postal",
+                  "required": "true",
+                  "disabled": "model.terminal == true",
+                  "conditionalShow": "model.terminal != true",
+                  "mask":"#######"
+                },
+                {
+                  "resultPathNode": "county",
+                  "model": "county",
+                  "targettext": "county",
+                  "type": "textbox",
+                  "label": "Municipio",
+                  "hint": "Ingresa el municipio del estado",
+                  "required": "true",
+                  "conditionalShow": ""
+                },
+                {
+                  "resultPathNode": "city",
+                  "model": "city",
+                  "type": "textbox",
+                  "label": "Ciudad",
+                  "hint": "Selecciona Ciudad",
+                  "required": "true",
+                  "conditionalShow": "model.terminal != true"
+                },
+                {
+                  "resultPathNode": "stateName",
+                  "model": "stateName",
+                  "type": "autocompleteObject",
+                  "label": "Estado",
+                  "hint": "Selecciona un estado",
+                  "required": "true",
+                  "conditionalShow": "",
+                  "options": [
+                    {"id":"AS","name":"Aguascalientes"},
+                    {"id":"BC","name":"Baja California"},
+                    {"id":"BS","name":"Baja California Sur"},
+                    {"id":"CC","name":"Campeche"},
+                    {"id":"CS","name":"Chiapas"},
+                    {"id":"CH","name":"Chihuahua"},
+                    {"id":"CL","name":"Coahuila de Zaragoza"},
+                    {"id":"CM","name":"Colima"},
+                    {"id":"DF","name":"Distrito Federal"},
+                    {"id":"DG","name":"Durango"},
+                    {"id":"MC","name":"Estado de México"},
+                    {"id":"GT","name":"Guanajuato"},
+                    {"id":"GR","name":"Guerrero"},
+                    {"id":"HG","name":"Hidalgo"},
+                    {"id":"JC","name":"Jalisco"},
+                    {"id":"MN","name":"Michoacán de Ocampo"},
+                    {"id":"MS","name":"Morelos"},
+                    {"id":"NT","name":"Nayarit"},
+                    {"id":"NL","name":"Nuevo León"},
+                    {"id":"OC","name":"Oaxaca"},
+                    {"id":"PL","name":"Puebla"},
+                    {"id":"QT","name":"Querétaro"},
+                    {"id":"QR","name":"Quintana Roo"},
+                    {"id":"SP","name":"San Luis Potosí"},
+                    {"id":"SL","name":"Sinaloa"},
+                    {"id":"SR","name":"Sonora"},
+                    {"id":"TC","name":"Tabasco"},
+                    {"id":"TS","name":"Tamaulipas"},
+                    {"id":"TL","name":"Tlaxcala"},
+                    {"id":"VZ","name":"Veracruz de Ignacio de la Llave"},
+                    {"id":"YN","name":"Yucatán"},
+                    {"id":"ZS","name":"Zacatecas"}
+                  ]
+                },
+                {
+                  "resultPathNode": "country",
+                  "model": "country",
+                  "type": "autocompleteObject",
+                  "label": "País",
+                  "hint": "Selecciona un País",
+                  "required": "true",
+                  "conditionalShow": "",
+                  "options": [
+                    {"id":"MEX","name":"México"}
+                  ]
                 }
-              }
-            ],
-            "filter":"",
-            "sort":"",
-            "expand":false,
-            "hide-actions":false,
-            "hide-headers":false,
-            "loading":false,
-            "no-data-text":"No hay registros"
-          },
-          "items":[],
-          "defaultItem":{
-  "creditFolio": "",
-  "creditorName": "",
-  "grantDate": "2018-01-01",
-  "outstandingBalance": "",
-  "periodicity": {
-    "id": "months",
-    "name": "Meses"
-  },
-  "principalAmount": "",
-  "terms": ""
-          }
+              ]
+            },
+            {
+              "legend":"Captura de pantalla",
+              "key":"idType2",
+              "fields":[
+                {
+                  "model": "linkVerificación",
+                  "type": "button",
+                  "label": "Verifica Comprobante CFE",
+                  "disabled": "model.terminal == true",
+                  "href": "('https://app.cfe.mx/Aplicaciones/CCFE/Recibos/Consulta')",
+                  "target": "_blank",
+                  "conditionalShow": "model.terminal != true"
+                },
+                {
+                  "resultPath": "serviceName",
+                  "model": "serviceName",
+                  "type": "textbox",
+                  "label": "Nombre del Servicio",
+                  "hint": "Nombre del Servicio",
+                  "required": "true",
+                  "disabled": "model.terminal == true",
+                  "conditionalShow": "model.terminal != true"
+                },
+                {
+                  "resultPath": "serviceNumber",
+                  "model": "serviceNumber",
+                  "type": "textbox",
+                  "label": "Numero de Servicio",
+                  "hint": "Numero de Servicio",
+                  "required": "true",
+                  "disabled": "model.terminal == true",
+                  "conditionalShow": "model.terminal != true",
+                  "mask":"##################"
+                },
+                {
+                  "resultPath": "validateProof",
+                  "model": "validateProof",
+                  "type": "radio",
+                  "label": "Documento",
+                  "hint": "El documento concuerda con la verificacón externa",
+                  "required": "true",
+                  "mandatory": "false",
+                  "conditionalShow": "model.terminal != true && (model.type != 'unknown' && model.type != 'low-quality' )",
+                  "options": [
+                    { "id": "true", "name": "Válido"},
+                    { "id": "false", "name": "Inválido"}
+                  ]
+                },
+                {
+                  "resultPath": "proofImages",
+                  "model": "proofImages",
+                  "type": "textareaImage",
+                  "label": "Pegar evidencia de captura de pantalla aquí",
+                  "hint": "Copia la imagen de la liga de verificación",
+                  "required": "true",
+                  "readonly": "true",
+                  "disabled": "model.terminal == true"
+                }
+              ]
+            }
+          ]
         }
       ]
     }
