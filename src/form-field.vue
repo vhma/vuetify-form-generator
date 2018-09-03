@@ -324,6 +324,7 @@
                    v-model="localValue"
                    :label="field.label"
                    :disabled="evalInContextDisabled( field.disabled || false )"
+                   append-icon="event"
                    readonly
                  ></v-text-field>
                  <v-date-picker
