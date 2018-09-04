@@ -368,6 +368,7 @@
 
 <script>
 import eventHub from './components/eventHub'
+import { firebase_mobile, db, branchOffice, covenant } from '../firebase/firebase'
 	export default{
 		name: 'v-form-generator-field',
 		props: {

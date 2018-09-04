@@ -39,4 +39,4 @@ export {firebase_mobile}
 
 export const db = firebase_mobile.database()
 export const branchOffice = db.ref('admin/broker/Aeternam/branchOffice')
-export const convenant = db.ref('admin/broker/Aeternam/covenant')
+export const covenant = db.ref('admin/broker/Aeternam/covenant')
