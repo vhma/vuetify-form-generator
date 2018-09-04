@@ -180,6 +180,8 @@
                             v-model="localValue"
                             :modelSelected="localModel"
                             :field="field"
+                            :options="options"
+                            :context="context"
                         >
             </v-form-generator-imageCapture>
 		</div>
@@ -374,7 +376,9 @@ import eventHub from './components/eventHub'
 			menu: false,
 			model: Object,
 			select: null,
-			show: null
+			show: null,
+			context:Object,
+			options:Object
 		},
         components: {
             'v-form-generator-field-dialogBox': require('./components/dialogBox.vue').default,

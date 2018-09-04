@@ -47,29 +47,24 @@ import ProductZoomer from 'vue-product-zoomer'
                     "public/documents/unknown.jpg"
                   ],
                 model: {
-    "type":"cfe",
-    "streetName":"",
-    "externalNumber":"",
-    "settlementName":"",
-    "zip":"",
-    "county":"",
-    "city":"",
-    "stateName":"",
-    "country":"",
-
-    "serviceNumber":"",
-    "serviceName":"",
-    "images":"",
-    "validationTime":""
+"type":"curp",
+"subtype":"curp",
+"valid":"",
+"remedy":"",
+"terminal":"",
+"curp":"",
+"images":[],
+"proofImages":[],
+"validationTime": ""
                  },
                 schema: {
-  "forms":[
+  "forms": [
     {
-      "id":"dataCapture",
-      "label":"Validación de Comprobante CFE",
-      "helpUrl":"todo.html",
-      "helpIcon":"false",
-      "fields":[
+      "id": "dataCapture",
+      "label": "Verifica Datos",
+      "helpUrl": "todo.html",
+      "helpIcon": "true",
+      "fields": [
         {
           "groups":[
             {
@@ -80,156 +75,81 @@ import ProductZoomer from 'vue-product-zoomer'
                   "resultPathNode": "type",
                   "model": "type",
                   "type": "dropdown",
-                  "label": "Valida Recibo",
-                  "hint": "Selecciona",
-                  "required": true,
-                  "options":[
+                  "label": "Tipo de Identificación",
+                  "hint": "Tipo de Identificación",
+                  "required": "true",
+                  "options": [
                     {
-                      "id": "cfe",
-                      "name": "CFE"
+                      "id": "curp",
+                      "name": "CURP"
                     },
                     {
-                      "id":"unknown",
-                      "name":"Desconocido o Equivocado",
-                      "terminal":"true",
-                      "remedy":{
-                        "type":"uploadDocument",
-                        "options":{
-                          "multiPage":true
+                      "id": "unknown",
+                      "name": "Desconocido o Equivocado",
+                      "terminal": true,
+                      "document": "curp",
+                      "remedy": {
+                        "type": "uploadDocument",
+                        "options": {
+                          "multiPage": true
                         },
-                        "label":"Favor de proporcionar un comprobante válido",
-                        "cause":"Documento desconocido o equivocado"
+                        "label": "Favor de proporcionar una CURP válida",
+                        "cause": "Documento desconocido o equivocado"
                       }
                     },
                     {
-                      "id":"low-quality",
-                      "name":"Borroso, incompleto o de baja calidad",
-                      "terminal":true,
-                      "remedy":{
-                        "type":"uploadDocument",
-                        "options":{
-                          "multiPage":true
+                      "id": "low-quality",
+                      "name": "Borroso, incompleto o de baja calidad",
+                      "terminal": true,
+                      "document": "curp",
+                      "remedy": {
+                        "type": "uploadDocument",
+                        "options": {
+                          "multiPage": true
                         },
-                        "label": "Favor de proporcionar un comprobante válido",
+                        "label": "Favor de proporcionar una CURP válida",
                         "cause": "Documento incompleto o ilegible"
                       }
                     }
                   ]
                 },
                 {
-                  "resultPath": "streetName",
-                  "model": "streetName",
-                  "type": "textbox",
-                  "label": "Calle",
-                  "hint": "Nombre de la Calle",
+                  "resultPathNode": "valid",
+                  "model": "valid",
+                  "type": "dropdown",
+                  "label": "Vigencia",
+                  "hint": "Vigencia de CURP",
                   "required": "true",
-                  "disabled": "model.terminal == true",
-                  "conditionalShow": "model.terminal != true"
-                },
-                {
-                  "resultPath": "externalNumber",
-                  "model": "externalNumber",
-                  "type": "textbox",
-                  "label": "Número Exterior/Interior",
-                  "hint": "Número Exterior",
-                  "required": "true",
-                  "disabled": "model.terminal == true",
-                  "conditionalShow": "model.terminal != true"
-                },
-                {
-                  "resultPath": "settlementName",
-                  "model": "settlementName",
-                  "type": "textbox",
-                  "label": "Colonia",
-                  "hint": "Colonia, Ejido, Ranchería, etc",
-                  "required": "true",
-                  "disabled": "model.terminal == true",
-                  "conditionalShow": "model.terminal != true"
-                },
-                {
-                  "resultPath": "zip",
-                  "model": "zip",
-                  "type": "textbox",
-                  "label": "Código Postal",
-                  "hint": "Código Postal",
-                  "required": "true",
-                  "disabled": "model.terminal == true",
-                  "conditionalShow": "model.terminal != true",
-                  "mask":"#######"
-                },
-                {
-                  "resultPathNode": "county",
-                  "model": "county",
-                  "targettext": "county",
-                  "type": "textbox",
-                  "label": "Municipio",
-                  "hint": "Ingresa el municipio del estado",
-                  "required": "true",
-                  "conditionalShow": ""
-                },
-                {
-                  "resultPathNode": "city",
-                  "model": "city",
-                  "type": "textbox",
-                  "label": "Ciudad",
-                  "hint": "Selecciona Ciudad",
-                  "required": "true",
-                  "conditionalShow": "model.terminal != true"
-                },
-                {
-                  "resultPathNode": "stateName",
-                  "model": "stateName",
-                  "type": "autocompleteObject",
-                  "label": "Estado",
-                  "hint": "Selecciona un estado",
-                  "required": "true",
-                  "conditionalShow": "",
                   "options": [
-                    {"id":"AS","name":"Aguascalientes"},
-                    {"id":"BC","name":"Baja California"},
-                    {"id":"BS","name":"Baja California Sur"},
-                    {"id":"CC","name":"Campeche"},
-                    {"id":"CS","name":"Chiapas"},
-                    {"id":"CH","name":"Chihuahua"},
-                    {"id":"CL","name":"Coahuila de Zaragoza"},
-                    {"id":"CM","name":"Colima"},
-                    {"id":"DF","name":"Distrito Federal"},
-                    {"id":"DG","name":"Durango"},
-                    {"id":"MC","name":"Estado de México"},
-                    {"id":"GT","name":"Guanajuato"},
-                    {"id":"GR","name":"Guerrero"},
-                    {"id":"HG","name":"Hidalgo"},
-                    {"id":"JC","name":"Jalisco"},
-                    {"id":"MN","name":"Michoacán de Ocampo"},
-                    {"id":"MS","name":"Morelos"},
-                    {"id":"NT","name":"Nayarit"},
-                    {"id":"NL","name":"Nuevo León"},
-                    {"id":"OC","name":"Oaxaca"},
-                    {"id":"PL","name":"Puebla"},
-                    {"id":"QT","name":"Querétaro"},
-                    {"id":"QR","name":"Quintana Roo"},
-                    {"id":"SP","name":"San Luis Potosí"},
-                    {"id":"SL","name":"Sinaloa"},
-                    {"id":"SR","name":"Sonora"},
-                    {"id":"TC","name":"Tabasco"},
-                    {"id":"TS","name":"Tamaulipas"},
-                    {"id":"TL","name":"Tlaxcala"},
-                    {"id":"VZ","name":"Veracruz de Ignacio de la Llave"},
-                    {"id":"YN","name":"Yucatán"},
-                    {"id":"ZS","name":"Zacatecas"}
+                    {
+                      "id": "true",
+                      "name": "Vigente"
+                    },
+                    {
+                      "id": "false",
+                      "name": "Expirada",
+                      "terminal": true,
+                      "remedy": {
+                        "type": "uploadDocument",
+                        "options": {
+                          "multiPage": true
+                        },
+                        "label": "Favor de proporcionar una CURP válida",
+                        "cause": "CURP vencida"
+                      }
+                    }
                   ]
                 },
                 {
-                  "resultPathNode": "country",
-                  "model": "country",
-                  "type": "autocompleteObject",
-                  "label": "País",
-                  "hint": "Selecciona un País",
+                  "resultPath": "curp",
+                  "model": "curp",
+                  "type": "textbox",
+                  "label": "CURP",
+                  "hint": "Clave CURP",
                   "required": "true",
-                  "conditionalShow": "",
-                  "options": [
-                    {"id":"MEX","name":"México"}
-                  ]
+                  "disabled": "model.terminal == true",
+                  "conditionalShow": "model.type == 'curp' && model.terminal != true",
+                  "mask":"AAAA######AAAAAA##"
                 }
               ]
             },
@@ -240,32 +160,10 @@ import ProductZoomer from 'vue-product-zoomer'
                 {
                   "model": "linkVerificación",
                   "type": "button",
-                  "label": "Verifica Comprobante CFE",
+                  "label": "Verifica documento",
                   "disabled": "model.terminal == true",
-                  "href": "('https://app.cfe.mx/Aplicaciones/CCFE/Recibos/Consulta')",
-                  "target": "_blank",
-                  "conditionalShow": "model.terminal != true"
-                },
-                {
-                  "resultPath": "serviceName",
-                  "model": "serviceName",
-                  "type": "textbox",
-                  "label": "Nombre del Servicio",
-                  "hint": "Nombre del Servicio",
-                  "required": "true",
-                  "disabled": "model.terminal == true",
-                  "conditionalShow": "model.terminal != true"
-                },
-                {
-                  "resultPath": "serviceNumber",
-                  "model": "serviceNumber",
-                  "type": "textbox",
-                  "label": "Numero de Servicio",
-                  "hint": "Numero de Servicio",
-                  "required": "true",
-                  "disabled": "model.terminal == true",
-                  "conditionalShow": "model.terminal != true",
-                  "mask":"##################"
+                  "href": "((model.type == 'curp')?'https://consultas.curp.gob.mx':'')",
+                  "target": "_blank"
                 },
                 {
                   "resultPath": "validateProof",
@@ -300,7 +198,18 @@ import ProductZoomer from 'vue-product-zoomer'
   ]
                 },
                 options: {},
-                context:{}
+                context:{
+input:{
+        "folio" : "6",
+        "id" : "b019698e-dfeb-4a37-a189-8237bfc2f0b2",
+        "origin" : "AlphaMobile",
+        "pdfFormName" : "test-contract",
+        "scriptId" : "test-domain",
+        "uid" : "12345"
+      }
+
+
+                }
 			}
 		},
 		methods: {

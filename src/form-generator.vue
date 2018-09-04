@@ -90,6 +90,8 @@
                                                                         :value="localmodel[field.model]"
                                                                         :model="localmodel"
                                                                         :fieldmodel="field.model"
+                                                                        :context="context"
+                                                                        :options="options"
                                                                         v-bind.sync="localmodel"
                                                                         @input="onInput"
                                                                         />
@@ -187,6 +189,7 @@
 </template>
 
 <script>
+
 import eventHub from './components/eventHub'
 import ProductZoomer from 'vue-product-zoomer'
 
@@ -195,9 +198,9 @@ import ProductZoomer from 'vue-product-zoomer'
         props: {
             'model': Object,
             'schema': Object,
-            'options': Object,
             'imageUrls': Array,
-            'context':Object
+            context:Object,
+            options: Object
         },
         components: {
             'v-form-generator-field': require('./form-field.vue').default,
@@ -264,6 +267,7 @@ import ProductZoomer from 'vue-product-zoomer'
             // On load
 
             eventHub.$on('updatefield', dataField=>{
+                debugger;
                 this.localmodelClone[dataField.field] = this.localmodelClone[dataField.field] = dataField.value
             })
             eventHub.$on('updatemodel', dataModel=>{

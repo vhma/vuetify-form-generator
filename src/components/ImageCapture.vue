@@ -1,7 +1,6 @@
 <template>
 
 <div>
-
     <v-textarea
       v-model="localValue"
       :label="field.label"
@@ -45,12 +44,16 @@ var config =({
   })
 firebase.initializeApp(config)
 **/
+
+import { firebase_main, firebase_mobile} from '../../firebase/firebase'
+
     export default{
         name: 'imageCapture',
         props: {
             'modelSelected': Object,
             'field':Object,
-            'context':Object,
+            context:Object,
+            options:Object
         }, 
         data(){
             return {
@@ -65,6 +68,19 @@ firebase.initializeApp(config)
             proofImages:{
                 get(){
                     return this.localImages;
+                },
+                set(image){
+                    this.localImages.push(image)
+                }
+            },
+            pathProofImages:{
+                get(){
+                    var arr=[], i=0;
+                    for(i=0; i<this.localImages.length; i++){
+                        arr.push( this.localImages[i].fullpath );
+                    }
+
+                    return arr;
                 },
                 set(image){
                     this.localImages.push(image)
@@ -96,7 +112,7 @@ firebase.initializeApp(config)
                     }
                 }
             },
-            uploadImage(){
+            uploadImage(image){
                 if (this.localImages ===null || this.localImages.length == 0) {
 
                 }
@@ -107,12 +123,40 @@ firebase.initializeApp(config)
                     //console.log('image', this.localImages[i])
                     //uploadTask = storageRef.child(this.localImages[i].name).put(this.localImages[i])
                     //}
-                  eventHub.$emit('updatefield', {field:this.field.model, value:{data:this.localImages} })
-                  eventHub.$emit('updatefield', {field:'validationTime', value:new Date(Date.now()).toJSON().slice(0,19).replace("T","-").replace(/:/g,"-")})
+                    debugger;
+
+                  var storageRef, item, uploadTask, path, currentDate;
+                  switch(this.context.input.origin){
+                    case "AlphaMobile":
+                        path = "users/"+this.context.input.uid+"/images/"+this.context.input.scriptId+"/"+this.context.input.id+"/images/";
+                        storageRef = firebase_mobile.storage().ref(path);
+                    break;
+                    case "AlphaX":
+                        path = "users/"+this.context.input.uid+"/images/"+this.context.input.scriptId+"/"+this.context.input.id+"/images/";
+                        storageRef = firebase_main.storage().ref(path);
+                    break;
+                    default:
+                        storageRef = null;
+                        path = "";
+                    break;
+                  }
+
+                  if(storageRef && storageRef != null){
+                      //var storageRef = firebase.firebase_mobile.storage().ref('test/upload/'),
+                      item = this.localImages.filter(itemArr => itemArr === image )[0];
+                      console.log('localImages', this.localImages)
+                      console.log('localImages', item)
+                      uploadTask = storageRef.child(item.id).put(item.data)
+                  }
+                  currentDate = new Date(Date.now()).toJSON();
+                  console.log( "pathProofImages", this.pathProofImages )
+                  eventHub.$emit('updatefield', {field:'images', value: this.pathProofImages })
+                  eventHub.$emit('updatefield', {field:'validationTime', value: currentDate })
                 }
             },
             onPaste(event) {
-                var items = (event.clipboardData  || event.originalEvent.clipboardData).items;
+                var items = (event.clipboardData  || event.originalEvent.clipboardData).items, path, pathId, imagen, objImage, fullpath;
+
                 // buscar imagen pegada entre los elementos pegados
                 var blob = null;
                 for (var i = 0; i < items.length; i++) {
@@ -122,13 +166,38 @@ firebase.initializeApp(config)
                 }
                 // cargar imagen si hay una imagen pegada
                 if (blob !== null) {
-                  var path = "proof_image_"+new Date(Date.now()).toJSON().slice(0,19).replace("T","-").replace(/:/g,"-")+".jpg",
-                      pathId = "proof_image_"+Date.now();
+                debugger;
+                  var path = "validate_proof_"+new Date(Date.now()).toJSON().slice(0,19).replace("T","-").replace(/:/g,"-")+".jpg",
+                      pathId = "validate_proof_"+new Date(Date.now()).toJSON().slice(0,19).replace("T","-").replace(/:/g,"-");
+
+                    if(this.context.input.folio){
+                        pathId = pathId +"_"+this.context.input.folio;
+                    }
+                    if(pathId){
+                        path = pathId +".jpg";
+                    }
+
+                    switch(this.context.input.origin){
+                        case "AlphaMobile":
+                            fullpath = "users/"+this.context.input.uid+"/images/"+this.context.input.scriptId+"/"+this.context.input.id+"/images/";
+                        break;
+                        case "AlphaX":
+                            fullpath = "users/"+this.context.input.uid+"/images/"+this.context.input.scriptId+"/"+this.context.input.id+"/images/";
+                        break;
+                        default:
+                            fullpath = "users/12345/test/images/";
+                        break;
+                    }
+                    fullpath = fullpath + path;
+
                   var imagen = new File([blob], path, { type: "image/jpeg", lastModified: Date.now(), id:pathId} )
-                      ,objImage ={ id:pathId, data:imagen }
+                      ,objImage ={ id:pathId, data:imagen, fullpath:fullpath }
 
                   this.localImages.push(objImage);
+                  this.uploadImage(objImage);
+
                   this.renderImages();
+
                 }
             },
             evalInContextValue(string){
